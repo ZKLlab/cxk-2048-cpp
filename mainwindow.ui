@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -31,8 +31,41 @@ color: #776e65;</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>-1</number>
+    </property>
     <item>
-     <spacer name="horizontalSpacer">
+     <layout class="QVBoxLayout" name="verticalLayout_1">
+      <item>
+       <widget class="QPushButton" name="exitButton">
+        <property name="styleSheet">
+         <string notr="true">background: white;
+border: none;
+border-radius: 3px;
+padding: 9px 12px;</string>
+        </property>
+        <property name="text">
+         <string>退出</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="horizontalSpacerLeft">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -45,23 +78,75 @@ color: #776e65;</string>
      </spacer>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="rightMargin">
+       <number>100</number>
+      </property>
       <item>
-       <widget class="QLabel" name="title">
-        <property name="font">
-         <font>
-          <pointsize>64</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>JNTM</string>
-        </property>
+       <widget class="QWidget" name="gameInfo" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="title">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>64</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>JNTM</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="score">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: #bbada0;
+color: white;
+border-radius: 6px;</string>
+           </property>
+           <property name="text">
+            <string>分数：0</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
     </item>
     <item>
-     <spacer name="horizontalSpacer_2">
+     <spacer name="horizontalSpacerRight">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -78,5 +163,22 @@ color: #776e65;</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>exitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>36</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

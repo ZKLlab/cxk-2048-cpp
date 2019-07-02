@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         game2048.cpp \
+        gamecontainerwidget.cpp \
         main.cpp \
         mainwindow.cpp \
         rankinglist.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
         game2048.h \
+        gamecontainerwidget.h \
         gamedef.h \
         mainwindow.h \
         rankinglist.h \
