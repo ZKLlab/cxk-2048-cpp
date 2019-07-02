@@ -14,7 +14,7 @@ public:
     explicit GameContainerWidget(QWidget *parent = nullptr);
 signals:
 public slots:
-    void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent *) override;
 };
 
 #endif // GAMECONTAINERWIDGET_H

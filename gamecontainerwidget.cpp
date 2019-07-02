@@ -5,7 +5,7 @@ GameContainerWidget::GameContainerWidget(QWidget *parent) : QWidget(parent)
 
 }
 
-void GameContainerWidget::paintEvent(QPaintEvent *event)
+void GameContainerWidget::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
