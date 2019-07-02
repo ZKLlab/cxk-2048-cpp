@@ -28,12 +28,14 @@ SOURCES += \
         game2048.cpp \
         main.cpp \
         mainwindow.cpp \
+        rankinglist.cpp \
         tile.cpp
 
 HEADERS += \
         game2048.h \
         gamedef.h \
         mainwindow.h \
+        rankinglist.h \
         tile.h
 
 FORMS += \
