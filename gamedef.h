@@ -1,0 +1,8 @@
+#ifndef GAMEDEF_H
+#define GAMEDEF_H
+
+#define TILE_WIDTH 100
+#define GUTTER_WIDTH 15
+#define CONTAINER_WIDTH (TILE_WIDTH * 4 + GUTTER_WIDTH * 5)
+
+#endif // GAMEDEF_H
