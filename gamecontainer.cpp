@@ -74,8 +74,12 @@ void GameContainer::newGame()
 {
     tiles.clear();
     score = 0;
-    generateRandomTile();
-    generateRandomTile();
+    addTile(4, 0, 0);
+    addTile(2, 3, 0);
+    addTile(2, 0, 1);
+    addTile(2, 3, 1);
+    //generateRandomTile();
+    //generateRandomTile();
 }
 
 std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
@@ -102,11 +106,12 @@ void GameContainer::move()
             for (int row = 1; row < 4; row++)
             {
                 int r = row - 1;
-                while(matrix[r][col] == nullptr && r > 0) --r;
-                if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
+                while(r > 0 && matrix[r][col] == nullptr) --r;
+                if (matrix[row][col] != nullptr && matrix[r][col] != nullptr && matrix[r][col]->getValue() == matrix[row][col]->getValue())
                 {
-                    matrix[row][col]->moveTo(r, col);
                     matrix[r][col]->doubleValue();
+                    matrix[row][col]->moveTo(r, col);
+                    matrix[row][col] = nullptr;
                     updateScore(matrix[r][col] -> getValue());
                     isMoved = true;
                 }
@@ -117,7 +122,8 @@ void GameContainer::move()
                 {
                     if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
                     {
-                        matrix[r][col]->moveTo(r - 1, col);
+                        matrix[r][col]->moveTo(r-1, col);
+                        matrix[r][col] = nullptr;
                         isMoved = true;
                     }
                 }
