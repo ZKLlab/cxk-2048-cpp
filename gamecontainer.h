@@ -7,6 +7,8 @@
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
+#include <string>
+#include <fstream>
 
 class GameContainer : public QWidget
 {
@@ -19,6 +21,12 @@ public:
     void generateRandomTile();
     void newGame();
     std::vector<std::vector<Tile *>> getTilesMatrix();
+    int getScore() const;
+    void updateScore(int value);
+    std::string serialize();
+    void deserialize(std::string information);
+    void recordFile(std::string information);
+    std::string readFile();
 private:
     int score;
     std::list<Tile> tiles;

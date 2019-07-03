@@ -5,29 +5,30 @@ RankingList::RankingList()
 
 }
 
-int RankingList::recordScore(int score)
+int RankingList::recordScore(int scoreThis)
 {
-    bool cmp(int x, int y);
     std::string line;
-    std::vector<int> sco;
+    std::vector<int> score;
     std::size_t i = 0;
     int x;
     std::ifstream infile("RankingList.txt");
     while(getline(infile, line))
     {
         std::istringstream items(line);
-        items >> x;
-        sco[i] = x;
-        i++;
+        while (items >> x)
+        {
+            score[i] = x;
+            i++;
+        }
     }
-    sco[i] = score;
-    sort(sco.begin(), sco.end());
+    score[i] = scoreThis;
+    sort(score.begin(), score.end());
     std::ofstream outfile("RankingList.txt");
-    for (std::size_t i = 0; i < sco.size(); i++)
+    for (std::size_t j = 0; j < score.size(); j++)
     {
-        outfile << sco[i] << '\t';
+        outfile << score[j] << '\t';
     }
     infile.close();
     outfile.close();
-    return sco[0];
+    return score[0];
 }
