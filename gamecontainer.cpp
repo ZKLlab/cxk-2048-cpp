@@ -102,7 +102,40 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
 
 void GameContainer::move()
 {
-
+    auto matrix = getTilesMatrix();
+    bool isMoved = false;
+        for(int col = 0; col < 4; col++)
+        {
+            for (int row = 1; row < 4; row++)
+            {
+                int r = row - 1;
+                while(matrix[r][col] == nullptr && r > 0) --r;
+                if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
+                {
+                    matrix[row][col]->moveTo(r, col);
+                    matrix[r][col]->doubleValue();
+                    int score = getScore();
+                    score += matrix[r][col]->getValue();
+                    updateScore(score);
+                    isMoved = true;
+                }
+            }
+            for (int row = 1; row < 4; row++)
+            {
+                for(int r = row; r >= 1; r--)
+                {
+                    if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
+                    {
+                        matrix[r][col]->moveTo(r - 1, col);
+                        isMoved = true;
+                    }
+                }
+            }
+        }
+        if(isMoved)
+        {
+            generateRandomTile();
+        }
 }
 
 int GameContainer::getScore() const
