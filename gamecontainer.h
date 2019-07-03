@@ -27,8 +27,11 @@ public:
     void deserialize(std::string information);
     void recordFile(std::string information);
     std::string readFile();
+    int getWinTile() const;
+    void setWinTile(int value);
+    int judge();
 private:
-    int score;
+    int score, winTile;
     std::list<Tile> tiles;
 signals:
 public slots:
