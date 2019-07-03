@@ -174,11 +174,7 @@ void Tile::doubleValue()
 {
     value *= 2;
     update(); // 重绘
-    QPropertyAnimation *scaleAnimation = new QPropertyAnimation(this, "geometry");
-    scaleAnimation->setDuration(200);
-    scaleAnimation->setStartValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
-    scaleAnimation->setEndValue(QRect(getX(), getY(), int(TILE_WIDTH * 1.2), int(TILE_WIDTH * 1.2)));
-    raise();
+    raise(); // 移至顶层
 }
 
 int Tile::getRow() const

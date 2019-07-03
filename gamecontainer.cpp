@@ -35,6 +35,7 @@ void GameContainer::addTile(int value, int row, int col)
     Tile &tile = tiles.back();
     tile.setParent(this);
     tile.setGeometry(tile.getX(), tile.getY(), TILE_WIDTH, TILE_WIDTH);
+    tile.show();
 }
 
 void GameContainer::generateRandomTile()
@@ -60,21 +61,13 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    int a = 0, temp = 0;
-    std::random_device rd;  // 将用于为随机数引擎获得种子
-    std::mt19937 gen(rd()); // 以播种标准 mersenne_twister_engine
-    std::uniform_int_distribution<> dis(0, k-1);
-    a = dis(gen);
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+    std::uniform_int_distribution<> dis(0, k - 1);
+    int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
-    temp = dis2(gen);
-    if (temp <= 8)
-    {
-        addTile(2, spare[a][0], spare[a][1]);
-    }
-    else
-    {
-        addTile(4, spare[a][0], spare[a][1]);
-    }
+    int temp = dis2(gen);
+    addTile((temp == 0 ? 4 : 2), spare[pos][0], spare[pos][1]);
 }
 
 void GameContainer::newGame()
@@ -102,7 +95,38 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
 
 void GameContainer::move()
 {
-
+    auto matrix = getTilesMatrix();
+    bool isMoved = false;
+        for(int col = 0; col < 4; col++)
+        {
+            for (int row = 1; row < 4; row++)
+            {
+                int r = row - 1;
+                while(matrix[r][col] == nullptr && r > 0) --r;
+                if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
+                {
+                    matrix[row][col]->moveTo(r, col);
+                    matrix[r][col]->doubleValue();
+                    updateScore(matrix[r][col] -> getValue());
+                    isMoved = true;
+                }
+            }
+            for (int row = 1; row < 4; row++)
+            {
+                for(int r = row; r >= 1; r--)
+                {
+                    if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
+                    {
+                        matrix[r][col]->moveTo(r - 1, col);
+                        isMoved = true;
+                    }
+                }
+            }
+        }
+        if(isMoved)
+        {
+            generateRandomTile();
+        }
 }
 
 int GameContainer::getScore() const
@@ -116,7 +140,6 @@ void GameContainer::updateScore(int value)
 
 std::string GameContainer::serialize()
 {
-    std::string information;
     std::ostringstream record(information);
     record << score;
     auto matrix = getTilesMatrix();
@@ -130,36 +153,38 @@ std::string GameContainer::serialize()
     return information;
 }
 
-void GameContainer::deserialize(std::string information)
+void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
-    auto matrix = getTilesMatrix();
+    tiles.clear();
     for (int row = 0; row < 4; row++)
     {
         for (int col = 0; col < 4; col++)
         {
             int value;
             read >> value;
-            addTile(value, row, col);
+            if (value > 0)
+            {
+                addTile(value, row, col);
+            }
         }
     }
+
 }
 
-void GameContainer::recordFile(std::string information)
+void GameContainer::recordFile()
 {
     std::ofstream outfile("2048Record.txt", std::ios::trunc);
     outfile << information;
     outfile.close();
 }
 
-std::string GameContainer::readFile()
+void GameContainer::readFile()
 {
-    std::string information;
-    std::ifstream infile("2048Record.tet");
+    std::ifstream infile("2048Record.txt");
     infile >> information;
     infile.close();
-    return information;
 }
 
 int GameContainer::getWinTile() const

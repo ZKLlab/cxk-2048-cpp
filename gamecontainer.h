@@ -4,11 +4,11 @@
 #include "gamedef.h"
 #include "tile.h"
 #include <list>
+#include <string>
+#include <fstream>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
-#include <string>
-#include <fstream>
 
 class GameContainer : public QWidget
 {
@@ -24,15 +24,23 @@ public:
     int getScore() const;
     void updateScore(int value);
     std::string serialize();
-    void deserialize(std::string information);
-    void recordFile(std::string information);
-    std::string readFile();
+    void deserialize();
+    void recordFile();
+    void readFile();
+    void elmcol();
+    void elmrow();
+    void retract();
     int getWinTile() const;
     void setWinTile(int value);
     int judge();
 private:
     int score, winTile;
+    std::string information;
     std::list<Tile> tiles;
+    bool prop_flag;
+    int prop_elmcol;
+    int prop_elmrow;
+    int prop_retraction;
 signals:
 public slots:
 };
