@@ -22,6 +22,8 @@ public:
     std::string getValueText() const; // 获取值文字
     std::string getText() const; // 获取文字
     void paintEvent(QPaintEvent *) override;
+    int getRow() const;
+    int getCol() const;
 private:
     int index, value, i, j, x, y;
 signals:

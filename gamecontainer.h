@@ -15,6 +15,7 @@ public:
     explicit GameContainer(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *) override;
     void addTile(int value, int row, int col);
+    void getTilesMatrix();
 private:
     int score;
     std::list<Tile> tiles;

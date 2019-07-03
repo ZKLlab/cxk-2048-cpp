@@ -179,3 +179,13 @@ void Tile::doubleValue()
     scaleAnimation->setStartValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     scaleAnimation->setEndValue(QRect(getX(), getY(), int(TILE_WIDTH * 1.2), int(TILE_WIDTH * 1.2)));
 }
+
+int Tile::getRow() const
+{
+    return i;
+}
+
+int Tile::getCol() const
+{
+    return j;
+}
