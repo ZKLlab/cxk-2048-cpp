@@ -25,8 +25,8 @@ public:
     void updateScore(int value);
     std::string serialize();
     void deserialize();
-    void recordFile(std::string information);
-    std::string readFile();
+    void recordFile();
+    void readFile();
 private:
     int score;
     std::string information;
