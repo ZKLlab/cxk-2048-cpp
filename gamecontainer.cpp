@@ -266,31 +266,6 @@ void GameContainer::readFile()
     infile.close();
 }
 
-void GameContainer::elmrow()
-{
-    std::istringstream read(information);
-    read >> score;
-    tiles.clear();
-    int temp[4];
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            int value;
-            read >> value;
-            temp[i] += value;
-        }
-    }
-    int rank=0;
-    for (int i  = 1; i < 4; i++)
-    {
-        if (temp[i-1] < temp[i])
-        {
-           rank = i;
-        }
-    }
-}
-
 void GameContainer::retract()
 {
     if (propFlag == true)
@@ -299,6 +274,7 @@ void GameContainer::retract()
         propFlag = false;
     }
 }
+
 int GameContainer::getWinTile() const
 {
     return winTile;
@@ -360,4 +336,32 @@ void GameContainer::playSoundEffect(int value)
     effect->setLoopCount(1);
     effect->setVolume(0.8);
     effect->play();
+}
+
+void GameContainer::elmrow()
+{
+    auto matrix = getTilesMatrix();
+    int maxRow = 0, maxSum = 0, sum = 0;
+    for (int row = 0; row < 4; row ++)
+    {
+        for (int col = 0; col < 4; col ++)
+        {
+            if (matrix[row][col] == nullptr)
+                continue;
+            sum += matrix[row][col]->getValue();
+        }
+        if (sum > maxSum)
+        {
+            maxSum = sum;
+        }
+        maxRow = row;
+        sum = 0;
+    }
+    for (auto tile = tiles.begin(); tile != tiles.end();)
+    {
+        if ((*tile).getRow() != maxRow)
+            tile++;
+        else
+            tiles.erase(tile);
+    }
 }
