@@ -4,11 +4,11 @@
 #include "gamedef.h"
 #include "tile.h"
 #include <list>
+#include <string>
+#include <fstream>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
-#include <string>
-#include <fstream>
 
 class GameContainer : public QWidget
 {

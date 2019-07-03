@@ -35,6 +35,7 @@ void GameContainer::addTile(int value, int row, int col)
     Tile &tile = tiles.back();
     tile.setParent(this);
     tile.setGeometry(tile.getX(), tile.getY(), TILE_WIDTH, TILE_WIDTH);
+    tile.show();
 }
 
 void GameContainer::generateRandomTile()
@@ -60,21 +61,13 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    int a = 0, temp = 0;
     std::random_device rd;  // 将用于为随机数引擎获得种子
     std::mt19937 gen(rd()); // 以播种标准 mersenne_twister_engine
-    std::uniform_int_distribution<> dis(0, k-1);
-    a = dis(gen);
+    std::uniform_int_distribution<> dis(0, k - 1);
+    int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
-    temp = dis2(gen);
-    if (temp <= 8)
-    {
-        addTile(2, spare[a][0], spare[a][1]);
-    }
-    else
-    {
-        addTile(4, spare[a][0], spare[a][1]);
-    }
+    int temp = dis2(gen);
+    addTile((temp == 0 ? 4 : 2), spare[pos][0], spare[pos][1]);
 }
 
 void GameContainer::newGame()
@@ -157,7 +150,7 @@ void GameContainer::recordFile(std::string information)
 std::string GameContainer::readFile()
 {
     std::string information;
-    std::ifstream infile("2048Record.tet");
+    std::ifstream infile("2048Record.txt");
     infile >> information;
     infile.close();
     return information;

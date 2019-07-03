@@ -3,6 +3,7 @@
 
 #include "gamedef.h"
 #include "gamecontainer.h"
+#include <QKeyEvent>
 #include <QMainWindow>
 
 namespace Ui
@@ -16,6 +17,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 private:
     Ui::MainWindow *ui;
     GameContainer *gameContainer;

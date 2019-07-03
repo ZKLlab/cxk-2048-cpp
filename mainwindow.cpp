@@ -26,3 +26,24 @@ MainWindow::~MainWindow()
     delete ui;
     delete gameContainer;
 }
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_W:
+    case Qt::Key_Up:
+        // 下行用于测试
+        gameContainer->generateRandomTile();
+        break;
+    case Qt::Key_A:
+    case Qt::Key_Left:
+        break;
+    case Qt::Key_S:
+    case Qt::Key_Down:
+        break;
+    case Qt::Key_D:
+    case Qt::Key_Right:
+        break;
+    }
+}
