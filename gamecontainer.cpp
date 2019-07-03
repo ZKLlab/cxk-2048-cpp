@@ -59,7 +59,7 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
     }
     for (auto &tile : tiles)
     {
-        matrix[tile.getRow()][tile.getCol()] = &tile;
+        matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
     }
     return matrix;
 }
