@@ -49,3 +49,16 @@ void GameContainer::newGame()
 
 }
 
+void GameContainer::getTilesMatrix()
+{
+    std::vector<std::vector<Tile *>> matrix;
+    matrix.resize(4);
+    for (auto &row : matrix)
+    {
+        row = {nullptr, nullptr, nullptr, nullptr};
+    }
+    for (auto &tile : tiles)
+    {
+        matrix[tile.getRow()][tile.getCol()] = &tile;
+    }
+}

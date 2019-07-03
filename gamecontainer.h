@@ -17,6 +17,7 @@ public:
     void addTile(int value, int row, int col);
     void generateRandomTile();
     void newGame();
+    void getTilesMatrix();
 private:
     int score;
     std::list<Tile> tiles;
