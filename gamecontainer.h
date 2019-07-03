@@ -17,7 +17,6 @@ public:
     void addTile(int value, int row, int col);
     void generateRandomTile();
     void newGame();
-    void getTilesMatrix();
     std::vector<std::vector<Tile *>> getTilesMatrix();
 private:
     int score;
