@@ -339,28 +339,64 @@ void GameContainer::playSoundEffect(int value)
 
 void GameContainer::elmrow()
 {
-    auto matrix = getTilesMatrix();
-    int maxRow = 0, maxSum = 0, sum = 0;
-    for (int row = 0; row < 4; row ++)
+    if(propFlag == true)
     {
+        auto matrix = getTilesMatrix();
+        int maxRow = 0, maxSum = 0, sum = 0;
+        for (int row = 0; row < 4; row ++)
+        {
+            for (int col = 0; col < 4; col ++)
+            {
+                if (matrix[row][col] == nullptr)
+                    continue;
+                sum += matrix[row][col]->getValue();
+            }
+            if (sum > maxSum)
+            {
+                maxSum = sum;
+                maxRow = row;
+            }
+            sum = 0;
+        }
+        for (auto tile = tiles.begin(); tile != tiles.end();)
+        {
+            if ((*tile).getRow() != maxRow)
+                tile++;
+            else
+                tile = tiles.erase(tile);
+        }
+    }
+    propFlag = false;
+}
+
+void GameContainer::elmcol()
+{
+    if(propFlag == true)
+    {
+        auto matrix = getTilesMatrix();
+        int maxCol = 0, maxSum = 0, sum = 0;
         for (int col = 0; col < 4; col ++)
         {
-            if (matrix[row][col] == nullptr)
-                continue;
-            sum += matrix[row][col]->getValue();
+            for (int row = 0; row < 4; row ++)
+            {
+                if (matrix[row][col] == nullptr)
+                    continue;
+                sum += matrix[row][col]->getValue();
+            }
+            if (sum > maxSum)
+            {
+                maxSum = sum;
+                maxCol = col;
+            }
+            sum = 0;
         }
-        if (sum > maxSum)
+        for (auto tile = tiles.begin(); tile != tiles.end();)
         {
-            maxSum = sum;
+            if ((*tile).getCol() != maxCol)
+                tile++;
+            else
+                tile = tiles.erase(tile);
         }
-        maxRow = row;
-        sum = 0;
     }
-    for (auto tile = tiles.begin(); tile != tiles.end();)
-    {
-        if ((*tile).getRow() != maxRow)
-            tile++;
-        else
-            tiles.erase(tile);
-    }
+    propFlag = false;
 }
