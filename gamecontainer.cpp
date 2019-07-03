@@ -118,7 +118,7 @@ void GameContainer::cleanTiles()
     }
 }
 
-void GameContainer::move()
+void GameContainer::move(int direction)
 {
     // partSerialize();
     auto matrix = getTilesMatrix();
@@ -143,7 +143,6 @@ void GameContainer::move()
                 }
             }
         }
-//        cleanTiles();
         for (int j = 1; j < 4; j++)
         {
             if (matrix[j][i] != nullptr)

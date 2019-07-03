@@ -15,4 +15,9 @@
 
 #define TILE_TEXT_MAX_SIZE 48
 
+#define MOVE_UP 0
+#define MOVE_LEFT 1
+#define MOVE_DOWN 2
+#define MOVE_RIGHT 3
+
 #endif // GAMEDEF_H

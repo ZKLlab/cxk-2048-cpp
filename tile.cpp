@@ -29,7 +29,6 @@ void Tile::moveTo(int row, int col)
     posAnimation->setEndValue(QPoint(getX(), getY()));
     posAnimation->setEasingCurve(QEasingCurve::InOutQuad);
     posAnimation->start();
-    // raise(); // 移至顶层
 }
 
 int Tile::getFontPixelSize() const
