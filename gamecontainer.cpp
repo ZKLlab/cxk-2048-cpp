@@ -112,7 +112,6 @@ void GameContainer::updateScore(int value)
 
 std::string GameContainer::serialize()
 {
-    std::string information;
     std::ostringstream record(information);
     record << score;
     auto matrix = getTilesMatrix();
@@ -126,7 +125,7 @@ std::string GameContainer::serialize()
     return information;
 }
 
-void GameContainer::deserialize(std::string information)
+void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
@@ -142,18 +141,16 @@ void GameContainer::deserialize(std::string information)
     }
 }
 
-void GameContainer::recordFile(std::string information)
+void GameContainer::recordFile()
 {
     std::ofstream outfile("2048Record.txt", std::ios::trunc);
     outfile << information;
     outfile.close();
 }
 
-std::string GameContainer::readFile()
+void GameContainer::readFile()
 {
-    std::string information;
-    std::ifstream infile("2048Record.tet");
+    std::ifstream infile("2048Record.txt");
     infile >> information;
     infile.close();
-    return information;
 }
