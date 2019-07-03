@@ -142,7 +142,7 @@ void GameContainer::updateScore(int value)
     score += value;
 }
 
-std::string GameContainer::serialize()//保存当前游戏所有状态
+std::string GameContainer::serialize()
 {
     std::ostringstream record(information);
     record << score;
@@ -158,7 +158,7 @@ std::string GameContainer::serialize()//保存当前游戏所有状态
     return information;
 }
 
-std::string GameContainer::part_serialize()//保存除道具数量之外的状态
+std::string GameContainer::part_serialize()
 {
     std::ostringstream record(information);
     record << score;
@@ -173,7 +173,7 @@ std::string GameContainer::part_serialize()//保存除道具数量之外的状�
     return information;
 }
 
-void GameContainer::deserialize()//复盘游戏所有状态
+void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
@@ -193,7 +193,7 @@ void GameContainer::deserialize()//复盘游戏所有状态
     read  >> prop_flag >> prop_elmcol >> prop_elmrow >> prop_retraction;
 }
 
-void GameContainer::part_deserialize()//复盘游戏除道具外所有状态
+void GameContainer::part_deserialize()
 {
     std::istringstream read(information);
     read >> score;
@@ -248,6 +248,7 @@ void GameContainer::retract()
         part_deserialize();
         prop_flag = false;
     }
+}
 int GameContainer::getWinTile() const
 {
     return winTile;
