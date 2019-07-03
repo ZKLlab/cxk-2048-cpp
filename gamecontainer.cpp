@@ -103,49 +103,28 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
 
 void GameContainer::move()
 {
+    /*partSerialize();
     auto matrix = getTilesMatrix();
-    bool isMoved = false;
-    for(int col = 0; col < 4; col++)
+    //cleanTiles;
+    for (int i = 0; i < 4; i++)
     {
-        for (int row = 1; row < 4; row++)
+        for (int j = 1; j < 4; j++)
         {
-            int r = row - 1;
-            while(matrix[r][col] == nullptr && r > 0) --r;
-            if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
+            int r = j - 1;
+            while (matrix[j][r] == nullptr) r--;
+            if (matrix[j][i] != nullptr && matrix[r][i] != nullptr && matrix[j][i]->getValue() == matrix[r][i]->getValue())
             {
-                int r = row - 1;
-                while(r > 0 && matrix[r][col] == nullptr) --r;
-                if (matrix[row][col] != nullptr && matrix[r][col] != nullptr && matrix[r][col]->getValue() == matrix[row][col]->getValue())
-                {
-                    matrix[r][col]->doubleValue();
-                    matrix[row][col]->moveTo(r, col);
-                    matrix[row][col] = nullptr;
-                    updateScore(matrix[r][col] -> getValue());
-                    isMoved = true;
-                }
+                propFlag = true;
+                //merge(j, i, r, i);
             }
         }
-        for (int row = 1; row < 4; row++)
-        {
-            for(int r = row; r >= 1; r--)
-            {
-                if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
-                {
-                    if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
-                    {
-                        matrix[r][col]->moveTo(r-1, col);
-                        matrix[r][col] = nullptr;
-                        isMoved = true;
-                    }
-                }
-            }
-        }
-    }
-    if(isMoved)
-    {
-        generateRandomTile();
-    }
+    }*/
+
 }
+/*void GameContainer::merge(int X, int Y, int targetX, int targetY)
+{
+    martix
+}*/
 
 int GameContainer::getScore() const
 {
