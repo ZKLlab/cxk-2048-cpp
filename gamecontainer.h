@@ -38,6 +38,7 @@ public:
     void elmcol(); // 消除一列
     void elmrow(); // 消除一行
     void retract(); // 回退一步
+    void cleanTiles(); // 清除多余方块
     int getWinTile() const; // 获取获胜方块
     void setWinTile(int value); // 设置获胜方块
     int judge(); // 判断游戏输赢状态

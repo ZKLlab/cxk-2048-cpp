@@ -101,6 +101,21 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
     return matrix;
 }
 
+void GameContainer::cleanTiles()
+{
+    auto matrix = getTilesMatrix();
+    for (auto tile = tiles.begin(); tile != tiles.end(); tile++)
+    {
+        bool flag = false;
+        for (auto &row : matrix)
+            for (Tile *tile2 : row)
+                if (tile2 != nullptr && (*tile).getValue() == tile2->getValue())
+                    flag = true;
+        if (!flag)
+            tiles.erase(tile);
+    }
+}
+
 void GameContainer::move()
 {
     auto matrix = getTilesMatrix();
