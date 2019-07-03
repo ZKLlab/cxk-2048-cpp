@@ -139,7 +139,7 @@ void GameContainer::move(int direction)
                     matrix[nearestNonZero][i]->doubleValue();
                     matrix[j][i]->moveTo(nearestNonZero, i);
                     matrix[j][i] = nullptr;
-                    //score
+                    updateScore(matrix[nearestNonZero][i]->getValue());
                 }
             }
         }
