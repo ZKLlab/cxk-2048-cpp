@@ -137,7 +137,6 @@ int GameContainer::getScore() const
 {
     return score;
 }
-
 void GameContainer::updateScore(int value)
 {
     score += value;
@@ -249,4 +248,52 @@ void GameContainer::retract()
         part_deserialize();
         prop_flag = false;
     }
+int GameContainer::getWinTile() const
+{
+    return winTile;
+}
+
+void GameContainer::setWinTile(int value)
+{
+   winTile = value;
+}
+
+int GameContainer::judge()
+{
+    auto matrix = getTilesMatrix();
+    // 赢得游戏
+    for (int row = 0; row < 4; row++)
+    {
+        for (int col = 0; col < 4; col++)
+        {
+            if (matrix[row][col]->getValue() == winTile)
+            {
+                return GAME_WIN;
+            }
+        }
+    }
+    // 横向检查
+    for (int row = 0; row < 4; row++)
+    {
+        for (int col = 0; col < 4 - 1; col++)
+        {
+            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
+            {
+                return GAME_CONTINUE;
+            }
+        }
+    }
+    // 纵向检查
+    for (int col = 0; col < 4; col++)
+    {
+        for (int row = 0; row < 4 - 1; row++)
+        {
+            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
+            {
+                return GAME_CONTINUE;
+            }
+        }
+    }
+    // 不符合上述两种状况，游戏结束
+    return GAME_LOSE;
 }
