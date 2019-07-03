@@ -3,7 +3,8 @@
 
 GameContainer::GameContainer(QWidget *parent) :
     QWidget(parent),
-    score(0)
+    score(0),
+    winTile(2048)
 {
     newGame();
 }
@@ -22,9 +23,7 @@ void GameContainer::paintEvent(QPaintEvent *)
     {
         for (int j = 0; j < 4; j++)
         {
-            painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH,
-                                    TILE_WIDTH, TILE_WIDTH,
-                                    3, 3);
+            painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH, TILE_WIDTH, TILE_WIDTH, 3, 3);
         }
     }
 }
@@ -61,8 +60,8 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    std::random_device rd;
-    std::default_random_engine gen(rd());
+    static std::random_device rd;
+    static std::default_random_engine gen(rd());
     std::uniform_int_distribution<> dis(0, k - 1);
     int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
@@ -74,7 +73,7 @@ void GameContainer::newGame()
 {
     playSoundEffect(2);
     tiles.clear();
-    score = 0;
+    resetScore();
     generateRandomTile();
     generateRandomTile();
     prop_flag = false;
@@ -93,7 +92,11 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
     }
     for (auto &tile : tiles)
     {
-        matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
+        if (matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] == nullptr ||
+                matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())]->getValue() < tile.getValue())
+        {
+            matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
+        }
     }
     return matrix;
 }
@@ -102,36 +105,36 @@ void GameContainer::move()
 {
     auto matrix = getTilesMatrix();
     bool isMoved = false;
-        for(int col = 0; col < 4; col++)
+    for(int col = 0; col < 4; col++)
+    {
+        for (int row = 1; row < 4; row++)
         {
-            for (int row = 1; row < 4; row++)
+            int r = row - 1;
+            while(matrix[r][col] == nullptr && r > 0) --r;
+            if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
             {
-                int r = row - 1;
-                while(matrix[r][col] == nullptr && r > 0) --r;
-                if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
+                matrix[row][col]->moveTo(r, col);
+                matrix[r][col]->doubleValue();
+                updateScore(matrix[r][col] -> getValue());
+                isMoved = true;
+            }
+        }
+        for (int row = 1; row < 4; row++)
+        {
+            for(int r = row; r >= 1; r--)
+            {
+                if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
                 {
-                    matrix[row][col]->moveTo(r, col);
-                    matrix[r][col]->doubleValue();
-                    updateScore(matrix[r][col] -> getValue());
+                    matrix[r][col]->moveTo(r - 1, col);
                     isMoved = true;
                 }
             }
-            for (int row = 1; row < 4; row++)
-            {
-                for(int r = row; r >= 1; r--)
-                {
-                    if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
-                    {
-                        matrix[r][col]->moveTo(r - 1, col);
-                        isMoved = true;
-                    }
-                }
-            }
         }
-        if(isMoved)
-        {
-            generateRandomTile();
-        }
+    }
+    if(isMoved)
+    {
+        generateRandomTile();
+    }
 }
 
 int GameContainer::getScore() const
@@ -142,6 +145,13 @@ int GameContainer::getScore() const
 void GameContainer::updateScore(int value)
 {
     score += value;
+    scoreUpdated(score);
+}
+
+void GameContainer::resetScore()
+{
+    score = 0;
+    scoreUpdated(score);
 }
 
 std::string GameContainer::serialize()
@@ -258,7 +268,7 @@ int GameContainer::getWinTile() const
 
 void GameContainer::setWinTile(int value)
 {
-   winTile = value;
+    winTile = value;
 }
 
 int GameContainer::judge()
