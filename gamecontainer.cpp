@@ -42,14 +42,14 @@ void GameContainer::generateRandomTile()
     auto matrix = getTilesMatrix();
     bool haveSpare = false;
     int spare[16][2], k = 0;
-    for(int i = 0; i < 16; i++)
-        for(int j = 0; j < 2; j++)
+    for (int i = 0; i < 16; i++)
+        for (int j = 0; j < 2; j++)
             spare[i][j] = -1;
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if(matrix[i][j] == nullptr)
+            if (matrix[std::size_t(i)][std::size_t(j)] == nullptr)
             {
                 spare[k][0] = i;
                 spare[k][1] = j;
@@ -67,13 +67,13 @@ void GameContainer::generateRandomTile()
     a = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
     temp = dis2(gen);
-    if ( temp <= 8)
+    if (temp <= 8)
     {
-         addTile (2, spare[a][0], spare[a][1]);
+        addTile(2, spare[a][0], spare[a][1]);
     }
     else
     {
-         addTile (4, spare[a][0], spare[a][1]);
+        addTile(4, spare[a][0], spare[a][1]);
     }
 }
 
@@ -98,6 +98,11 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
         matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
     }
     return matrix;
+}
+
+void GameContainer::move()
+{
+
 }
 
 int GameContainer::getScore() const

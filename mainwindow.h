@@ -19,6 +19,9 @@ public:
 private:
     Ui::MainWindow *ui;
     GameContainer *gameContainer;
+signals:
+public slots:
+    void handleNewGameClicked();
 };
 
 #endif // MAINWINDOW_H
