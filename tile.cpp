@@ -190,3 +190,8 @@ int Tile::getCol() const
 {
     return j;
 }
+
+int Tile::getValue() const
+{
+    return value;
+}
