@@ -141,7 +141,6 @@ void GameContainer::updateScore(int value)
 
 std::string GameContainer::serialize()
 {
-    std::string information;
     std::ostringstream record(information);
     record << score;
     auto matrix = getTilesMatrix();
@@ -155,34 +154,35 @@ std::string GameContainer::serialize()
     return information;
 }
 
-void GameContainer::deserialize(std::string information)
+void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
-    auto matrix = getTilesMatrix();
+    tiles.clear();
     for (int row = 0; row < 4; row++)
     {
         for (int col = 0; col < 4; col++)
         {
             int value;
             read >> value;
-            addTile(value, row, col);
+            if (value > 0)
+            {
+                addTile(value, row, col);
+            }
         }
     }
 }
 
-void GameContainer::recordFile(std::string information)
+void GameContainer::recordFile()
 {
     std::ofstream outfile("2048Record.txt", std::ios::trunc);
     outfile << information;
     outfile.close();
 }
 
-std::string GameContainer::readFile()
+void GameContainer::readFile()
 {
-    std::string information;
     std::ifstream infile("2048Record.txt");
     infile >> information;
     infile.close();
-    return information;
 }

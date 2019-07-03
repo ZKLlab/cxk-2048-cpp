@@ -24,11 +24,12 @@ public:
     int getScore() const;
     void updateScore(int value);
     std::string serialize();
-    void deserialize(std::string information);
-    void recordFile(std::string information);
-    std::string readFile();
+    void deserialize();
+    void recordFile();
+    void readFile();
 private:
     int score;
+    std::string information;
     std::list<Tile> tiles;
 signals:
 public slots:
