@@ -114,34 +114,56 @@ void GameContainer::cleanTiles()
         if (flag)
             tile++;
         else
-            tiles.erase(tile);
+            tile = tiles.erase(tile);
     }
 }
 
 void GameContainer::move()
 {
-    /*partSerialize();
+    // partSerialize();
     auto matrix = getTilesMatrix();
-    //cleanTiles;
+    cleanTiles();
+    bool isMoved = false;
     for (int i = 0; i < 4; i++)
     {
         for (int j = 1; j < 4; j++)
         {
-            int r = j - 1;
-            while (matrix[j][r] == nullptr) r--;
-            if (matrix[j][i] != nullptr && matrix[r][i] != nullptr && matrix[j][i]->getValue() == matrix[r][i]->getValue())
+            if(matrix[j][i] != nullptr)
             {
-                propFlag = true;
-                //merge(j, i, r, i);
+                int nearestNonZero = j - 1;
+                while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
+                {
+                    propFlag = true;
+                    isMoved = true;
+                    matrix[nearestNonZero][i]->doubleValue();
+                    matrix[j][i]->moveTo(nearestNonZero, i);
+                    matrix[j][i] = nullptr;
+                    //score
+                }
             }
         }
-    }*/
-
+//        cleanTiles();
+        for (int j = 1; j < 4; j++)
+        {
+            if (matrix[j][i] != nullptr)
+            {
+                int nearestNonZero = j - 1;
+                while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                if (matrix[nearestNonZero][i] != nullptr) nearestNonZero++;
+                matrix[j][i]->moveTo(nearestNonZero, i);
+                if (nearestNonZero != j)
+                {
+                    matrix[j][i] = nullptr;
+                    isMoved = true;
+                    propFlag = true;
+                }
+            }
+        }
+    }
+    if (isMoved)
+        generateRandomTile();
 }
-/*void GameContainer::merge(int X, int Y, int targetX, int targetY)
-{
-    martix
-}*/
 
 int GameContainer::getScore() const
 {
