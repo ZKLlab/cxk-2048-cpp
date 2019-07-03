@@ -13,6 +13,7 @@
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
+#include <QMediaPlayer>
 #include <QSoundEffect>
 
 class GameContainer : public QWidget

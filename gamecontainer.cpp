@@ -323,11 +323,13 @@ int GameContainer::judge()
 
 void GameContainer::playSoundEffect(int value)
 {
-    char filename[80];
-    QSoundEffect effect;
-    sprintf(filename, ":/soundEffects/effect-%d.wav", value);
-    effect.setSource(QUrl::fromLocalFile(filename));
-    effect.setLoopCount(1);
-    effect.setVolume(0.9);
-    effect.play();
+    if (value > 4096)
+        value = 4096;
+    std::ostringstream url;
+    QSoundEffect *effect = new QSoundEffect();
+    url << "qrc:/soundEffects/effect-" << value << ".wav";
+    effect->setSource(QUrl(url.str().c_str()));
+    effect->setLoopCount(1);
+    effect->setVolume(0.8);
+    effect->play();
 }
