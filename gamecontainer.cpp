@@ -158,14 +158,17 @@ void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
-    auto matrix = getTilesMatrix();
+    tiles.clear();
     for (int row = 0; row < 4; row++)
     {
         for (int col = 0; col < 4; col++)
         {
             int value;
             read >> value;
-            addTile(value, row, col);
+            if (value > 0)
+            {
+                addTile(value, row, col);
+            }
         }
     }
 }
