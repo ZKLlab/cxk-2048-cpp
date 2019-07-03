@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>soundEffects/effect-2.wav</file>
+        <file>soundEffects/effect-4.wav</file>
+        <file>soundEffects/effect-8.wav</file>
+        <file>soundEffects/effect-16.wav</file>
+        <file>soundEffects/effect-32.wav</file>
+        <file>soundEffects/effect-64.wav</file>
+        <file>soundEffects/effect-128.wav</file>
+        <file>soundEffects/effect-256.wav</file>
+        <file>soundEffects/effect-512.wav</file>
+        <file>soundEffects/effect-1024.wav</file>
+        <file>soundEffects/effect-2048.wav</file>
+        <file>soundEffects/effect-4096.wav</file>
+    </qresource>
+</RCC>

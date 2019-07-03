@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui \
+         multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -48,3 +49,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     2048Record.txt
+
+RESOURCES += \
+    audio.qrc

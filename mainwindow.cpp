@@ -9,16 +9,31 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     gameContainer->setParent(ui->centralWidget);
     gameContainer->setFixedSize(CONTAINER_WIDTH, CONTAINER_WIDTH);
-    ui->horizontalLayout->insertWidget(3, gameContainer);
+    ui->horizontalLayout->insertWidget(2, gameContainer);
     ui->gameInfo->setFixedHeight(CONTAINER_WIDTH);
 
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
 }
 
 void MainWindow::handleNewGameClicked()
 {
     gameContainer->newGame();
+}
+
+void MainWindow::handleScoreUpdated(int score)
+{
+    std::ostringstream text;
+    text << score;
+    ui->score->setText(text.str().c_str());
+}
+
+void MainWindow::handleBestScoreUpdated(int score)
+{
+    std::ostringstream text;
+    text << score;
+    ui->bestScore->setText(text.str().c_str());
 }
 
 MainWindow::~MainWindow()

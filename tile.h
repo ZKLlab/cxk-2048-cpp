@@ -21,10 +21,11 @@ public:
     std::string getBackgroundColor() const; // 获取背景色
     std::string getValueText() const; // 获取值文字
     std::string getText() const; // 获取文字
+    int getRow() const; // 获取行号
+    int getCol() const; // 获取列号
+    int getValue() const; // 获取值
+protected:
     void paintEvent(QPaintEvent *) override;
-    int getRow() const;
-    int getCol() const;
-    int getValue() const;
 private:
     int index, value, i, j, x, y;
 signals:

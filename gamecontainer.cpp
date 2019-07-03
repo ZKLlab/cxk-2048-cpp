@@ -3,7 +3,8 @@
 
 GameContainer::GameContainer(QWidget *parent) :
     QWidget(parent),
-    score(0)
+    score(0),
+    winTile(2048)
 {
     newGame();
 }
@@ -22,9 +23,7 @@ void GameContainer::paintEvent(QPaintEvent *)
     {
         for (int j = 0; j < 4; j++)
         {
-            painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH,
-                                    TILE_WIDTH, TILE_WIDTH,
-                                    3, 3);
+            painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH, TILE_WIDTH, TILE_WIDTH, 3, 3);
         }
     }
 }
@@ -61,8 +60,8 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    std::random_device rd;
-    std::default_random_engine gen(rd());
+    static std::random_device rd;
+    static std::default_random_engine gen(rd());
     std::uniform_int_distribution<> dis(0, k - 1);
     int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
@@ -72,14 +71,15 @@ void GameContainer::generateRandomTile()
 
 void GameContainer::newGame()
 {
+    playSoundEffect(2);
     tiles.clear();
-    score = 0;
-    addTile(4, 0, 0);
-    addTile(2, 3, 0);
-    addTile(2, 0, 1);
-    addTile(2, 3, 1);
-    //generateRandomTile();
-    //generateRandomTile();
+    resetScore();
+    generateRandomTile();
+    generateRandomTile();
+    propFlag = false;
+    propElmcol = 0;
+    propElmrow = 0;
+    propRetraction = 0;
 }
 
 std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
@@ -92,7 +92,11 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
     }
     for (auto &tile : tiles)
     {
-        matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
+        if (matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] == nullptr ||
+                matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())]->getValue() < tile.getValue())
+        {
+            matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
+        }
     }
     return matrix;
 }
@@ -101,9 +105,13 @@ void GameContainer::move()
 {
     auto matrix = getTilesMatrix();
     bool isMoved = false;
-        for(int col = 0; col < 4; col++)
+    for(int col = 0; col < 4; col++)
+    {
+        for (int row = 1; row < 4; row++)
         {
-            for (int row = 1; row < 4; row++)
+            int r = row - 1;
+            while(matrix[r][col] == nullptr && r > 0) --r;
+            if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
             {
                 int r = row - 1;
                 while(r > 0 && matrix[r][col] == nullptr) --r;
@@ -116,9 +124,12 @@ void GameContainer::move()
                     isMoved = true;
                 }
             }
-            for (int row = 1; row < 4; row++)
+        }
+        for (int row = 1; row < 4; row++)
+        {
+            for(int r = row; r >= 1; r--)
             {
-                for(int r = row; r >= 1; r--)
+                if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
                 {
                     if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
                     {
@@ -129,22 +140,47 @@ void GameContainer::move()
                 }
             }
         }
-        if(isMoved)
-        {
-            generateRandomTile();
-        }
+    }
+    if(isMoved)
+    {
+        generateRandomTile();
+    }
 }
 
 int GameContainer::getScore() const
 {
     return score;
 }
+
 void GameContainer::updateScore(int value)
 {
     score += value;
+    scoreUpdated(score);
+}
+
+void GameContainer::resetScore()
+{
+    score = 0;
+    scoreUpdated(score);
 }
 
 std::string GameContainer::serialize()
+{
+    std::ostringstream record(information);
+    record << score;
+    auto matrix = getTilesMatrix();
+    for (auto &row : matrix)
+    {
+        for (Tile *tile : row)
+        {
+            record << " " << tile->getValueText();
+        }
+    }
+    record << " " << propFlag << " " << propElmcol << " " << propElmrow << " " << propRetraction;
+    return information;
+}
+
+std::string GameContainer::partSerialize()
 {
     std::ostringstream record(information);
     record << score;
@@ -176,7 +212,26 @@ void GameContainer::deserialize()
             }
         }
     }
+    read  >> propFlag >> propElmcol >> propElmrow >> propRetraction;
+}
 
+void GameContainer::partDeserialize()
+{
+    std::istringstream read(information);
+    read >> score;
+    tiles.clear();
+    for (int row = 0; row < 4; row++)
+    {
+        for (int col = 0; col < 4; col++)
+        {
+            int value;
+            read >> value;
+            if (value > 0)
+            {
+                addTile(value, row, col);
+            }
+        }
+    }
 }
 
 void GameContainer::recordFile()
@@ -193,51 +248,98 @@ void GameContainer::readFile()
     infile.close();
 }
 
+void GameContainer::elmrow()
+{
+    std::istringstream read(information);
+    read >> score;
+    tiles.clear();
+    int temp[4];
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            int value;
+            read >> value;
+            temp[i] += value;
+        }
+    }
+    int rank=0;
+    for (int i  = 1; i < 4; i++)
+    {
+        if (temp[i-1] < temp[i])
+        {
+           rank = i;
+        }
+    }
+}
+
+void GameContainer::retract()
+{
+    if (propFlag == true)
+    {
+        partDeserialize();
+        propFlag = false;
+    }
+}
 int GameContainer::getWinTile() const
 {
     return winTile;
 }
+
 void GameContainer::setWinTile(int value)
 {
-   winTile = value;
+    winTile = value;
 }
 
 int GameContainer::judge()
 {
     auto matrix = getTilesMatrix();
-    //赢得游戏
-    for(int row = 0; row < 4; ++row)
+    // 赢得游戏
+    for (int row = 0; row < 4; row++)
     {
-        for(int col = 0; col < 4; ++col)
+        for (int col = 0; col < 4; col++)
         {
-            if(matrix[row][col]->getValue() == winTile)
+            if (matrix[row][col]->getValue() == winTile)
             {
                 return GAME_WIN;
             }
         }
     }
-
-    //横向检查
-    for(int row = 0 ;row < 4; ++row)
+    // 横向检查
+    for (int row = 0; row < 4; row++)
     {
-        for(int col = 0; col < 4 - 1; ++ col)
+        for (int col = 0; col < 4 - 1; col++)
         {
-            if(!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
+            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
             {
                 return GAME_CONTINUE;
             }
         }
     }
-    //纵向检查
-    for(int col = 0; col < 4; ++ col)
+    // 纵向检查
+    for (int col = 0; col < 4; col++)
     {
-        for(int row = 0; row < 4 -1; ++ row)
+        for (int row = 0; row < 4 - 1; row++)
         {
-            if(!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
+            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
             {
                 return GAME_CONTINUE;
             }
         }
-    }//不符合上述两种状况，游戏结束
+    }
+    // 不符合上述两种状况，游戏结束
     return GAME_LOSE;
+}
+
+void GameContainer::playSoundEffect(int value)
+{
+    if (value > 4096)
+        value = 4096;
+    std::ostringstream url;
+    QSoundEffect *effect = new QSoundEffect();
+    url << "qrc:/soundEffects/effect-" << value << ".wav";
+    effect->setSource(QUrl(url.str().c_str()));
+    effect->setLoopCount(1);
+    effect->setVolume(0.8);
+    effect->play();
 }
