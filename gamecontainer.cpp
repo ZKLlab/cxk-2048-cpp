@@ -39,7 +39,7 @@ void GameContainer::addTile(int value, int row, int col)
     tile.doubleValue();
 }
 
-void GameContainer::getTilesMatrix()
+std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
 {
     std::vector<std::vector<Tile *>> matrix;
     matrix.resize(4);
@@ -51,4 +51,5 @@ void GameContainer::getTilesMatrix()
     {
         matrix[tile.getRow()][tile.getCol()] = &tile;
     }
+    return matrix;
 }
