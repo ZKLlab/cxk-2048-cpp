@@ -9,6 +9,10 @@
 #define TILE_VALUE_SIZE 12
 #define TILE_VALUE_MARGIN 3
 
+#define GAME_WIN 1
+#define GAME_LOSE 0
+#define GAME_CONTINUE 2
+
 #define TILE_TEXT_MAX_SIZE 48
 
 #endif // GAMEDEF_H

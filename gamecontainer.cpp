@@ -61,8 +61,8 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    std::random_device rd;  // 将用于为随机数引擎获得种子
-    std::mt19937 gen(rd()); // 以播种标准 mersenne_twister_engine
+    std::random_device rd;
+    std::default_random_engine gen(rd());
     std::uniform_int_distribution<> dis(0, k - 1);
     int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
@@ -139,7 +139,6 @@ int GameContainer::getScore() const
 {
     return score;
 }
-
 void GameContainer::updateScore(int value)
 {
     score += value;
@@ -147,7 +146,6 @@ void GameContainer::updateScore(int value)
 
 std::string GameContainer::serialize()
 {
-    std::string information;
     std::ostringstream record(information);
     record << score;
     auto matrix = getTilesMatrix();
@@ -161,34 +159,85 @@ std::string GameContainer::serialize()
     return information;
 }
 
-void GameContainer::deserialize(std::string information)
+void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
-    auto matrix = getTilesMatrix();
+    tiles.clear();
     for (int row = 0; row < 4; row++)
     {
         for (int col = 0; col < 4; col++)
         {
             int value;
             read >> value;
-            addTile(value, row, col);
+            if (value > 0)
+            {
+                addTile(value, row, col);
+            }
         }
     }
+
 }
 
-void GameContainer::recordFile(std::string information)
+void GameContainer::recordFile()
 {
     std::ofstream outfile("2048Record.txt", std::ios::trunc);
     outfile << information;
     outfile.close();
 }
 
-std::string GameContainer::readFile()
+void GameContainer::readFile()
 {
-    std::string information;
     std::ifstream infile("2048Record.txt");
     infile >> information;
     infile.close();
-    return information;
+}
+
+int GameContainer::getWinTile() const
+{
+    return winTile;
+}
+void GameContainer::setWinTile(int value)
+{
+   winTile = value;
+}
+
+int GameContainer::judge()
+{
+    auto matrix = getTilesMatrix();
+    //赢得游戏
+    for(int row = 0; row < 4; ++row)
+    {
+        for(int col = 0; col < 4; ++col)
+        {
+            if(matrix[row][col]->getValue() == winTile)
+            {
+                return GAME_WIN;
+            }
+        }
+    }
+
+    //横向检查
+    for(int row = 0 ;row < 4; ++row)
+    {
+        for(int col = 0; col < 4 - 1; ++ col)
+        {
+            if(!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
+            {
+                return GAME_CONTINUE;
+            }
+        }
+    }
+    //纵向检查
+    for(int col = 0; col < 4; ++ col)
+    {
+        for(int row = 0; row < 4 -1; ++ row)
+        {
+            if(!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
+            {
+                return GAME_CONTINUE;
+            }
+        }
+    }//不符合上述两种状况，游戏结束
+    return GAME_LOSE;
 }
