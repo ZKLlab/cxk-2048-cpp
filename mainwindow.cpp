@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     gameContainer->setParent(ui->centralWidget);
     gameContainer->setFixedSize(CONTAINER_WIDTH, CONTAINER_WIDTH);
-    ui->horizontalLayout->insertWidget(3, gameContainer);
+    ui->horizontalLayout->insertWidget(2, gameContainer);
     ui->gameInfo->setFixedHeight(CONTAINER_WIDTH);
 
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
