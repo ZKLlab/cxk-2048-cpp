@@ -9,6 +9,7 @@
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
+#include <algorithm>
 
 class GameContainer : public QWidget
 {
@@ -24,12 +25,14 @@ public:
     int getScore() const;
     void updateScore(int value);
     std::string serialize();
+    std::string part_serialize();
     void deserialize();
     void recordFile();
     void readFile();
     void elmcol();
     void elmrow();
     void retract();
+    void part_deserialize();
 private:
     int score;
     std::string information;

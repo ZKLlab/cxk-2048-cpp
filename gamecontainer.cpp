@@ -76,6 +76,10 @@ void GameContainer::newGame()
     score = 0;
     generateRandomTile();
     generateRandomTile();
+    prop_flag = false;
+    prop_elmcol = 0;
+    prop_elmrow = 0;
+    prop_retraction = 0;
 }
 
 std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
@@ -139,7 +143,23 @@ void GameContainer::updateScore(int value)
     score += value;
 }
 
-std::string GameContainer::serialize()
+std::string GameContainer::serialize()//保存当前游戏所有状态
+{
+    std::ostringstream record(information);
+    record << score;
+    auto matrix = getTilesMatrix();
+    for (auto &row : matrix)
+    {
+        for (Tile *tile : row)
+        {
+            record << " " << tile->getValueText();
+        }
+    }
+    record << " " << prop_flag << " " << prop_elmcol << " " << prop_elmrow << " " << prop_retraction;
+    return information;
+}
+
+std::string GameContainer::part_serialize()//保存除道具数量之外的状态
 {
     std::ostringstream record(information);
     record << score;
@@ -154,7 +174,7 @@ std::string GameContainer::serialize()
     return information;
 }
 
-void GameContainer::deserialize()
+void GameContainer::deserialize()//复盘游戏所有状态
 {
     std::istringstream read(information);
     read >> score;
@@ -171,7 +191,26 @@ void GameContainer::deserialize()
             }
         }
     }
+    read  >> prop_flag >> prop_elmcol >> prop_elmrow >> prop_retraction;
+}
 
+void GameContainer::part_deserialize()//复盘游戏除道具外所有状态
+{
+    std::istringstream read(information);
+    read >> score;
+    tiles.clear();
+    for (int row = 0; row < 4; row++)
+    {
+        for (int col = 0; col < 4; col++)
+        {
+            int value;
+            read >> value;
+            if (value > 0)
+            {
+                addTile(value, row, col);
+            }
+        }
+    }
 }
 
 void GameContainer::recordFile()
@@ -186,4 +225,28 @@ void GameContainer::readFile()
     std::ifstream infile("2048Record.txt");
     infile >> information;
     infile.close();
+}
+
+void GameContainer::elmcol()
+{
+    std::istringstream read(information);
+    read >> score;
+    tiles.clear();
+    /*(int temp[4];
+    for (int i = 0; i < 4; i++)
+    {
+        int value;
+        read >> value;
+        temp[i] += value;
+        sort(temp, temp + 4);
+    }*/
+}
+
+void GameContainer::retract()
+{
+    if (prop_flag == true)
+    {
+        part_deserialize();
+        prop_flag = false;
+    }
 }
