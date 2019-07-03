@@ -6,7 +6,10 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <sstream>
+#include <iostream>
 #include <algorithm>
+#include <QUrl>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>

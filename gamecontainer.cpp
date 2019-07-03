@@ -315,9 +315,9 @@ void GameContainer::playSoundEffect(int value)
 {
     char filename[80];
     QSoundEffect effect;
-    sprintf(filename, "D:\\jntm\\effect-%d.wav", value);
+    sprintf(filename, ":/soundEffects/effect-%d.wav", value);
     effect.setSource(QUrl::fromLocalFile(filename));
-    effect.setLoopCount(QSoundEffect::Infinite);
-    effect.setVolume(80);
+    effect.setLoopCount(1);
+    effect.setVolume(0.9);
     effect.play();
 }

@@ -49,3 +49,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     2048Record.txt
+
+RESOURCES += \
+    audio.qrc
