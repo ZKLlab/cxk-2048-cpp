@@ -114,47 +114,49 @@ void GameContainer::cleanTiles()
         if (flag)
             tile++;
         else
-            tiles.erase(tile);
+            tile = tiles.erase(tile);
     }
 }
 
 void GameContainer::move()
 {
-    partSerialize();
+    // partSerialize();
     auto matrix = getTilesMatrix();
-    //cleanTiles();
+    cleanTiles();
     bool isMoved = false;
     for (int i = 0; i < 4; i++)
     {
         for (int j = 1; j < 4; j++)
         {
-            int nearestNonZero = j - 1;
-            while (matrix[nearestNonZero][i] == nullptr) nearestNonZero--;
-            if (matrix[j][i] != nullptr && matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
+            if(matrix[j][i] != nullptr)
             {
-                propFlag = true;
-                isMoved = true;
-                //merge(j, i, r, i);
-                matrix[nearestNonZero][i]->doubleValue();
-                matrix[j][i]->moveTo(nearestNonZero, i);
+                int nearestNonZero = j - 1;
+                while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
+                {
+                    propFlag = true;
+                    isMoved = true;
+                    matrix[nearestNonZero][i]->doubleValue();
+                    matrix[j][i]->moveTo(nearestNonZero, i);
+                    matrix[j][i] = nullptr;
+                    //score
+                }
             }
         }
-        //cleanTiles();
+//        cleanTiles();
         for (int j = 1; j < 4; j++)
         {
-            for (int now = j; now < 4; now++)
+            if (matrix[j][i] != nullptr)
             {
-                if (matrix[now][i] != nullptr)
+                int nearestNonZero = j - 1;
+                while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                if (matrix[nearestNonZero][i] != nullptr) nearestNonZero++;
+                matrix[j][i]->moveTo(nearestNonZero, i);
+                if (nearestNonZero != j)
                 {
-                    int nearestNonZero = now - 1;
-                    while (matrix[now][nearestNonZero] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                    if (matrix[nearestNonZero][i] != nullptr) nearestNonZero++;
-                    matrix[j][i]->moveTo(nearestNonZero, i);
-                    if (nearestNonZero != j)
-                    {
-                        isMoved = true;
-                        propFlag = true;
-                    }
+                    matrix[j][i] = nullptr;
+                    isMoved = true;
+                    propFlag = true;
                 }
             }
         }
@@ -162,10 +164,6 @@ void GameContainer::move()
     if (isMoved)
         generateRandomTile();
 }
-/*void GameContainer::merge(int X, int Y, int targetX, int targetY)
-{
-    martix
-}*/
 
 int GameContainer::getScore() const
 {
