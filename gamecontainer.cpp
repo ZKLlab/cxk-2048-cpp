@@ -171,6 +171,7 @@ void GameContainer::deserialize()
             }
         }
     }
+
 }
 
 void GameContainer::recordFile()

@@ -27,10 +27,17 @@ public:
     void deserialize();
     void recordFile();
     void readFile();
+    void elmcol();
+    void elmrow();
+    void retract();
 private:
     int score;
     std::string information;
     std::list<Tile> tiles;
+    bool prop_flag;
+    int prop_elmcol;
+    int prop_elmrow;
+    int prop_retraction;
 signals:
 public slots:
 };
