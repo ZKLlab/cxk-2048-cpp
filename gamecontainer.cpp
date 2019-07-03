@@ -240,6 +240,7 @@ void GameContainer::readFile()
 
 void GameContainer::elmrow()
 {
+    information = partSerialize();
     std::istringstream read(information);
     read >> score;
     tiles.clear();
@@ -254,14 +255,38 @@ void GameContainer::elmrow()
         }
     }
     int rank=0;
-    for (int i  = 1; i < 4; i++)
+    for (int i = 1; i < 4; i++)
     {
         if (temp[i-1] < temp[i])
         {
            rank = i;
         }
     }
+    std::ostringstream record(information);
+    record << score;
+    switch (rank)
+    {
+    case 0:
+        for (int j = 0; j < 4; j++)
+        {
+            record << " "<< 0 ;
+        }
+        for (int row = 1; row < 4; row ++)
+        {
+            for (int col = 0; col < 4; col++)
+            {
+                record << " " <<
+            }
+        }
+    }
+
+
+
+
+
 }
+
+
 
 void GameContainer::retract()
 {
@@ -271,6 +296,7 @@ void GameContainer::retract()
         propFlag = false;
     }
 }
+
 int GameContainer::getWinTile() const
 {
     return winTile;
