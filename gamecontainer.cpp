@@ -114,9 +114,7 @@ void GameContainer::move()
                 {
                     matrix[row][col]->moveTo(r, col);
                     matrix[r][col]->doubleValue();
-                    int score = getScore();
-                    score += matrix[r][col]->getValue();
-                    updateScore(score);
+                    updateScore(matrix[r][col] -> getValue());
                     isMoved = true;
                 }
             }
