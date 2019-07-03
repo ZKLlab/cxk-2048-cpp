@@ -61,8 +61,8 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    std::random_device rd;  // 将用于为随机数引擎获得种子
-    std::mt19937 gen(rd()); // 以播种标准 mersenne_twister_engine
+    std::random_device rd;
+    std::default_random_engine gen(rd());
     std::uniform_int_distribution<> dis(0, k - 1);
     int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
