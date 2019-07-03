@@ -99,3 +99,8 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
     }
     return matrix;
 }
+
+void GameContainer::move()
+{
+
+}
