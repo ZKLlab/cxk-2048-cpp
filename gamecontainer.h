@@ -11,13 +11,13 @@
 class GameContainer : public QWidget
 {
     Q_OBJECT
-private:
-    int score;
-    std::list<Tile> tiles;
 public:
     explicit GameContainer(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *) override;
     void addTile(int value, int row, int col);
+private:
+    int score;
+    std::list<Tile> tiles;
 signals:
 public slots:
 };

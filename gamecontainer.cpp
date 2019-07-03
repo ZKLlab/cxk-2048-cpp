@@ -4,7 +4,7 @@ GameContainer::GameContainer(QWidget *parent) :
     QWidget(parent),
     score(0)
 {
-
+    addTile(2, 1, 1);
 }
 
 void GameContainer::paintEvent(QPaintEvent *)
@@ -31,4 +31,8 @@ void GameContainer::paintEvent(QPaintEvent *)
 void GameContainer::addTile(int value, int row, int col)
 {
     tiles.emplace_back(value, row, col);
+    Tile &tile = tiles.back();
+    tile.setParent(this);
+    tile.setGeometry(tile.getX(), tile.getY(), TILE_WIDTH, TILE_WIDTH);
+    tile.moveTo(2, 3);
 }

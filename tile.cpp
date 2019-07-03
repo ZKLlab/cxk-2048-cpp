@@ -21,8 +21,14 @@ int Tile::getY() const
 
 void Tile::moveTo(int row, int col)
 {
+    QPropertyAnimation *posAnimation = new QPropertyAnimation(this, "pos");
+    posAnimation->setDuration(200);
+    posAnimation->setStartValue(QPoint(getX(), getY()));
     i = row;
     j = col;
+    posAnimation->setEndValue(QPoint(getX(), getY()));
+    posAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+    posAnimation->start();
 }
 
 int Tile::getFontPixelSize() const
@@ -162,4 +168,10 @@ void Tile::paintEvent(QPaintEvent *)
     font.setPixelSize(getFontPixelSize());
     painter.setFont(font);
     painter.drawText(QRect(0, 0, TILE_WIDTH, TILE_WIDTH), Qt::AlignCenter, getText().c_str());
+}
+
+void Tile::doubleValue()
+{
+    value *= 2;
+    update();
 }
