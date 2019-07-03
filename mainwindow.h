@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include "gamedef.h"
-#include "game2048.h"
-#include "gamecontainerwidget.h"
+#include "gamecontainer.h"
 #include <QMainWindow>
 
 namespace Ui
@@ -19,8 +18,7 @@ public:
     ~MainWindow();
 private:
     Ui::MainWindow *ui;
-    Game2048 *game;
-    GameContainerWidget *gameContainer;
+    GameContainer *gameContainer;
 };
 
 #endif // MAINWINDOW_H

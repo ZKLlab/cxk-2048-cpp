@@ -4,8 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    game(nullptr),
-    gameContainer(new GameContainerWidget)
+    gameContainer(new GameContainer)
 {
     ui->setupUi(this);
     gameContainer->setParent(ui->centralWidget);
@@ -17,6 +16,5 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete game;
     delete gameContainer;
 }

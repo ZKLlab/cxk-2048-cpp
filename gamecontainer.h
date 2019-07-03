@@ -3,18 +3,22 @@
 
 #include "gamedef.h"
 #include "tile.h"
+#include <list>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
 
-class GameContainerWidget : public QWidget
+class GameContainer : public QWidget
 {
     Q_OBJECT
+private:
+    int score;
+    std::list<Tile> tiles;
 public:
-    explicit GameContainerWidget(QWidget *parent = nullptr);
+    explicit GameContainer(QWidget *parent = nullptr);
+    void paintEvent(QPaintEvent *) override;
 signals:
 public slots:
-    void paintEvent(QPaintEvent *) override;
 };
 
 #endif // GAMECONTAINERWIDGET_H

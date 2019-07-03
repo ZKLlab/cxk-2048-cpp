@@ -19,6 +19,12 @@ int Tile::getY() const
     return i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH;
 }
 
+void Tile::moveTo(int row, int col)
+{
+    i = row;
+    j = col;
+}
+
 int Tile::getFontPixelSize() const
 {
     switch (value)
@@ -133,4 +139,27 @@ std::string Tile::getText() const
     default:
         return "鸡你太美";
     }
+}
+
+void Tile::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    // 绘制背景
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(QColor(getBackgroundColor().c_str()));
+    painter.drawRoundedRect(0, 0, TILE_WIDTH, TILE_WIDTH, 3, 3);
+    // 绘制前景
+    painter.setPen(QColor(getForeColor().c_str()));
+    // 值
+    QFont font = painter.font();
+    font.setPixelSize(TILE_VALUE_SIZE);
+    painter.setFont(font);
+    painter.drawText(QRect(TILE_VALUE_MARGIN, TILE_VALUE_MARGIN,
+                           TILE_WIDTH - 2 * TILE_VALUE_MARGIN, TILE_WIDTH - 2 * TILE_VALUE_MARGIN),
+                     getValueText().c_str());
+    // 文本
+    font.setPixelSize(getFontPixelSize());
+    painter.setFont(font);
+    painter.drawText(QRect(0, 0, TILE_WIDTH, TILE_WIDTH), Qt::AlignCenter, getText().c_str());
 }
