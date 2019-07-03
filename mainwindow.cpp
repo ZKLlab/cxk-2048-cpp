@@ -14,11 +14,26 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
 }
 
 void MainWindow::handleNewGameClicked()
 {
     gameContainer->newGame();
+}
+
+void MainWindow::handleScoreUpdated(int score)
+{
+    std::ostringstream text;
+    text << score;
+    ui->score->setText(text.str().c_str());
+}
+
+void MainWindow::handleBestScoreUpdated(int score)
+{
+    std::ostringstream text;
+    text << score;
+    ui->bestScore->setText(text.str().c_str());
 }
 
 MainWindow::~MainWindow()
@@ -33,8 +48,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_W:
     case Qt::Key_Up:
-        // 下行用于测试
+        // 下面用来测试
         gameContainer->generateRandomTile();
+        gameContainer->updateScore(233);
         break;
     case Qt::Key_A:
     case Qt::Key_Left:

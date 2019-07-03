@@ -23,6 +23,7 @@ public:
     std::vector<std::vector<Tile *>> getTilesMatrix(); // 获取方块矩阵
     int getScore() const; // 获取分数
     void updateScore(int value); // 更新(增加)分数
+    void resetScore(); // 重置分数
     std::string serialize(); // 序列化游戏状态
     std::string part_serialize(); // 序列化游戏状态(不含道具状态)
     void deserialize(); // 反序列化游戏状态
@@ -47,6 +48,8 @@ private:
     int prop_elmrow;
     int prop_retraction;
 signals:
+    void scoreUpdated(int);
+    void bestScoreUpdated(int);
 public slots:
 };
 

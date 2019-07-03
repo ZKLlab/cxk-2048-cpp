@@ -25,6 +25,8 @@ private:
 signals:
 public slots:
     void handleNewGameClicked();
+    void handleScoreUpdated(int score);
+    void handleBestScoreUpdated(int bestScore);
 };
 
 #endif // MAINWINDOW_H
