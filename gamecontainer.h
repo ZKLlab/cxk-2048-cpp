@@ -32,6 +32,7 @@ public:
     int getWinTile() const; // 获取获胜方块
     void setWinTile(int value); // 设置获胜方块
     int judge(); // 判断游戏输赢状态
+    void playSoundEffect(int value); // 播放音效
 protected:
     void paintEvent(QPaintEvent *) override;
 private:

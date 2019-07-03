@@ -133,6 +133,7 @@ int GameContainer::getScore() const
 {
     return score;
 }
+
 void GameContainer::updateScore(int value)
 {
     score += value;
@@ -235,4 +236,9 @@ int GameContainer::judge()
     }
     // 不符合上述两种状况，游戏结束
     return GAME_LOSE;
+}
+
+void GameContainer::playSoundEffect(int value)
+{
+
 }
