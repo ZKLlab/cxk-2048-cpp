@@ -76,10 +76,10 @@ void GameContainer::newGame()
     resetScore();
     generateRandomTile();
     generateRandomTile();
-    prop_flag = false;
-    prop_elmcol = 0;
-    prop_elmrow = 0;
-    prop_retraction = 0;
+    propFlag = false;
+    propElmcol = 0;
+    propElmrow = 0;
+    propRetraction = 0;
 }
 
 std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
@@ -166,11 +166,11 @@ std::string GameContainer::serialize()
             record << " " << tile->getValueText();
         }
     }
-    record << " " << prop_flag << " " << prop_elmcol << " " << prop_elmrow << " " << prop_retraction;
+    record << " " << propFlag << " " << propElmcol << " " << propElmrow << " " << propRetraction;
     return information;
 }
 
-std::string GameContainer::part_serialize()
+std::string GameContainer::partSerialize()
 {
     std::ostringstream record(information);
     record << score;
@@ -202,10 +202,10 @@ void GameContainer::deserialize()
             }
         }
     }
-    read  >> prop_flag >> prop_elmcol >> prop_elmrow >> prop_retraction;
+    read  >> propFlag >> propElmcol >> propElmrow >> propRetraction;
 }
 
-void GameContainer::part_deserialize()
+void GameContainer::partDeserialize()
 {
     std::istringstream read(information);
     read >> score;
@@ -238,27 +238,37 @@ void GameContainer::readFile()
     infile.close();
 }
 
-void GameContainer::elmcol()
+void GameContainer::elmrow()
 {
     std::istringstream read(information);
     read >> score;
     tiles.clear();
-    /*(int temp[4];
+    int temp[4];
     for (int i = 0; i < 4; i++)
     {
-        int value;
-        read >> value;
-        temp[i] += value;
-        sort(temp, temp + 4);
-    }*/
+        for (int j = 0; j < 4; j++)
+        {
+            int value;
+            read >> value;
+            temp[i] += value;
+        }
+    }
+    int rank=0;
+    for (int i  = 1; i < 4; i++)
+    {
+        if (temp[i-1] < temp[i])
+        {
+           rank = i;
+        }
+    }
 }
 
 void GameContainer::retract()
 {
-    if (prop_flag == true)
+    if (propFlag == true)
     {
-        part_deserialize();
-        prop_flag = false;
+        partDeserialize();
+        propFlag = false;
     }
 }
 int GameContainer::getWinTile() const

@@ -29,9 +29,9 @@ public:
     void updateScore(int value); // 更新(增加)分数
     void resetScore(); // 重置分数
     std::string serialize(); // 序列化游戏状态
-    std::string part_serialize(); // 序列化游戏状态(不含道具状态)
+    std::string partSerialize(); // 序列化游戏状态(不含道具状态)
     void deserialize(); // 反序列化游戏状态
-    void part_deserialize(); // 反序列化游戏状态(不含道具状态)
+    void partDeserialize(); // 反序列化游戏状态(不含道具状态)
     void recordFile(); // 储存游戏状态到文件
     void readFile(); // 从文件读取游戏状态
     void elmcol(); // 消除一列
@@ -47,10 +47,10 @@ private:
     int score, winTile;
     std::string information;
     std::list<Tile> tiles;
-    bool prop_flag;
-    int prop_elmcol;
-    int prop_elmrow;
-    int prop_retraction;
+    bool propFlag;
+    int propElmcol;
+    int propElmrow;
+    int propRetraction;
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
