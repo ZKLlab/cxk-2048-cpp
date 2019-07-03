@@ -104,14 +104,16 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
 void GameContainer::cleanTiles()
 {
     auto matrix = getTilesMatrix();
-    for (auto tile = tiles.begin(); tile != tiles.end(); tile++)
+    for (auto tile = tiles.begin(); tile != tiles.end();)
     {
         bool flag = false;
         for (auto &row : matrix)
             for (Tile *tile2 : row)
                 if (tile2 != nullptr && (*tile).getValue() == tile2->getValue())
                     flag = true;
-        if (!flag)
+        if (flag)
+            tile++;
+        else
             tiles.erase(tile);
     }
 }
