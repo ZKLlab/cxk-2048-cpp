@@ -34,5 +34,7 @@ void GameContainer::addTile(int value, int row, int col)
     Tile &tile = tiles.back();
     tile.setParent(this);
     tile.setGeometry(tile.getX(), tile.getY(), TILE_WIDTH, TILE_WIDTH);
+    // 以下测试
     tile.moveTo(2, 3);
+    tile.doubleValue();
 }
