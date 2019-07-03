@@ -6,10 +6,11 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
-#include <algorithm>
+#include <QSoundEffect>
 
 class GameContainer : public QWidget
 {

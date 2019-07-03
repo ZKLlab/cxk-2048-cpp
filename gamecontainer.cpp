@@ -72,6 +72,7 @@ void GameContainer::generateRandomTile()
 
 void GameContainer::newGame()
 {
+    playSoundEffect(2);
     tiles.clear();
     score = 0;
     generateRandomTile();
@@ -302,5 +303,11 @@ int GameContainer::judge()
 
 void GameContainer::playSoundEffect(int value)
 {
-
+    char filename[80];
+    QSoundEffect effect;
+    sprintf(filename, "D:\\jntm\\effect-%d.wav", value);
+    effect.setSource(QUrl::fromLocalFile(filename));
+    effect.setLoopCount(QSoundEffect::Infinite);
+    effect.setVolume(80);
+    effect.play();
 }
