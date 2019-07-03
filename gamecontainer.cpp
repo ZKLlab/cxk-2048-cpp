@@ -27,3 +27,8 @@ void GameContainer::paintEvent(QPaintEvent *)
         }
     }
 }
+
+void GameContainer::addTile(int value, int row, int col)
+{
+    tiles.emplace_back(value, row, col);
+}

@@ -17,6 +17,7 @@ private:
 public:
     explicit GameContainer(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *) override;
+    void addTile(int value, int row, int col);
 signals:
 public slots:
 };
