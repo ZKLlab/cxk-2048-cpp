@@ -23,6 +23,7 @@ public:
     explicit GameContainer(QWidget *parent = nullptr); // 构造函数
     void addTile(int value, int row, int col); // 增加方块
     void move(); // 移动方块
+    //void merge(auto matrix, int a, int b, int c, int d);
     void generateRandomTile(); // 生成随机方块
     void newGame(); // 新游戏
     std::vector<std::vector<Tile *>> getTilesMatrix(); // 获取方块矩阵
@@ -38,6 +39,7 @@ public:
     void elmcol(); // 消除一列
     void elmrow(); // 消除一行
     void retract(); // 回退一步
+    void cleanTiles(); // 清除多余方块
     int getWinTile() const; // 获取获胜方块
     void setWinTile(int value); // 设置获胜方块
     int judge(); // 判断游戏输赢状态

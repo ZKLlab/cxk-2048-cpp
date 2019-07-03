@@ -48,9 +48,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_W:
     case Qt::Key_Up:
-        // 下面用来测试
-        gameContainer->generateRandomTile();
-        gameContainer->updateScore(233);
+        // 下行用于测试
+        //gameContainer->generateRandomTile();
+        gameContainer->move();
         break;
     case Qt::Key_A:
     case Qt::Key_Left:
