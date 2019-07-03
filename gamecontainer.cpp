@@ -212,11 +212,11 @@ int GameContainer::judge()
         }
     }
     // 横向检查
-    for (int row = 0 ;row < 4; row++)
+    for (int row = 0; row < 4; row++)
     {
         for (int col = 0; col < 4 - 1; col++)
         {
-            if (!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
+            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
             {
                 return GAME_CONTINUE;
             }
@@ -227,7 +227,7 @@ int GameContainer::judge()
     {
         for (int row = 0; row < 4 - 1; row++)
         {
-            if (!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
+            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
             {
                 return GAME_CONTINUE;
             }
