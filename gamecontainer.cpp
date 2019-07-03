@@ -35,6 +35,7 @@ void GameContainer::addTile(int value, int row, int col)
     Tile &tile = tiles.back();
     tile.setParent(this);
     tile.setGeometry(tile.getX(), tile.getY(), TILE_WIDTH, TILE_WIDTH);
+    tile.show();
 }
 
 void GameContainer::generateRandomTile()
@@ -42,14 +43,14 @@ void GameContainer::generateRandomTile()
     auto matrix = getTilesMatrix();
     bool haveSpare = false;
     int spare[16][2], k = 0;
-    for(int i = 0; i < 16; i++)
-        for(int j = 0; j < 2; j++)
+    for (int i = 0; i < 16; i++)
+        for (int j = 0; j < 2; j++)
             spare[i][j] = -1;
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if(matrix[i][j] == nullptr)
+            if (matrix[std::size_t(i)][std::size_t(j)] == nullptr)
             {
                 spare[k][0] = i;
                 spare[k][1] = j;
@@ -60,21 +61,13 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    int a = 0, temp = 0;
     std::random_device rd;  // 将用于为随机数引擎获得种子
     std::mt19937 gen(rd()); // 以播种标准 mersenne_twister_engine
-    std::uniform_int_distribution<> dis(0, k-1);
-    a = dis(gen);
+    std::uniform_int_distribution<> dis(0, k - 1);
+    int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);
-    temp = dis2(gen);
-    if ( temp <= 8)
-    {
-         addTile (2, spare[a][0], spare[a][1]);
-    }
-    else
-    {
-         addTile (4, spare[a][0], spare[a][1]);
-    }
+    int temp = dis2(gen);
+    addTile((temp == 0 ? 4 : 2), spare[pos][0], spare[pos][1]);
 }
 
 void GameContainer::newGame()
@@ -98,6 +91,42 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
         matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
     }
     return matrix;
+}
+
+void GameContainer::move()
+{
+    auto matrix = getTilesMatrix();
+    bool isMoved = false;
+        for(int col = 0; col < 4; col++)
+        {
+            for (int row = 1; row < 4; row++)
+            {
+                int r = row - 1;
+                while(matrix[r][col] == nullptr && r > 0) --r;
+                if (matrix[r][col]->getValue() == matrix[row][col]->getValue() && matrix[row][col] != nullptr)
+                {
+                    matrix[row][col]->moveTo(r, col);
+                    matrix[r][col]->doubleValue();
+                    updateScore(matrix[r][col] -> getValue());
+                    isMoved = true;
+                }
+            }
+            for (int row = 1; row < 4; row++)
+            {
+                for(int r = row; r >= 1; r--)
+                {
+                    if(matrix[r - 1][col] == nullptr && matrix[r][col] != nullptr )
+                    {
+                        matrix[r][col]->moveTo(r - 1, col);
+                        isMoved = true;
+                    }
+                }
+            }
+        }
+        if(isMoved)
+        {
+            generateRandomTile();
+        }
 }
 
 int GameContainer::getScore() const

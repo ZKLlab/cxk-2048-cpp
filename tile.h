@@ -24,6 +24,7 @@ public:
     void paintEvent(QPaintEvent *) override;
     int getRow() const;
     int getCol() const;
+    int getValue() const;
 private:
     int index, value, i, j, x, y;
 signals:

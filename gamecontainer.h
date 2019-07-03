@@ -4,11 +4,11 @@
 #include "gamedef.h"
 #include "tile.h"
 #include <list>
+#include <string>
+#include <fstream>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
-#include <string>
-#include <fstream>
 
 class GameContainer : public QWidget
 {
@@ -17,6 +17,7 @@ public:
     explicit GameContainer(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *) override;
     void addTile(int value, int row, int col);
+    void move();
     void generateRandomTile();
     void newGame();
     std::vector<std::vector<Tile *>> getTilesMatrix();
