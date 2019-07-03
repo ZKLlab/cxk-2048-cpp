@@ -191,6 +191,7 @@ int GameContainer::getWinTile() const
 {
     return winTile;
 }
+
 void GameContainer::setWinTile(int value)
 {
    winTile = value;
@@ -199,39 +200,39 @@ void GameContainer::setWinTile(int value)
 int GameContainer::judge()
 {
     auto matrix = getTilesMatrix();
-    //赢得游戏
-    for(int row = 0; row < 4; ++row)
+    // 赢得游戏
+    for (int row = 0; row < 4; row++)
     {
-        for(int col = 0; col < 4; ++col)
+        for (int col = 0; col < 4; col++)
         {
-            if(matrix[row][col]->getValue() == winTile)
+            if (matrix[row][col]->getValue() == winTile)
             {
                 return GAME_WIN;
             }
         }
     }
-
-    //横向检查
-    for(int row = 0 ;row < 4; ++row)
+    // 横向检查
+    for (int row = 0 ;row < 4; row++)
     {
-        for(int col = 0; col < 4 - 1; ++ col)
+        for (int col = 0; col < 4 - 1; col++)
         {
-            if(!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
+            if (!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
             {
                 return GAME_CONTINUE;
             }
         }
     }
-    //纵向检查
-    for(int col = 0; col < 4; ++ col)
+    // 纵向检查
+    for (int col = 0; col < 4; col++)
     {
-        for(int row = 0; row < 4 -1; ++ row)
+        for (int row = 0; row < 4 - 1; row++)
         {
-            if(!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
+            if (!matrix[row][col]->getValue() || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
             {
                 return GAME_CONTINUE;
             }
         }
-    }//不符合上述两种状况，游戏结束
+    }
+    // 不符合上述两种状况，游戏结束
     return GAME_LOSE;
 }
