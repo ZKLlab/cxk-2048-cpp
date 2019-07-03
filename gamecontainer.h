@@ -9,6 +9,7 @@
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
+#include <algorithm>
 
 class GameContainer : public QWidget
 {
@@ -23,7 +24,9 @@ public:
     int getScore() const; // 获取分数
     void updateScore(int value); // 更新(增加)分数
     std::string serialize(); // 序列化游戏状态
+    std::string part_serialize(); // 序列化游戏状态(不含道具状态)
     void deserialize(); // 反序列化游戏状态
+    void part_deserialize(); // 反序列化游戏状态(不含道具状态)
     void recordFile(); // 储存游戏状态到文件
     void readFile(); // 从文件读取游戏状态
     void elmcol(); // 消除一列
