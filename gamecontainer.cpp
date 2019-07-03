@@ -38,3 +38,14 @@ void GameContainer::addTile(int value, int row, int col)
     tile.moveTo(2, 3);
     tile.doubleValue();
 }
+
+void GameContainer::generateRandomTile()
+{
+
+}
+
+void GameContainer::newGame()
+{
+
+}
+
