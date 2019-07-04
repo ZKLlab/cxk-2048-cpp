@@ -74,8 +74,8 @@ void GameContainer::newGame()
     playSoundEffect(2);
     tiles.clear();
     resetScore();
-    //generateRandomTile();
-    //generateRandomTile();
+    /*generateRandomTile();
+    generateRandomTile();*/
     addTile(2,0,0);
     addTile(2,1,0);
     addTile(4,2,0);
@@ -141,7 +141,7 @@ void GameContainer::move(int direction)
     //case MOVE_UP:
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 1; j < 4; j++)
+            /*for (int j = 1; j < 4; j++)
             {
                if(matrix[j][i] != nullptr)
                 {
@@ -155,10 +155,50 @@ void GameContainer::move(int direction)
                         matrix[j][i] = nullptr;
                         updateScore(matrix[nearestNonZero][i]->getValue());
                     }
+
+                }
+            }*/
+            for (int j = 0; j < 4; j++)
+            {
+                if(matrix[j][i] != nullptr)
+                {
+                    for (int k = j + 1; k < 4; k++)
+                    {
+                        if (matrix[k][i] != nullptr)
+                        {
+                            if (matrix[j][i]->getValue() == matrix[k][i]->getValue())
+                            {
+                                isMoved = true;
+                                matrix[j][i]->doubleValue();
+                                matrix[k][i]->moveTo(j, i);
+                                matrix[k][i] = nullptr;
+                                updateScore(matrix[j][i]->getValue());
+                                j = 0;
+                                k = 0;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-            //cleanTiles();
-            for (int j = 1; j < 4; j++)
+            cleanTiles();/////////////
+            int temp[4]={-1, -1, -1, -1};
+            int t=0;
+            for (int j = 0; j < 4; j++)
+            {
+                if (matrix[j][i] != nullptr)
+                {
+                    temp[t++] = j;
+                }
+            }
+            for (t = 0; temp[t] != -1; t++)
+            {
+                matrix[temp[t]][i]->moveTo(t, i);
+                matrix[temp[t]][i] = nullptr;/////////////////
+                if (temp[t] != t)
+                    isMoved = true;
+            }
+            /*for (int j = 1; j < 4; j++)
             {
 
                 if (matrix[j][i] != nullptr)
@@ -173,7 +213,7 @@ void GameContainer::move(int direction)
                         isMoved = true;
                     }
                 }
-            }
+            }*/
         }
         /*break;
     case MOVE_LEFT:
