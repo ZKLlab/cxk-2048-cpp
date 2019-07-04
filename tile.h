@@ -24,10 +24,12 @@ public:
     int getRow() const; // 获取行号
     int getCol() const; // 获取列号
     int getValue() const; // 获取值
+    ~Tile() override;
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
     int index, value, i, j, x, y;
+    QPropertyAnimation *posAnimation;
 signals:
 public slots:
 };
