@@ -12,7 +12,7 @@ class RankingList
 {
 public:
     RankingList();
-    int recordScore(int score);
+    std::vector<int> recordScore(int score);
 };
 
 #endif // RANKINGLIST_H

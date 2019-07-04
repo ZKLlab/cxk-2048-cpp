@@ -5,7 +5,7 @@ RankingList::RankingList()
 
 }
 
-int RankingList::recordScore(int scoreThis)
+std::vector<int> RankingList::recordScore(int scoreThis)
 {
     std::string line;
     std::vector<int> score;
@@ -31,5 +31,5 @@ int RankingList::recordScore(int scoreThis)
     }
     infile.close();
     outfile.close();
-    return score[0];
+    return score;
 }
