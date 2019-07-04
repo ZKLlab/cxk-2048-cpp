@@ -287,14 +287,14 @@ void GameContainer::updateInformation()
 
 void GameContainer::recordFile()
 {
-    std::ofstream outfile("2048Record.txt", std::ios::trunc);
+    std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("2048Record.txt").toStdString(), std::ios::trunc);
     outfile << information;
     outfile.close();
 }
 
 void GameContainer::readFile()
 {
-    std::ifstream infile("2048Record.txt");
+    std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("2048Record.txt").toStdString());
     infile >> information;
     infile.close();
 }

@@ -10,11 +10,13 @@
 #include <iostream>
 #include <algorithm>
 #include <QUrl>
+#include <QDir>
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
 #include <QMediaPlayer>
 #include <QSoundEffect>
+#include <QStandardPaths>
 
 class GameContainer : public QWidget
 {

@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->gameInfo->setFixedHeight(CONTAINER_WIDTH);
 
     // 事件
-    connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
