@@ -12,7 +12,6 @@ class RankingList
 {
 public:
     RankingList();
-    bool cmp(int x, int y);
     int recordScore(int score);
 };
 

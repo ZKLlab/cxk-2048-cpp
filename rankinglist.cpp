@@ -25,7 +25,7 @@ int RankingList::recordScore(int scoreThis)
     sort(score.begin(), score.end());
     reverse(score.begin(), score.end());
     std::ofstream outfile("RankingList.txt");
-    for (std::size_t j = score.size() - 1; j >= 0; j--)
+    for (std::size_t j = 0; j < score.size(); j++)
     {
         outfile << score[j] << '\t';
     }
