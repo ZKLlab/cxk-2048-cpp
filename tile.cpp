@@ -6,7 +6,8 @@ Tile::Tile(int value, int row, int col) :
     index(currentIndex++),
     value(value),
     i(row),
-    j(col)
+    j(col),
+    posAnimation(nullptr)
 {}
 
 int Tile::getX() const
@@ -21,7 +22,8 @@ int Tile::getY() const
 
 void Tile::moveTo(int row, int col)
 {
-    QPropertyAnimation *posAnimation = new QPropertyAnimation(this, "pos");
+    delete posAnimation;
+    posAnimation = new QPropertyAnimation(this, "pos");
     posAnimation->setDuration(200);
     posAnimation->setStartValue(QPoint(getX(), getY()));
     i = row;
@@ -190,4 +192,9 @@ int Tile::getCol() const
 int Tile::getValue() const
 {
     return value;
+}
+
+Tile::~Tile()
+{
+    delete posAnimation;
 }

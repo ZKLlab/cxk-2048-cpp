@@ -132,7 +132,7 @@ void GameContainer::cleanTiles()
 
 void GameContainer::move(int direction)
 {
-    // partSerialize();
+    partSerialize();
     auto matrix = getTilesMatrix();
     cleanTiles();
     bool isMoved = false;
@@ -362,7 +362,10 @@ std::string GameContainer::serialize()
     {
         for (Tile *tile : row)
         {
-            record << " " << tile->getValueText();
+            if (tile != nullptr)
+                record << " " << tile->getValueText();
+            else
+                record << " " << 0;
         }
     }
     record << " " << propFlag << " " << propElmcol << " " << propElmrow << " " << propRetraction;
@@ -378,7 +381,10 @@ std::string GameContainer::partSerialize()
     {
         for (Tile *tile : row)
         {
-            record << " " << tile->getValueText();
+            if (tile != nullptr)
+                record << " " << tile->getValueText();
+            else
+                record << " " << 0;
         }
     }
     return information;
