@@ -24,7 +24,7 @@ void Tile::moveTo(int row, int col)
 {
     delete posAnimation;
     posAnimation = new QPropertyAnimation(this, "pos");
-    posAnimation->setDuration(200);
+    posAnimation->setDuration(100);
     posAnimation->setStartValue(QPoint(getX(), getY()));
     i = row;
     j = col;

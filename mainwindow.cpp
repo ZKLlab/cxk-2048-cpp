@@ -48,19 +48,21 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_W:
     case Qt::Key_Up:
-        gameContainer->move(0);
+        gameContainer->move(MOVE_UP);
         break;
     case Qt::Key_A:
     case Qt::Key_Left:
-        gameContainer->move(1);
+        gameContainer->move(MOVE_LEFT);
         break;
     case Qt::Key_S:
     case Qt::Key_Down:
-        gameContainer->move(2);
+        gameContainer->move(MOVE_DOWN);
         break;
     case Qt::Key_D:
     case Qt::Key_Right:
-        gameContainer->move(3);
+        gameContainer->move(MOVE_RIGHT);
         break;
+    default:
+        return;
     }
 }

@@ -74,20 +74,8 @@ void GameContainer::newGame()
     playSoundEffect(2);
     tiles.clear();
     resetScore();
-    //generateRandomTile();
-    //generateRandomTile();
-    addTile(2,0,0);
-    addTile(2,1,0);
-    addTile(4,2,0);
-    addTile(4,3,0);
-    addTile(2,0,1);
-    addTile(2,1,1);
-    addTile(2,2,1);
-    addTile(2,3,1);
-    addTile(2,0,2);
-    addTile(2,1,2);
-    addTile(4,2,2);
-    addTile(8,3,2);
+    generateRandomTile();
+    generateRandomTile();
     propFlag = false;
     propElmcol = 0;
     propElmrow = 0;
@@ -121,7 +109,10 @@ void GameContainer::cleanTiles()
         bool flag = false;
         for (auto &row : matrix)
             for (Tile *tile2 : row)
-                if (tile2 != nullptr && (*tile).getValue() == tile2->getValue())
+                if (tile2 != nullptr &&
+                        tile->getRow() == tile2->getRow() &&
+                        tile->getCol() == tile2->getCol() &&
+                        tile->getValue() == tile2->getValue())
                     flag = true;
         if (flag)
             tile++;
@@ -136,163 +127,70 @@ void GameContainer::move(int direction)
     auto matrix = getTilesMatrix();
     cleanTiles();
     bool isMoved = false;
-    //switch (direction)
-    //{
-    //case MOVE_UP:
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 1; j < 4; j++)
-            {
-               if(matrix[j][i] != nullptr)
-                {
-                    int nearestNonZero = j - 1;
-                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                    if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
-                    {
-                        isMoved = true;
-                        matrix[nearestNonZero][i]->doubleValue();
-                        matrix[j][i]->moveTo(nearestNonZero, i);
-                        matrix[j][i] = nullptr;
-                        updateScore(matrix[nearestNonZero][i]->getValue());
-                    }
-                }
-            }
-            //cleanTiles();
-            for (int j = 1; j < 4; j++)
-            {
-
-                if (matrix[j][i] != nullptr)
-                {
-                    int nearestNonZero = j - 1;
-                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                    if (matrix[nearestNonZero][i] != nullptr) nearestNonZero++;
-                    matrix[j][i]->moveTo(nearestNonZero, i);
-                    if (nearestNonZero != j)
-                    {
-                        matrix[j][i] = nullptr;
-                        isMoved = true;
-                    }
-                }
-            }
-        }
-        /*break;
+    int maxMergedTile = 0;
+    std::vector<std::vector<int>> base;
+    std::vector<std::vector<int>> diff;
+    switch (direction)
+    {
+    case MOVE_UP:
+        base = {{0, 0}, {0, 1}, {0, 2}, {0, 3}};
+        diff = {{0, 0}, {1, 0}, {2, 0}, {3, 0}};
+        break;
     case MOVE_LEFT:
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 1; j < 4; j++)
-            {
-               if(matrix[i][j] != nullptr)
-                {
-                    int nearestNonZero = j - 1;
-                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                    if (matrix[i][nearestNonZero] != nullptr && matrix[i][j]->getValue() == matrix[i][nearestNonZero]->getValue())
-                    {
-                        isMoved = true;
-                        matrix[i][nearestNonZero]->doubleValue();
-                        matrix[i][j]->moveTo(i, nearestNonZero);
-                        matrix[i][j] = nullptr;
-                        updateScore(matrix[i][nearestNonZero]->getValue());
-                    }
-                }
-            }
-            for (int j = 1; j < 4; j++)
-            {
-
-                if (matrix[i][j] != nullptr)
-                {
-                    int nearestNonZero = j - 1;
-                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                    if (matrix[i][nearestNonZero] != nullptr) nearestNonZero++;
-                    matrix[i][j]->moveTo(i, nearestNonZero);
-                    if (nearestNonZero != j)
-                    {
-                        matrix[i][j] = nullptr;
-                        isMoved = true;
-                    }
-                }
-            }
-        }
+        base = {{0, 0}, {1, 0}, {2, 0}, {3, 0}};
+        diff = {{0, 0}, {0, 1}, {0, 2}, {0, 3}};
         break;
     case MOVE_DOWN:
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 2; j >= 0; j--)
-            {
-               if(matrix[j][i] != nullptr)
-                {
-                    int nearestNonZero = j + 1;
-                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero < 3) nearestNonZero++;
-                    if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
-                    {
-                        isMoved = true;
-                        matrix[nearestNonZero][i]->doubleValue();
-                        matrix[j][i]->moveTo(nearestNonZero, i);
-                        matrix[j][i] = nullptr;
-                        updateScore(matrix[nearestNonZero][i]->getValue());
-                    }
-                }
-            }
-            for (int j = 2; j >= 0; j--)
-            {
-
-                if (matrix[j][i] != nullptr)
-                {
-                    int nearestNonZero = j + 1;
-                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero++;
-                    if (matrix[nearestNonZero][i] != nullptr) nearestNonZero--;
-                    matrix[j][i]->moveTo(nearestNonZero, i);
-                    if (nearestNonZero != j)
-                    {
-                        matrix[j][i] = nullptr;
-                        isMoved = true;
-                    }
-                }
-            }
-        }
+        base = {{3, 0}, {3, 1}, {3, 2}, {3, 3}};
+        diff = {{0, 0}, {-1, 0}, {-2, 0}, {-3, 0}};
         break;
     case MOVE_RIGHT:
-        for (int i = 0; i < 4; i++)
+        base = {{0, 3}, {1, 3}, {2, 3}, {3, 3}};
+        diff = {{0, 0}, {0, -1}, {0, -2}, {0, -3}};
+        break;
+    default:
+        return;
+    }
+    for (std::vector<int> &basePos : base)
+    {
+        Tile *currentTile = nullptr;
+        int targetPosIndex = 0;
+        for (std::vector<int> &diffPos : diff)
         {
-            for (int j = 2; j >= 0; j--)
+            int i = basePos[0] + diffPos[0], j = basePos[1] + diffPos[1];
+            if (matrix[i][j] != nullptr)
             {
-               if(matrix[i][j] != nullptr)
+                if (currentTile != nullptr && matrix[i][j]->getValue() == currentTile->getValue())
                 {
-                    int nearestNonZero = j + 1;
-                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero < 3) nearestNonZero++;
-                    if (matrix[i][nearestNonZero] != nullptr && matrix[i][j]->getValue() == matrix[i][nearestNonZero]->getValue())
-                    {
-                        isMoved = true;
-                        matrix[i][nearestNonZero]->doubleValue();
-                        matrix[i][j]->moveTo(i, nearestNonZero);
-                        matrix[i][j] = nullptr;
-                        updateScore(matrix[i][nearestNonZero]->getValue());
-                    }
+                    isMoved = true;
+                    matrix[i][j]->moveTo(currentTile->getRow(), currentTile->getCol());
+                    matrix[i][j]->doubleValue();
+                    updateScore(matrix[i][j]->getValue());
+                    maxMergedTile = maxMergedTile > matrix[i][j]->getValue() ? maxMergedTile : matrix[i][j]->getValue();
+                    currentTile = nullptr;
                 }
-            }
-            for (int j = 2; j >= 0; j--)
-            {
-
-                if (matrix[i][j] != nullptr)
+                else
                 {
-                    int nearestNonZero = j + 1;
-                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero < 3) nearestNonZero++;
-                    if (matrix[i][nearestNonZero] != nullptr) nearestNonZero--;
-                    matrix[i][j]->moveTo(i, nearestNonZero);
-                    if (nearestNonZero != j)
+                    int targetPosI = basePos[0] + diff[targetPosIndex][0], targetPosJ = basePos[1] + diff[targetPosIndex][1];
+                    if (i != targetPosI || j != targetPosJ)
                     {
-                        matrix[i][j] = nullptr;
                         isMoved = true;
+                        matrix[i][j]->moveTo(targetPosI, targetPosJ);
                     }
+                    currentTile = matrix[i][j];
+                    targetPosIndex++;
                 }
             }
         }
-        break;
     }
-*/
     if (isMoved)
     {
         propFlag = true;
         generateRandomTile();
+    }
+    if (maxMergedTile)
+    {
+        playSoundEffect(maxMergedTile);
     }
 }
 
