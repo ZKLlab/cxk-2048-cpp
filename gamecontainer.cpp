@@ -74,8 +74,20 @@ void GameContainer::newGame()
     playSoundEffect(2);
     tiles.clear();
     resetScore();
-    generateRandomTile();
-    generateRandomTile();
+    //generateRandomTile();
+    //generateRandomTile();
+    addTile(2,0,0);
+    addTile(2,1,0);
+    addTile(4,2,0);
+    addTile(4,3,0);
+    addTile(2,0,1);
+    addTile(2,1,1);
+    addTile(2,2,1);
+    addTile(2,3,1);
+    addTile(2,0,2);
+    addTile(2,1,2);
+    addTile(4,2,2);
+    addTile(8,3,2);
     propFlag = false;
     propElmcol = 0;
     propElmrow = 0;
@@ -124,44 +136,164 @@ void GameContainer::move(int direction)
     auto matrix = getTilesMatrix();
     cleanTiles();
     bool isMoved = false;
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 1; j < 4; j++)
+    //switch (direction)
+    //{
+    //case MOVE_UP:
+        for (int i = 0; i < 4; i++)
         {
-            if(matrix[j][i] != nullptr)
+            for (int j = 1; j < 4; j++)
             {
-                int nearestNonZero = j - 1;
-                while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
+               if(matrix[j][i] != nullptr)
                 {
-                    propFlag = true;
-                    isMoved = true;
-                    matrix[nearestNonZero][i]->doubleValue();
+                    int nearestNonZero = j - 1;
+                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                    if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
+                    {
+                        isMoved = true;
+                        matrix[nearestNonZero][i]->doubleValue();
+                        matrix[j][i]->moveTo(nearestNonZero, i);
+                        matrix[j][i] = nullptr;
+                        updateScore(matrix[nearestNonZero][i]->getValue());
+                    }
+                }
+            }
+            //cleanTiles();
+            for (int j = 1; j < 4; j++)
+            {
+
+                if (matrix[j][i] != nullptr)
+                {
+                    int nearestNonZero = j - 1;
+                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                    if (matrix[nearestNonZero][i] != nullptr) nearestNonZero++;
                     matrix[j][i]->moveTo(nearestNonZero, i);
-                    matrix[j][i] = nullptr;
-                    updateScore(matrix[nearestNonZero][i]->getValue());
+                    if (nearestNonZero != j)
+                    {
+                        matrix[j][i] = nullptr;
+                        isMoved = true;
+                    }
                 }
             }
         }
-        for (int j = 1; j < 4; j++)
+        /*break;
+    case MOVE_LEFT:
+        for (int i = 0; i < 4; i++)
         {
-            if (matrix[j][i] != nullptr)
+            for (int j = 1; j < 4; j++)
             {
-                int nearestNonZero = j - 1;
-                while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero--;
-                if (matrix[nearestNonZero][i] != nullptr) nearestNonZero++;
-                matrix[j][i]->moveTo(nearestNonZero, i);
-                if (nearestNonZero != j)
+               if(matrix[i][j] != nullptr)
                 {
-                    matrix[j][i] = nullptr;
-                    isMoved = true;
-                    propFlag = true;
+                    int nearestNonZero = j - 1;
+                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                    if (matrix[i][nearestNonZero] != nullptr && matrix[i][j]->getValue() == matrix[i][nearestNonZero]->getValue())
+                    {
+                        isMoved = true;
+                        matrix[i][nearestNonZero]->doubleValue();
+                        matrix[i][j]->moveTo(i, nearestNonZero);
+                        matrix[i][j] = nullptr;
+                        updateScore(matrix[i][nearestNonZero]->getValue());
+                    }
+                }
+            }
+            for (int j = 1; j < 4; j++)
+            {
+
+                if (matrix[i][j] != nullptr)
+                {
+                    int nearestNonZero = j - 1;
+                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero > 0) nearestNonZero--;
+                    if (matrix[i][nearestNonZero] != nullptr) nearestNonZero++;
+                    matrix[i][j]->moveTo(i, nearestNonZero);
+                    if (nearestNonZero != j)
+                    {
+                        matrix[i][j] = nullptr;
+                        isMoved = true;
+                    }
                 }
             }
         }
+        break;
+    case MOVE_DOWN:
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 2; j >= 0; j--)
+            {
+               if(matrix[j][i] != nullptr)
+                {
+                    int nearestNonZero = j + 1;
+                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero < 3) nearestNonZero++;
+                    if (matrix[nearestNonZero][i] != nullptr && matrix[j][i]->getValue() == matrix[nearestNonZero][i]->getValue())
+                    {
+                        isMoved = true;
+                        matrix[nearestNonZero][i]->doubleValue();
+                        matrix[j][i]->moveTo(nearestNonZero, i);
+                        matrix[j][i] = nullptr;
+                        updateScore(matrix[nearestNonZero][i]->getValue());
+                    }
+                }
+            }
+            for (int j = 2; j >= 0; j--)
+            {
+
+                if (matrix[j][i] != nullptr)
+                {
+                    int nearestNonZero = j + 1;
+                    while (matrix[nearestNonZero][i] == nullptr && nearestNonZero > 0) nearestNonZero++;
+                    if (matrix[nearestNonZero][i] != nullptr) nearestNonZero--;
+                    matrix[j][i]->moveTo(nearestNonZero, i);
+                    if (nearestNonZero != j)
+                    {
+                        matrix[j][i] = nullptr;
+                        isMoved = true;
+                    }
+                }
+            }
+        }
+        break;
+    case MOVE_RIGHT:
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 2; j >= 0; j--)
+            {
+               if(matrix[i][j] != nullptr)
+                {
+                    int nearestNonZero = j + 1;
+                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero < 3) nearestNonZero++;
+                    if (matrix[i][nearestNonZero] != nullptr && matrix[i][j]->getValue() == matrix[i][nearestNonZero]->getValue())
+                    {
+                        isMoved = true;
+                        matrix[i][nearestNonZero]->doubleValue();
+                        matrix[i][j]->moveTo(i, nearestNonZero);
+                        matrix[i][j] = nullptr;
+                        updateScore(matrix[i][nearestNonZero]->getValue());
+                    }
+                }
+            }
+            for (int j = 2; j >= 0; j--)
+            {
+
+                if (matrix[i][j] != nullptr)
+                {
+                    int nearestNonZero = j + 1;
+                    while (matrix[i][nearestNonZero] == nullptr && nearestNonZero < 3) nearestNonZero++;
+                    if (matrix[i][nearestNonZero] != nullptr) nearestNonZero--;
+                    matrix[i][j]->moveTo(i, nearestNonZero);
+                    if (nearestNonZero != j)
+                    {
+                        matrix[i][j] = nullptr;
+                        isMoved = true;
+                    }
+                }
+            }
+        }
+        break;
     }
+*/
     if (isMoved)
+    {
+        propFlag = true;
         generateRandomTile();
+    }
 }
 
 int GameContainer::getScore() const
