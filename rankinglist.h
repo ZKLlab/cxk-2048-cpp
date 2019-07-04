@@ -12,8 +12,7 @@ class RankingList
 {
 public:
     RankingList();
-    bool cmp(int x, int y);
-    int recordScore(int score);
+    std::vector<int> recordScore(int score);
 };
 
 #endif // RANKINGLIST_H
