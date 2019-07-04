@@ -7,9 +7,27 @@ Tile::Tile(int value, int row, int col) :
     value(value),
     i(row),
     j(col),
+    scale(0),
     posAnimation(nullptr)
 {
+    // 移至底层
     lower();
+    // 淡入效果
+    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(parent());
+    setGraphicsEffect(effect);
+    QPropertyAnimation *fadeInAnimation = new QPropertyAnimation(effect, "opacity");
+    fadeInAnimation->setDuration(200);
+    fadeInAnimation->setStartValue(0);
+    fadeInAnimation->setEndValue(1);
+    fadeInAnimation->setEasingCurve(QEasingCurve::InOutSine);
+    fadeInAnimation->start(QPropertyAnimation::DeleteWhenStopped);
+    // 缩放效果
+    posAnimation = new ScaleAnimation(false, scale, this, "geometry");
+    posAnimation->setDuration(200);
+    posAnimation->setStartValue(QRect(getX() + TILE_WIDTH / 2, getY() + TILE_WIDTH / 2, 0, 0));
+    posAnimation->setEndValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
+    posAnimation->setEasingCurve(QEasingCurve::InOutSine);
+    posAnimation->start();
 }
 
 int Tile::getX() const
@@ -25,12 +43,29 @@ int Tile::getY() const
 void Tile::moveTo(int row, int col)
 {
     delete posAnimation;
-    posAnimation = new QPropertyAnimation(this, "pos");
+    posAnimation = new ScaleAnimation(false, scale, this, "geometry");
     posAnimation->setDuration(100);
-    posAnimation->setStartValue(QPoint(getX(), getY()));
+    posAnimation->setStartValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     i = row;
     j = col;
-    posAnimation->setEndValue(QPoint(getX(), getY()));
+    posAnimation->setEndValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
+    posAnimation->setEasingCurve(QEasingCurve::InOutSine);
+    posAnimation->start();
+}
+
+void Tile::moveToAndDoubleValue(int row, int col)
+{
+    delete posAnimation;
+    update();
+    posAnimation = new ScaleAnimation(true, scale, this, "geometry");
+    posAnimation->setDuration(200);
+    posAnimation->setStartValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
+    i = row;
+    j = col;
+    posAnimation->setKeyValueAt(0.5, QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
+    posAnimation->setKeyValueAt(0.75, QRectF(getX() - 0.1 * TILE_WIDTH, getY() - 0.1 * TILE_WIDTH,
+                                            1.2 * TILE_WIDTH, 1.2 * TILE_WIDTH));
+    posAnimation->setEndValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     posAnimation->setEasingCurve(QEasingCurve::InOutSine);
     posAnimation->start();
 }
@@ -155,6 +190,7 @@ void Tile::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.scale(scale, scale);
     // 绘制背景
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(getBackgroundColor().c_str()));
@@ -177,7 +213,6 @@ void Tile::paintEvent(QPaintEvent *)
 void Tile::doubleValue()
 {
     value *= 2;
-    update(); // 重绘
     raise(); // 移至顶层
 }
 
@@ -199,4 +234,16 @@ int Tile::getValue() const
 Tile::~Tile()
 {
     delete posAnimation;
+}
+
+void ScaleAnimation::updateCurrentValue(const QVariant &value)
+{
+    scale = double(value.toRectF().width()) / TILE_WIDTH;
+    if (scale > 1 && doubleValueRequired)
+    {
+        doubleValueRequired = false;
+        static_cast<Tile *>(targetObject())->doubleValue();
+    }
+    static_cast<QWidget *>(targetObject())->setGeometry(value.toRect());
+    static_cast<QWidget *>(targetObject())->update();
 }

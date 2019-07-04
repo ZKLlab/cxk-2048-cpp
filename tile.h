@@ -2,10 +2,28 @@
 #define TILE_H
 
 #include "gamedef.h"
+#include <iostream>
 #include <sstream>
 #include <QWidget>
 #include <QPainter>
+#include <QVariant>
 #include <QPropertyAnimation>
+#include <QGraphicsOpacityEffect>
+
+class ScaleAnimation : public QPropertyAnimation
+{
+public:
+    ScaleAnimation(bool doubleValueRequired, double &scale, QObject *target, const QByteArray &propertyName, QObject *parent = nullptr) :
+        QPropertyAnimation(target, propertyName, parent),
+        scale(scale),
+        doubleValueRequired(doubleValueRequired)
+    {}
+protected:
+    void updateCurrentValue(const QVariant &value);
+private:
+    double &scale;
+    bool doubleValueRequired;
+};
 
 class Tile : public QWidget
 {
@@ -16,6 +34,7 @@ public:
     int getY() const; // 获取Y坐标
     void moveTo(int row, int col); // 移动到
     void doubleValue(); // 值翻倍
+    void moveToAndDoubleValue(int row, int col); // 移动且值翻倍
     int getFontPixelSize() const; // 获取文字像素尺寸
     std::string getForeColor() const; // 获取前景色
     std::string getBackgroundColor() const; // 获取背景色
@@ -29,7 +48,8 @@ protected:
     void paintEvent(QPaintEvent *) override;
 private:
     int index, value, i, j, x, y;
-    QPropertyAnimation *posAnimation;
+    double scale;
+    ScaleAnimation *posAnimation;
 signals:
 public slots:
 };

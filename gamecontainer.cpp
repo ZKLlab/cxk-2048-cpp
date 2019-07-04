@@ -33,7 +33,6 @@ void GameContainer::addTile(int value, int row, int col)
     tiles.emplace_back(value, row, col);
     Tile &tile = tiles.back();
     tile.setParent(this);
-    tile.setGeometry(tile.getX(), tile.getY(), TILE_WIDTH, TILE_WIDTH);
     tile.show();
 }
 
@@ -163,10 +162,9 @@ void GameContainer::move(int direction)
                 if (currentTile != nullptr && matrix[i][j]->getValue() == currentTile->getValue())
                 {
                     isMoved = true;
-                    matrix[i][j]->moveTo(currentTile->getRow(), currentTile->getCol());
-                    matrix[i][j]->doubleValue();
+                    matrix[i][j]->moveToAndDoubleValue(currentTile->getRow(), currentTile->getCol());
                     updateScore(matrix[i][j]->getValue());
-                    maxMergedTile = maxMergedTile > matrix[i][j]->getValue() ? maxMergedTile : matrix[i][j]->getValue();
+                    maxMergedTile = maxMergedTile > matrix[i][j]->getValue() * 2 ? maxMergedTile : matrix[i][j]->getValue() * 2;
                     currentTile = nullptr;
                 }
                 else
@@ -189,7 +187,7 @@ void GameContainer::move(int direction)
         updateInformation();
         generateRandomTile();
     }
-    if (maxMergedTile)
+    if (maxMergedTile > 2)
     {
         playSoundEffect(maxMergedTile);
     }
