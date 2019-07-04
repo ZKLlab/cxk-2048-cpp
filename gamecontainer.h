@@ -35,23 +35,25 @@ public:
     void partDeserialize(); // 反序列化游戏状态(不含道具状态)
     void recordFile(); // 储存游戏状态到文件
     void readFile(); // 从文件读取游戏状态
-    void elmcol(); // 消除一列
-    void elmrow(); // 消除一行
+    void eliminateCol(); // 消除一列
+    void eliminateRow(); // 消除一行
     void retract(); // 回退一步
     void cleanTiles(); // 清除多余方块
     int getWinTile() const; // 获取获胜方块
     void setWinTile(int value); // 设置获胜方块
     int judge(); // 判断游戏输赢状态
     void playSoundEffect(int value); // 播放音效
+    void updateInformation(); //更新序列
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
     int score, winTile;
     std::string information;
+    std::string tempInformation;
     std::list<Tile> tiles;
     bool propFlag;
-    int propElmcol;
-    int propElmrow;
+    int propEliminateCol;
+    int propEliminateRow;
     int propRetraction;
 signals:
     void scoreUpdated(int);

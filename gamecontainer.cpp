@@ -77,8 +77,8 @@ void GameContainer::newGame()
     generateRandomTile();
     generateRandomTile();
     propFlag = false;
-    propElmcol = 0;
-    propElmrow = 0;
+    propEliminateCol = 0;
+    propEliminateRow = 0;
     propRetraction = 0;
 }
 
@@ -186,6 +186,7 @@ void GameContainer::move(int direction)
     if (isMoved)
     {
         propFlag = true;
+        updateInformation();
         generateRandomTile();
     }
     if (maxMergedTile)
@@ -226,7 +227,7 @@ std::string GameContainer::serialize()
                 record << " " << 0;
         }
     }
-    record << " " << propFlag << " " << propElmcol << " " << propElmrow << " " << propRetraction;
+    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow << " " << propRetraction;
     information = record.str();
     return information;
 }
@@ -246,14 +247,15 @@ std::string GameContainer::partSerialize()
                 record << " " << 0;
         }
     }
-    information = record.str();
-    return information;
+    tempInformation = record.str();
+    return tempInformation;
 }
 
 void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
+    scoreUpdated(score);    //给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
     {
@@ -267,13 +269,14 @@ void GameContainer::deserialize()
             }
         }
     }
-    read  >> propFlag >> propElmcol >> propElmrow >> propRetraction;
+    read  >> propFlag >> propEliminateCol >> propEliminateRow >> propRetraction;
 }
 
 void GameContainer::partDeserialize()
 {
     std::istringstream read(information);
     read >> score;
+    scoreUpdated(score);    //给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
     {
@@ -287,6 +290,11 @@ void GameContainer::partDeserialize()
             }
         }
     }
+}
+
+void GameContainer::updateInformation()
+{
+    information = tempInformation;
 }
 
 void GameContainer::recordFile()
@@ -308,7 +316,6 @@ void GameContainer::retract()
     if (propFlag == true)
     {
         partDeserialize();
-        propFlag = false;
     }
 }
 
@@ -375,7 +382,7 @@ void GameContainer::playSoundEffect(int value)
     effect->play();
 }
 
-void GameContainer::elmrow()
+void GameContainer::eliminateRow()
 {
     if(propFlag == true)
     {
@@ -407,7 +414,7 @@ void GameContainer::elmrow()
     propFlag = false;
 }
 
-void GameContainer::elmcol()
+void GameContainer::eliminateCol()
 {
     if(propFlag == true)
     {
