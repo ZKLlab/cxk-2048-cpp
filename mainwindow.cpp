@@ -7,11 +7,13 @@ MainWindow::MainWindow(QWidget *parent) :
     gameContainer(new GameContainer)
 {
     ui->setupUi(this);
+
     gameContainer->setParent(ui->centralWidget);
     gameContainer->setFixedSize(CONTAINER_WIDTH, CONTAINER_WIDTH);
     ui->horizontalLayout->insertWidget(2, gameContainer);
     ui->gameInfo->setFixedHeight(CONTAINER_WIDTH);
 
+    // 事件
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));

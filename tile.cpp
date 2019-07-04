@@ -16,14 +16,14 @@ Tile::Tile(int value, int row, int col) :
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(parent());
     setGraphicsEffect(effect);
     QPropertyAnimation *fadeInAnimation = new QPropertyAnimation(effect, "opacity");
-    fadeInAnimation->setDuration(200);
+    fadeInAnimation->setDuration(2 * ANIMATION_DURATION_BASE);
     fadeInAnimation->setStartValue(0);
     fadeInAnimation->setEndValue(1);
     fadeInAnimation->setEasingCurve(QEasingCurve::InOutSine);
     fadeInAnimation->start(QPropertyAnimation::DeleteWhenStopped);
     // 缩放效果
     posAnimation = new ScaleAnimation(false, scale, this, "geometry");
-    posAnimation->setDuration(200);
+    posAnimation->setDuration(2 * ANIMATION_DURATION_BASE);
     posAnimation->setStartValue(QRect(getX() + TILE_WIDTH / 2, getY() + TILE_WIDTH / 2, 0, 0));
     posAnimation->setEndValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     posAnimation->setEasingCurve(QEasingCurve::InOutSine);
@@ -44,7 +44,7 @@ void Tile::moveTo(int row, int col)
 {
     delete posAnimation;
     posAnimation = new ScaleAnimation(false, scale, this, "geometry");
-    posAnimation->setDuration(100);
+    posAnimation->setDuration(ANIMATION_DURATION_BASE);
     posAnimation->setStartValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     i = row;
     j = col;
@@ -55,16 +55,17 @@ void Tile::moveTo(int row, int col)
 
 void Tile::moveToAndDoubleValue(int row, int col)
 {
+    doubleValue();
     delete posAnimation;
     update();
     posAnimation = new ScaleAnimation(true, scale, this, "geometry");
-    posAnimation->setDuration(200);
+    posAnimation->setDuration(2 * ANIMATION_DURATION_BASE);
     posAnimation->setStartValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     i = row;
     j = col;
     posAnimation->setKeyValueAt(0.5, QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     posAnimation->setKeyValueAt(0.75, QRectF(getX() - 0.1 * TILE_WIDTH, getY() - 0.1 * TILE_WIDTH,
-                                            1.2 * TILE_WIDTH, 1.2 * TILE_WIDTH));
+                                             1.2 * TILE_WIDTH, 1.2 * TILE_WIDTH));
     posAnimation->setEndValue(QRect(getX(), getY(), TILE_WIDTH, TILE_WIDTH));
     posAnimation->setEasingCurve(QEasingCurve::InOutSine);
     posAnimation->start();
@@ -201,8 +202,8 @@ void Tile::paintEvent(QPaintEvent *)
     QFont font = painter.font();
     font.setPixelSize(TILE_VALUE_SIZE);
     painter.setFont(font);
-    painter.drawText(QRect(TILE_VALUE_MARGIN, TILE_VALUE_MARGIN,
-                           TILE_WIDTH - 2 * TILE_VALUE_MARGIN, TILE_WIDTH - 2 * TILE_VALUE_MARGIN),
+    painter.drawText(QRect(TILE_VALUE_MARGIN_LEFT, TILE_VALUE_MARGIN_TOP,
+                           TILE_WIDTH - 2 * TILE_VALUE_MARGIN_LEFT, TILE_WIDTH - 2 * TILE_VALUE_MARGIN_TOP),
                      getValueText().c_str());
     // 文本
     font.setPixelSize(getFontPixelSize());
@@ -239,11 +240,6 @@ Tile::~Tile()
 void ScaleAnimation::updateCurrentValue(const QVariant &value)
 {
     scale = double(value.toRectF().width()) / TILE_WIDTH;
-    if (scale > 1 && doubleValueRequired)
-    {
-        doubleValueRequired = false;
-        static_cast<Tile *>(targetObject())->doubleValue();
-    }
     static_cast<QWidget *>(targetObject())->setGeometry(value.toRect());
     static_cast<QWidget *>(targetObject())->update();
 }

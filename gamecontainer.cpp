@@ -20,12 +20,8 @@ void GameContainer::paintEvent(QPaintEvent *)
     // 绘制格子
     painter.setBrush(QColor(238, 228, 218, 90));
     for (int i = 0; i < 4; i++)
-    {
         for (int j = 0; j < 4; j++)
-        {
             painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH, TILE_WIDTH, TILE_WIDTH, 3, 3);
-        }
-    }
 }
 
 void GameContainer::addTile(int value, int row, int col)
@@ -86,17 +82,11 @@ std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()
     std::vector<std::vector<Tile *>> matrix;
     matrix.resize(4);
     for (auto &row : matrix)
-    {
         row = {nullptr, nullptr, nullptr, nullptr};
-    }
     for (auto &tile : tiles)
-    {
         if (matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] == nullptr ||
                 matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())]->getValue() < tile.getValue())
-        {
             matrix[std::size_t(tile.getRow())][std::size_t(tile.getCol())] = &tile;
-        }
-    }
     return matrix;
 }
 
@@ -153,7 +143,7 @@ void GameContainer::move(int direction)
     for (std::vector<int> &basePos : base)
     {
         Tile *currentTile = nullptr;
-        int targetPosIndex = 0;
+        auto diffIter = diff.begin(); // 迭代器语法
         for (std::vector<int> &diffPos : diff)
         {
             int i = basePos[0] + diffPos[0], j = basePos[1] + diffPos[1];
@@ -164,19 +154,19 @@ void GameContainer::move(int direction)
                     isMoved = true;
                     matrix[i][j]->moveToAndDoubleValue(currentTile->getRow(), currentTile->getCol());
                     updateScore(matrix[i][j]->getValue());
-                    maxMergedTile = maxMergedTile > matrix[i][j]->getValue() * 2 ? maxMergedTile : matrix[i][j]->getValue() * 2;
+                    maxMergedTile = maxMergedTile > matrix[i][j]->getValue() ? maxMergedTile : matrix[i][j]->getValue();
                     currentTile = nullptr;
                 }
                 else
                 {
-                    int targetPosI = basePos[0] + diff[targetPosIndex][0], targetPosJ = basePos[1] + diff[targetPosIndex][1];
+                    int targetPosI = basePos[0] + (*diffIter)[0], targetPosJ = basePos[1] + (*diffIter)[1];
                     if (i != targetPosI || j != targetPosJ)
                     {
                         isMoved = true;
                         matrix[i][j]->moveTo(targetPosI, targetPosJ);
                     }
                     currentTile = matrix[i][j];
-                    targetPosIndex++;
+                    diffIter++;
                 }
             }
         }
@@ -253,7 +243,7 @@ void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
-    scoreUpdated(score);    //给主界面发送分数修改信号
+    scoreUpdated(score);    // 给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
     {
@@ -274,7 +264,7 @@ void GameContainer::partDeserialize()
 {
     std::istringstream read(information);
     read >> score;
-    scoreUpdated(score);    //给主界面发送分数修改信号
+    scoreUpdated(score);    // 给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
     {
@@ -435,7 +425,7 @@ void GameContainer::eliminateCol()
         }
         for (auto tile = tiles.begin(); tile != tiles.end();)
         {
-            if ((*tile).getCol() != maxCol)
+            if (tile->getCol() != maxCol)
                 tile++;
             else
                 tile = tiles.erase(tile);

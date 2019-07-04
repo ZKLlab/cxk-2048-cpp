@@ -51,4 +51,5 @@ DISTFILES += \
     2048Record.txt
 
 RESOURCES += \
-    audio.qrc
+    audio.qrc \
+    fonts.qrc
