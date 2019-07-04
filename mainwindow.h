@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private:
@@ -25,6 +25,7 @@ private:
 signals:
 public slots:
     void handleNewGameClicked();
+    void handleRetractClicked();
     void handleScoreUpdated(int score);
     void handleBestScoreUpdated(int bestScore);
 };

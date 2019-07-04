@@ -166,6 +166,13 @@ font-size: 14px;</string>
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="retractButton">
+           <property name="text">
+            <string>回退一步</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QWidget" name="scoreboard" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

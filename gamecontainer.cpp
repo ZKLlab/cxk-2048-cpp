@@ -123,7 +123,7 @@ void GameContainer::cleanTiles()
 
 void GameContainer::move(int direction)
 {
-    // partSerialize();
+    partSerialize();
     auto matrix = getTilesMatrix();
     cleanTiles();
     bool isMoved = false;
@@ -213,7 +213,7 @@ void GameContainer::resetScore()
 
 std::string GameContainer::serialize()
 {
-    std::ostringstream record(information);
+    std::ostringstream record;
     record << score;
     auto matrix = getTilesMatrix();
     for (auto &row : matrix)
@@ -227,12 +227,13 @@ std::string GameContainer::serialize()
         }
     }
     record << " " << propFlag << " " << propElmcol << " " << propElmrow << " " << propRetraction;
+    information = record.str();
     return information;
 }
 
 std::string GameContainer::partSerialize()
 {
-    std::ostringstream record(information);
+    std::ostringstream record;
     record << score;
     auto matrix = getTilesMatrix();
     for (auto &row : matrix)
@@ -245,6 +246,7 @@ std::string GameContainer::partSerialize()
                 record << " " << 0;
         }
     }
+    information = record.str();
     return information;
 }
 

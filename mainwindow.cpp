@@ -14,12 +14,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
 }
 
 void MainWindow::handleNewGameClicked()
 {
     gameContainer->newGame();
+}
+
+void MainWindow::handleRetractClicked()
+{
+    gameContainer->retract();
 }
 
 void MainWindow::handleScoreUpdated(int score)

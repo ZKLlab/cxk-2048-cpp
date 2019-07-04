@@ -8,7 +8,9 @@ Tile::Tile(int value, int row, int col) :
     i(row),
     j(col),
     posAnimation(nullptr)
-{}
+{
+    lower();
+}
 
 int Tile::getX() const
 {
@@ -29,7 +31,7 @@ void Tile::moveTo(int row, int col)
     i = row;
     j = col;
     posAnimation->setEndValue(QPoint(getX(), getY()));
-    posAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+    posAnimation->setEasingCurve(QEasingCurve::InOutSine);
     posAnimation->start();
 }
 
