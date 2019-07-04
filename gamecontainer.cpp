@@ -206,7 +206,8 @@ std::string GameContainer::partSerialize()
     {
         for (Tile *tile : row)
         {
-            record << " " << tile->getValueText();
+            if (tile)
+                record << " " << tile->getValueText();
         }
     }
     return information;
