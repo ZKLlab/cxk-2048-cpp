@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
+    connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
 }
 
 void MainWindow::handleNewGameClicked()
