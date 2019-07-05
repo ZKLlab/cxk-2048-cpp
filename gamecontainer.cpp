@@ -192,10 +192,12 @@ void GameContainer::updateScore(int value)
 {
     score += value;
     scoreUpdated(score);
+    getHighest();
 }
 
 void GameContainer::resetScore()
 {
+    recordScore(score);
     score = 0;
     scoreUpdated(score);
 }
@@ -327,6 +329,7 @@ int GameContainer::judge()
         {
             if (matrix[row][col]->getValue() == winTile)
             {
+                recordScore(score);
                 return GAME_WIN;
             }
         }
@@ -338,6 +341,7 @@ int GameContainer::judge()
         {
             if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
             {
+                recordScore(score);
                 return GAME_CONTINUE;
             }
         }
@@ -349,11 +353,13 @@ int GameContainer::judge()
         {
             if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
             {
+                recordScore(score);
                 return GAME_CONTINUE;
             }
         }
     }
     // 不符合上述两种状况，游戏结束
+    recordScore(score);
     return GAME_LOSE;
 }
 
@@ -432,4 +438,41 @@ void GameContainer::eliminateCol()
         }
     }
     propFlag = false;
+}
+
+void GameContainer::recordScore(int scoreThis)
+{
+    std::string line;
+    std::size_t i = 0;
+    int x;
+    std::ifstream infile("RankingList.txt");
+    while(getline(infile, line))
+    {
+        std::istringstream items(line);
+        while (items >> x)
+        {
+            scoreList[i] = x;
+            i++;
+        }
+    }
+    scoreList[i] = scoreThis;
+    sort(scoreList.rbegin(), scoreList.rend());
+    std::ofstream outfile("RankingList.txt");
+    for (std::size_t j = 0; j < scoreList.size(); j++)
+    {
+        outfile << scoreList[j] << '\t';
+    }
+    infile.close();
+    outfile.close();
+}
+
+void GameContainer::getHighest()
+{
+    highest = score > highest ? score : highest;
+    //highest = score;
+    //if (scoreList[0] > highest)
+    //{
+    //    highest = scoreList[0];
+    //}
+    bestScoreUpdated(highest);
 }

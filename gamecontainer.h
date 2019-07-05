@@ -17,6 +17,7 @@
 #include <QMediaPlayer>
 #include <QSoundEffect>
 #include <QStandardPaths>
+#include <vector>
 
 class GameContainer : public QWidget
 {
@@ -46,6 +47,8 @@ public:
     int judge(); // 判断游戏输赢状态
     void playSoundEffect(int value); // 播放音效
     void updateInformation(); //更新序列
+    void recordScore(int score);//记录分数排行榜
+    void getHighest();//获取历史最高分
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
@@ -57,6 +60,8 @@ private:
     int propEliminateCol;
     int propEliminateRow;
     int propRetraction;
+    std::vector<int> scoreList = {0};
+    int highest;
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
