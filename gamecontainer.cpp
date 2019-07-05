@@ -176,6 +176,7 @@ void GameContainer::move(int direction)
         propFlag = true;
         updateInformation();
         generateRandomTile();
+        judge();
     }
     if (maxMergedTile > 2)
     {
@@ -327,7 +328,7 @@ int GameContainer::judge()
     {
         for (int col = 0; col < 4; col++)
         {
-            if (matrix[row][col]->getValue() == winTile)
+            if (matrix[row][col] == nullptr || matrix[row][col]->getValue() == winTile)
             {
                 recordScore(score);
                 return GAME_WIN;
