@@ -29,14 +29,12 @@ SOURCES += \
         gamecontainer.cpp \
         main.cpp \
         mainwindow.cpp \
-        rankinglist.cpp \
         tile.cpp
 
 HEADERS += \
         gamecontainer.h \
         gamedef.h \
         mainwindow.h \
-        rankinglist.h \
         tile.h
 
 FORMS += \
