@@ -440,27 +440,30 @@ void GameContainer::eliminateCol()
     propFlag = false;
 }
 
-void GameContainer::recordScore(int scoreThis)
+void GameContainer::recordScore(int scoreThis, std::string nameThis)
 {
     std::string line;
     std::size_t i = 0;
     int x;
+    std::string y;
     std::ifstream infile("RankingList.txt");
     while(getline(infile, line))
     {
         std::istringstream items(line);
-        while (items >> x)
+        while (items >> x >> y)
         {
             scoreList[i] = x;
+            nameList[i] = y;
             i++;
         }
     }
     scoreList[i] = scoreThis;
+    nameList[i] = nameThis;
     sort(scoreList.rbegin(), scoreList.rend());
     std::ofstream outfile("RankingList.txt");
     for (std::size_t j = 0; j < scoreList.size(); j++)
     {
-        outfile << scoreList[j] << '\t';
+        outfile << scoreList[j] << '\t' << nameList[j];
     }
     infile.close();
     outfile.close();
