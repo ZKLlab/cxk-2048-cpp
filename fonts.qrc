@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/SourceSansPro-Semibold.ttf</file>
-        <file>fonts/SourceHanSansCN-Medium.otf</file>
+        <file>fonts/WenQuanYiMicroHei.ttf</file>
     </qresource>
 </RCC>

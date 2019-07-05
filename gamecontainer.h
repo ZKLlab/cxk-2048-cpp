@@ -4,7 +4,9 @@
 #include "gamedef.h"
 #include "tile.h"
 #include <list>
+#include <random>
 #include <string>
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -14,10 +16,9 @@
 #include <QColor>
 #include <QWidget>
 #include <QPainter>
-#include <QMediaPlayer>
+#include <QMessageBox>
 #include <QSoundEffect>
 #include <QStandardPaths>
-#include <vector>
 
 class GameContainer : public QWidget
 {
@@ -46,13 +47,14 @@ public:
     void setWinTile(int value); // 设置获胜方块
     int judge(); // 判断游戏输赢状态
     void playSoundEffect(int value); // 播放音效
-    void updateInformation(); //更新序列
-    void recordScore(int score);//记录分数排行榜
-    void getHighest();//获取历史最高分
+    void updateInformation(); // 更新序列
+    void recordScore(int score); // 记录分数排行榜
+    void getHighest(); // 获取历史最高分
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
-    int score, winTile;
+    int score, highest, winTile;
+    double soundEffectsVolume;
     std::string information;
     std::string tempInformation;
     std::list<Tile> tiles;
@@ -61,7 +63,6 @@ private:
     int propEliminateRow;
     int propRetraction;
     std::vector<int> scoreList = {0};
-    int highest;
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
