@@ -59,6 +59,7 @@ public:
     void setName(); // 获取玩家姓名
     void initHighest(); // 初始化最高分
     void saveHighest(); // 保存最高分
+    void setSoundEffectsVolume(double value);
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
@@ -77,6 +78,7 @@ private:
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
+    void soundEffectsVolumeChanged(int);
 public slots:
 };
 

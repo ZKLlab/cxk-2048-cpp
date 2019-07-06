@@ -3,6 +3,7 @@
 
 #include "gamedef.h"
 #include "gamecontainer.h"
+#include <sstream>
 #include <QKeyEvent>
 #include <QMainWindow>  
 
@@ -29,6 +30,7 @@ public slots:
     void handleRetractClicked();
     void handleScoreUpdated(int score);
     void handleBestScoreUpdated(int bestScore);
+    void handleSoundEffectsVolumeChanged(int value);
 };
 
 #endif // MAINWINDOW_H
