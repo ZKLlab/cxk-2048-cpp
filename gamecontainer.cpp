@@ -7,10 +7,7 @@ GameContainer::GameContainer(QWidget *parent) :
     winTile(2048),
     scoreList{0},
     nameList{""}
-{
-    soundEffectsVolumeChanged(QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 80 : 0);
-    newGame();
-}
+{}
 
 void GameContainer::paintEvent(QPaintEvent *)
 {
