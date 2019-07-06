@@ -4,7 +4,9 @@ GameContainer::GameContainer(QWidget *parent) :
     QWidget(parent),
     score(0),
     highest(0),
-    winTile(2048)
+    winTile(2048),
+    scoreList{0},
+    nameList{""}
 {
     soundEffectsVolume = QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 0.8 : 0.0;
     newGame();
@@ -67,6 +69,8 @@ void GameContainer::generateRandomTile()
 
 void GameContainer::newGame()
 {
+    initHighest();
+    setName();
     playSoundEffect(2);
     tiles.clear();
     resetScore();
@@ -194,12 +198,12 @@ void GameContainer::updateScore(int value)
 {
     score += value;
     scoreUpdated(score);
-    getHighest();
+    setHighest();
 }
 
 void GameContainer::resetScore()
 {
-    recordScore(score);
+    recordScore(score, name);
     score = 0;
     scoreUpdated(score);
 }
@@ -329,9 +333,10 @@ int GameContainer::judge()
     {
         for (int col = 0; col < 4; col++)
         {
-            if (matrix[row][col] == nullptr || matrix[row][col]->getValue() == winTile)
+            if (matrix[row][col] != nullptr && matrix[row][col]->getValue() == winTile)
             {
-                recordScore(score);
+                recordScore(score, name);
+                saveHighest();
                 return GAME_WIN;
             }
         }
@@ -341,9 +346,8 @@ int GameContainer::judge()
     {
         for (int col = 0; col < 4 - 1; col++)
         {
-            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
+            if (matrix[row][col] == nullptr || matrix[row][col + 1] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
             {
-                recordScore(score);
                 return GAME_CONTINUE;
             }
         }
@@ -353,15 +357,15 @@ int GameContainer::judge()
     {
         for (int row = 0; row < 4 - 1; row++)
         {
-            if (matrix[row][col] == nullptr || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
+            if (matrix[row][col] == nullptr || matrix[row + 1][col] == nullptr  || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
             {
-                recordScore(score);
                 return GAME_CONTINUE;
             }
         }
     }
     // 不符合上述两种状况，游戏结束
-    recordScore(score);
+    recordScore(score, name);
+    saveHighest();
     return GAME_LOSE;
 }
 
@@ -445,7 +449,6 @@ void GameContainer::eliminateCol()
 void GameContainer::recordScore(int scoreThis, std::string nameThis)
 {
     std::string line;
-    std::size_t i = 0;
     int x;
     std::string y;
     std::ifstream infile("RankingList.txt");
@@ -454,24 +457,30 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
         std::istringstream items(line);
         while (items >> x >> y)
         {
-            scoreList[i] = x;
-            nameList[i] = y;
-            i++;
+            scoreList.push_back(x);
+            nameList.push_back(y);
         }
     }
-    scoreList[i] = scoreThis;
-    nameList[i] = nameThis;
-    sort(scoreList.rbegin(), scoreList.rend());
-    std::ofstream outfile("RankingList.txt");
+    scoreList.push_back(scoreThis);
+    nameList.push_back(nameThis);
+    for (size_t i = 0; i < scoreList.size(); i++)
+    {
+        for(size_t j = i; j < scoreList.size(); j++)
+        {
+            std::swap(scoreList[i], scoreList[j]);
+            std::swap(nameList[i], nameList[j]);
+        }
+    }
+    std::ofstream outfile("RankingList.txt", std::ios::trunc);
     for (std::size_t j = 0; j < scoreList.size(); j++)
     {
-        outfile << scoreList[j] << '\t' << nameList[j];
+        outfile << scoreList[j] << '\t' << nameList[j] << std::endl;
     }
     infile.close();
     outfile.close();
 }
 
-void GameContainer::getHighest()
+void GameContainer::setHighest()
 {
     highest = score > highest ? score : highest;
     //highest = score;
@@ -480,4 +489,36 @@ void GameContainer::getHighest()
     //    highest = scoreList[0];
     //}
     bestScoreUpdated(highest);
+}
+
+void GameContainer::setName()
+{
+    bool ok;
+    QString text = QInputDialog::getText(this, "报上名来", "请输入昵称", QLineEdit::Normal, "", &ok);
+    name = text.toStdString();
+}
+
+void GameContainer::initHighest()
+{
+    std::ifstream infile("HighestScore.txt");
+    int i;
+    infile >> i;
+    if (infile.fail())
+    {
+        i = 0;
+    }
+    highest = i;
+    infile.close();
+}
+
+void GameContainer::saveHighest()
+{
+    std::ifstream infile("HighestScore.txt");
+    int i;
+    infile >> i;
+    infile.close();
+    highest = highest > i ? highest : i;
+    std::ofstream outfile("HighestScore.txt", std::ios::trunc);
+    outfile << highest;
+    outfile.close();
 }

@@ -46,7 +46,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    2048Record.txt
+    2048Record.txt \
+    HighestScore.txt
 
 RESOURCES += \
     audio.qrc \

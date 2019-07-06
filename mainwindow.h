@@ -4,7 +4,7 @@
 #include "gamedef.h"
 #include "gamecontainer.h"
 #include <QKeyEvent>
-#include <QMainWindow>
+#include <QMainWindow>  
 
 namespace Ui
 {
@@ -21,7 +21,8 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 private:
     Ui::MainWindow *ui;
-    GameContainer *gameContainer;
+    GameContainer *gameContainer; 
+
 signals:
 public slots:
     void handleNewGameClicked();

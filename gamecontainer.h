@@ -20,6 +20,11 @@
 #include <QSoundEffect>
 #include <QStandardPaths>
 #include <vector>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QString>
+#include <exception>
+#include <algorithm>
 
 class GameContainer : public QWidget
 {
@@ -50,7 +55,10 @@ public:
     void playSoundEffect(int value); // 播放音效
     void updateInformation(); // 更新序列
     void recordScore(int score, std::string nameThis); // 记录分数排行榜
-    void getHighest();// 获取历史最高分
+    void setHighest();// 获取历史最高分
+    void setName(); // 获取玩家姓名
+    void initHighest();
+    void saveHighest();
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
@@ -63,9 +71,9 @@ private:
     int propEliminateCol;
     int propEliminateRow;
     int propRetraction;
-    std::vector<int> scoreList = {0};
+    std::vector<int> scoreList;
     std::vector<std::string> nameList;
-    int highest;
+    std::string name;
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
