@@ -451,7 +451,7 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
     std::string line;
     int x;
     std::string y;
-    std::ifstream infile("RankingList.txt");
+    std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("RankingList.txt").toStdString());
     while(getline(infile, line))
     {
         std::istringstream items(line);
@@ -471,7 +471,7 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
             std::swap(nameList[i], nameList[j]);
         }
     }
-    std::ofstream outfile("RankingList.txt", std::ios::trunc);
+    std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("RankingList.txt").toStdString(), std::ios::trunc);
     for (std::size_t j = 0; j < scoreList.size(); j++)
     {
         outfile << scoreList[j] << '\t' << nameList[j] << std::endl;
@@ -505,7 +505,7 @@ void GameContainer::setName()
 
 void GameContainer::initHighest()
 {
-    std::ifstream infile("HighestScore.txt");
+    std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("HighestScore.txt").toStdString());
     int i;
     infile >> i;
     if (infile.fail())
@@ -518,12 +518,16 @@ void GameContainer::initHighest()
 
 void GameContainer::saveHighest()
 {
-    std::ifstream infile("HighestScore.txt");
+    std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("HighestScore.txt").toStdString());
     int i;
     infile >> i;
+    if (infile.fail())
+    {
+        i = 0;
+    }
     infile.close();
     highest = highest > i ? highest : i;
-    std::ofstream outfile("HighestScore.txt", std::ios::trunc);
+    std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("HighestScore.txt").toStdString(), std::ios::trunc);
     outfile << highest;
     outfile.close();
 }
