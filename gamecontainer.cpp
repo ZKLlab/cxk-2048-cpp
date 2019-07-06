@@ -522,6 +522,10 @@ void GameContainer::saveHighest()
     std::ifstream infile("HighestScore.txt");
     int i;
     infile >> i;
+    if (infile.fail())
+    {
+        i = 0;
+    }
     infile.close();
     highest = highest > i ? highest : i;
     std::ofstream outfile("HighestScore.txt", std::ios::trunc);
