@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    gameContainer(new GameContainer)
+    gameContainer(new GameContainer())
 {
     ui->setupUi(this);
 
@@ -17,8 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
-    connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
+    connect(ui->soundEffectsVolumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
+    connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
+    connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
 }
 
 void MainWindow::handleNewGameClicked()
@@ -43,6 +45,16 @@ void MainWindow::handleBestScoreUpdated(int score)
     std::ostringstream text;
     text << score;
     ui->bestScore->setText(text.str().c_str());
+}
+
+void MainWindow::handleSoundEffectsVolumeChanged(int value)
+{
+    std::ostringstream text;
+    text << value << '%';
+    ui->soundEffectsVolume->setText(text.str().c_str());
+    if (ui->soundEffectsVolumeSlider->value() != value)
+        ui->soundEffectsVolumeSlider->setValue(value);
+    gameContainer->setSoundEffectsVolume(value / 100.0);
 }
 
 MainWindow::~MainWindow()

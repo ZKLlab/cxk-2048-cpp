@@ -50,6 +50,7 @@ public:
     void updateInformation(); // 更新序列
     void recordScore(int score); // 记录分数排行榜
     void getHighest(); // 获取历史最高分
+    void setSoundEffectsVolume(double value); // 设置音效音量
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
@@ -66,6 +67,7 @@ private:
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
+    void soundEffectsVolumeChanged(int);
 public slots:
 };
 

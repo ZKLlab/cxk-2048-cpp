@@ -6,7 +6,7 @@ GameContainer::GameContainer(QWidget *parent) :
     highest(0),
     winTile(2048)
 {
-    soundEffectsVolume = QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 0.8 : 0.0;
+    soundEffectsVolumeChanged(QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 80 : 0);
     newGame();
 }
 
@@ -17,12 +17,12 @@ void GameContainer::paintEvent(QPaintEvent *)
     painter.setPen(Qt::NoPen);
     // 绘制背景
     painter.setBrush(QColor("#bbada0"));
-    painter.drawRoundedRect(0, 0, CONTAINER_WIDTH, CONTAINER_WIDTH, 6, 6);
+    painter.drawRoundedRect(0, 0, CONTAINER_WIDTH, CONTAINER_WIDTH, CONTAINER_BORDER_RADIUS, CONTAINER_BORDER_RADIUS);
     // 绘制格子
     painter.setBrush(QColor(238, 228, 218, 90));
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
-            painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH, TILE_WIDTH, TILE_WIDTH, 3, 3);
+            painter.drawRoundedRect(j * TILE_WIDTH + (j + 1) * GUTTER_WIDTH, i * TILE_WIDTH + (i + 1) * GUTTER_WIDTH, TILE_WIDTH, TILE_WIDTH, TILE_BORDER_RADIUS, TILE_BORDER_RADIUS);
 }
 
 void GameContainer::addTile(int value, int row, int col)
@@ -477,4 +477,9 @@ void GameContainer::getHighest()
     //    highest = scoreList[0];
     //}
     bestScoreUpdated(highest);
+}
+
+void GameContainer::setSoundEffectsVolume(double value)
+{
+    soundEffectsVolume = value;
 }

@@ -195,7 +195,7 @@ void Tile::paintEvent(QPaintEvent *)
     // 绘制背景
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(getBackgroundColor().c_str()));
-    painter.drawRoundedRect(0, 0, TILE_WIDTH, TILE_WIDTH, 3, 3);
+    painter.drawRoundedRect(0, 0, TILE_WIDTH, TILE_WIDTH, TILE_BORDER_RADIUS, TILE_BORDER_RADIUS);
     // 绘制前景
     painter.setPen(QColor(getForeColor().c_str()));
     // 值
