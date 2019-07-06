@@ -57,8 +57,8 @@ public:
     void recordScore(int score, std::string nameThis); // 记录分数排行榜
     void setHighest();// 获取历史最高分
     void setName(); // 获取玩家姓名
-    void initHighest();
-    void saveHighest();
+    void initHighest(); // 初始化最高分
+    void saveHighest(); // 保存最高分
     void setSoundEffectsVolume(double value);
 protected:
     void paintEvent(QPaintEvent *) override;
