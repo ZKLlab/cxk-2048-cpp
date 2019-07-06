@@ -455,9 +455,10 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
     while(getline(infile, line))
     {
         std::istringstream items(line);
-        while (items >> x >> y)
+        while (items >> x)
         {
             scoreList.push_back(x);
+            getline(infile, y);
             nameList.push_back(y);
         }
     }
