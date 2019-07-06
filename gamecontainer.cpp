@@ -1,11 +1,12 @@
 #include "gamecontainer.h"
-#include <random>
 
 GameContainer::GameContainer(QWidget *parent) :
     QWidget(parent),
     score(0),
+    highest(0),
     winTile(2048)
 {
+    soundEffectsVolume = QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 0.8 : 0.0;
     newGame();
 }
 
@@ -176,6 +177,7 @@ void GameContainer::move(int direction)
         propFlag = true;
         updateInformation();
         generateRandomTile();
+        judge();
     }
     if (maxMergedTile > 2)
     {
@@ -303,7 +305,7 @@ void GameContainer::readFile()
 
 void GameContainer::retract()
 {
-    if (propFlag == true)
+    if (propFlag)
     {
         partDeserialize();
     }
@@ -327,7 +329,7 @@ int GameContainer::judge()
     {
         for (int col = 0; col < 4; col++)
         {
-            if (matrix[row][col]->getValue() == winTile)
+            if (matrix[row][col] == nullptr || matrix[row][col]->getValue() == winTile)
             {
                 recordScore(score);
                 return GAME_WIN;
@@ -372,13 +374,13 @@ void GameContainer::playSoundEffect(int value)
     url << "qrc:/soundEffects/effect-" << value << ".wav";
     effect->setSource(QUrl(url.str().c_str()));
     effect->setLoopCount(1);
-    effect->setVolume(0.8);
+    effect->setVolume(soundEffectsVolume);
     effect->play();
 }
 
 void GameContainer::eliminateRow()
 {
-    if(propFlag == true)
+    if (propFlag)
     {
         auto matrix = getTilesMatrix();
         int maxRow = 0, maxSum = 0, sum = 0;
@@ -399,7 +401,7 @@ void GameContainer::eliminateRow()
         }
         for (auto tile = tiles.begin(); tile != tiles.end();)
         {
-            if ((*tile).getRow() != maxRow)
+            if (tile->getRow() != maxRow)
                 tile++;
             else
                 tile = tiles.erase(tile);
@@ -410,7 +412,7 @@ void GameContainer::eliminateRow()
 
 void GameContainer::eliminateCol()
 {
-    if(propFlag == true)
+    if (propFlag)
     {
         auto matrix = getTilesMatrix();
         int maxCol = 0, maxSum = 0, sum = 0;

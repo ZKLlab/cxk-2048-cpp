@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>428</width>
-    <height>556</height>
-   </rect>
-  </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
@@ -19,7 +11,7 @@
   <property name="styleSheet">
    <string notr="true">background: #faf8ef;
 color: #776e65;
-font-family: &quot;Source Sans Pro&quot;, &quot;Source Han Sans CN&quot;, sans-serif;</string>
+font-family: &quot;Source Sans Pro&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif;</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -179,7 +171,7 @@ line-height: 32px;</string>
            </property>
            <property name="font">
             <font>
-             <family>Source Sans Pro,Source Han Sans CN,sans-serif</family>
+             <family>Source Sans Pro,WenQuanYi Micro Hei,sans-serif</family>
              <pointsize>64</pointsize>
             </font>
            </property>
