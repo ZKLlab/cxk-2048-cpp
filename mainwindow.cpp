@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
+    connect(gameContainer, SIGNAL(rankingListUpdated(const std::string &)), this, SLOT(handleRankingListUpdated(const std::string &)));
 
     handleSoundEffectsVolumeChanged(QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 80 : 0);
     gameContainer->newGame();
@@ -48,6 +49,11 @@ void MainWindow::handleBestScoreUpdated(int score)
     std::ostringstream text;
     text << score;
     ui->bestScore->setText(text.str().c_str());
+}
+
+void MainWindow::handleRankingListUpdated(const std::string &content)
+{
+    ui->rankingList->setText(content.c_str());
 }
 
 void MainWindow::handleSoundEffectsVolumeChanged(int value)

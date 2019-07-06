@@ -9,6 +9,21 @@ GameContainer::GameContainer(QWidget *parent) :
     nameList{""}
 {}
 
+void GameContainer::newGame()
+{
+    initHighest();
+    setName();
+    playSoundEffect(2);
+    tiles.clear();
+    resetScore();
+    generateRandomTile();
+    generateRandomTile();
+    propFlag = false;
+    propEliminateCol = 0;
+    propEliminateRow = 0;
+    propRetraction = 0;
+}
+
 void GameContainer::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
@@ -62,21 +77,6 @@ void GameContainer::generateRandomTile()
     std::uniform_int_distribution<> dis2(0, 9);
     int temp = dis2(gen);
     addTile((temp == 0 ? 4 : 2), spare[pos][0], spare[pos][1]);
-}
-
-void GameContainer::newGame()
-{
-    initHighest();
-    setName();
-    playSoundEffect(2);
-    tiles.clear();
-    resetScore();
-    generateRandomTile();
-    generateRandomTile();
-    propFlag = false;
-    propEliminateCol = 0;
-    propEliminateRow = 0;
-    propRetraction = 0;
 }
 
 std::vector<std::vector<Tile *>> GameContainer::getTilesMatrix()

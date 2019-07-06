@@ -31,6 +31,7 @@ public slots:
     void handleScoreUpdated(int score);
     void handleBestScoreUpdated(int bestScore);
     void handleSoundEffectsVolumeChanged(int value);
+    void handleRankingListUpdated(const std::string &content);
 };
 
 #endif // MAINWINDOW_H
