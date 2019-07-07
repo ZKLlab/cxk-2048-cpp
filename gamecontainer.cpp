@@ -459,9 +459,9 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
         if (!items.fail())
         {
             scoreList.push_back(x);
-            std::ws(infile);
-            items >> y;
-            //getline(infile, y);
+            std::ws(items);
+            //items >> y;
+            getline(items, y);
             nameList.push_back(y);
         }
     }
