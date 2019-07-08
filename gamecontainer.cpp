@@ -11,16 +11,18 @@ void GameContainer::newGame()
 {
     showRankingList();
     initHighest();
-    setName();
-    playSoundEffect(2);
-    tiles.clear();
-    resetScore();
-    generateRandomTile();
-    generateRandomTile();
-    propFlag = false;
-    propRetractionFlag = false;
-    propEliminateCol = 0;
-    propEliminateRow = 0;
+    if (setName())
+    {
+        playSoundEffect(2);
+        tiles.clear();
+        resetScore();
+        generateRandomTile();
+        generateRandomTile();
+        propFlag = false;
+        propRetractionFlag = false;
+        propEliminateCol = 0;
+        propEliminateRow = 0;
+    }
 }
 
 void GameContainer::paintEvent(QPaintEvent *)
@@ -508,11 +510,19 @@ void GameContainer::setSoundEffectsVolume(double value)
     soundEffectsVolume = value;
 }
 
-void GameContainer::setName()
+bool GameContainer::setName()
 {
     bool ok;
-    QString text = QInputDialog::getText(this, "报上名来！", "请输入昵称：", QLineEdit::Normal, "", &ok);
+    QString text;
+    while (text == "")
+    {
+        text = QInputDialog::getText(this, "报上名来！", "请输入昵称：", QLineEdit::Normal, "", &ok);
+        if (!ok)
+            return false;
+        text = text.trimmed();
+    }
     name = text.toStdString();
+    return true;
 }
 
 void GameContainer::initHighest()
@@ -547,19 +557,9 @@ void GameContainer::saveHighest()
 void GameContainer::showRankingList()
 {
     std::ostringstream items;
-    if (scoreList.size() >= 5)
+    for (std::size_t i = 0, len = scoreList.size() >= 5 ? 5 : scoreList.size(); i < len; i++)
     {
-        for (size_t i = 0; i < 5; i++)
-        {
-            items << nameList[i] << " " << scoreList[i] << std::endl;
-        }
-    }
-    else
-    {
-        for (size_t i = 0; i < scoreList.size(); i++)
-        {
-            items << nameList[i] << " " << scoreList[i] << std::endl;
-        }
+        items << "#" << i + 1 << "   " << nameList[i] << "   " << scoreList[i] << std::endl;
     }
     rankingListUpdated(items.str());
 }

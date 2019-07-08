@@ -15,16 +15,13 @@
 #include <QDir>
 #include <QColor>
 #include <QWidget>
+#include <QString>
 #include <QPainter>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QSoundEffect>
 #include <QStandardPaths>
-#include <vector>
 #include <QInputDialog>
-#include <QLineEdit>
-#include <QString>
-#include <exception>
-#include <algorithm>
 
 class GameContainer : public QWidget
 {
@@ -56,7 +53,7 @@ public:
     void updateInformation(); // 更新序列
     void recordScore(int score, std::string nameThis); // 记录分数排行榜
     void setHighest();// 获取历史最高分
-    void setName(); // 获取玩家姓名
+    bool setName(); // 获取玩家姓名
     void initHighest(); // 初始化最高分
     void saveHighest(); // 保存最高分
     void setSoundEffectsVolume(double value); // 设置音效音量大小
