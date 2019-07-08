@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-const char buttonStyleSheet[] = "background: #8f7a66;color: white;border: none;border-radius: 3px;margin: 0;padding: 0 12px;font-size: 14px;height: 32px;line-height: 32px;";
-const char buttonStyleSheetDisabled[] = "background: #bdbdbd;color: white;border: none;border-radius: 3px;margin: 0;padding: 0 12px;font-size: 14px;height: 32px;line-height: 32px;";
+const char buttonStyleSheet[] = "background: #8f7a66;color: white;border: none;border-radius: 3px;margin: 0;padding: 0 12px;font-size: 14px;height: 32px;";
+const char buttonStyleSheetDisabled[] = "background: #bdbdbd;color: white;border: none;border-radius: 3px;margin: 0;padding: 0 12px;font-size: 14px;height: 32px;";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
