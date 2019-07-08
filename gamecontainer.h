@@ -31,6 +31,7 @@ class GameContainer : public QWidget
     Q_OBJECT
 public:
     explicit GameContainer(QWidget *parent = nullptr); // 构造函数
+    ~GameContainer(); //析构函数
     void addTile(int value, int row, int col); // 增加方块
     void move(int direction); // 移动方块
     void generateRandomTile(); // 生成随机方块
@@ -44,7 +45,7 @@ public:
     void deserialize(); // 反序列化游戏状态
     void partDeserialize(); // 反序列化游戏状态(不含道具状态)
     void recordFile(); // 储存游戏状态到文件
-    void readFile(); // 从文件读取游戏状态
+    std::string readFile(); // 从文件读取游戏状态
     void eliminateCol(); // 消除一列
     void eliminateRow(); // 消除一行
     void retract(); // 回退一步
@@ -61,6 +62,9 @@ public:
     void saveHighest(); // 保存最高分
     void setSoundEffectsVolume(double value);
     void showRankingList();
+    void startGame();// 开始游戏
+    void continueGame(); // 继续游戏
+    void clearFile(); // 清空文件
 protected:
     void paintEvent(QPaintEvent *) override;
 private:

@@ -7,6 +7,39 @@ GameContainer::GameContainer(QWidget *parent) :
     winTile(2048)
 {}
 
+GameContainer::~GameContainer()
+{
+    if (information == "")
+    {
+        return;
+    }
+    serialize();
+    recordFile();
+}
+
+void GameContainer::startGame()
+{
+    readFile();
+    if (information.empty())
+    {
+        newGame();
+    }
+    else
+    {
+        continueGame();
+    }
+}
+
+void GameContainer::continueGame()
+{
+    deserialize();
+    showRankingList();
+    initHighest();
+    playSoundEffect(2);
+    generateRandomTile();
+    generateRandomTile();
+}
+
 void GameContainer::newGame()
 {
     showRankingList();
@@ -206,7 +239,7 @@ void GameContainer::resetScore()
 std::string GameContainer::serialize()
 {
     std::ostringstream record;
-    record << score;
+    record << score << " " << name;
     auto matrix = getTilesMatrix();
     for (auto &row : matrix)
     {
@@ -218,7 +251,7 @@ std::string GameContainer::serialize()
                 record << " " << 0;
         }
     }
-    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow << " " << propRetraction;
+    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow;
     information = record.str();
     return information;
 }
@@ -246,6 +279,7 @@ void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
+    read >> name;
     scoreUpdated(score);    // 给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
@@ -260,7 +294,7 @@ void GameContainer::deserialize()
             }
         }
     }
-    read  >> propFlag >> propEliminateCol >> propEliminateRow >> propRetraction;
+    read  >> propFlag >> propEliminateCol >> propEliminateRow;
 }
 
 void GameContainer::partDeserialize()
@@ -292,14 +326,20 @@ void GameContainer::recordFile()
 {
     std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("2048Record.txt").toStdString(), std::ios::trunc);
     outfile << information;
+    std::cout << information << std::endl;
     outfile.close();
 }
 
-void GameContainer::readFile()
+std::string GameContainer::readFile()
 {
     std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("2048Record.txt").toStdString());
-    infile >> information;
+    getline(infile, information);
+    if (infile.fail())
+    {
+        information = "";
+    }
     infile.close();
+    return information;
 }
 
 void GameContainer::retract()
@@ -333,6 +373,7 @@ int GameContainer::judge()
                 recordScore(score, name);
                 showRankingList();
                 saveHighest();
+                clearFile();
                 return GAME_WIN;
             }
         }
@@ -363,6 +404,7 @@ int GameContainer::judge()
     recordScore(score, name);
     showRankingList();
     saveHighest();
+    clearFile();
     return GAME_LOSE;
 }
 
@@ -558,4 +600,11 @@ void GameContainer::showRankingList()
         }
     }
     rankingListUpdated(items.str());
+}
+
+void GameContainer::clearFile()
+{
+    information = "";
+    std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("2048Record.txt").toStdString(), std::ios::trunc);
+    outfile.close();
 }
