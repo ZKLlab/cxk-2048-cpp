@@ -26,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(propRetractEnabled(bool)), this, SLOT(handlePropRetractEnabled(bool)));
-    connect(gameContainer, SIGNAL(propEliminateRowEnabled(bool)), this, SLOT(handlePropEliminateRowEnabled(bool)));
-    connect(gameContainer, SIGNAL(propEliminateColEnabled(bool)), this, SLOT(handlePropEliminateColEnabled(bool)));
+    connect(gameContainer, SIGNAL(propEliminateRowEnabled(int)), this, SLOT(handlePropEliminateRowEnabled(int)));
+    connect(gameContainer, SIGNAL(propEliminateColEnabled(int)), this, SLOT(handlePropEliminateColEnabled(int)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
     connect(gameContainer, SIGNAL(rankingListUpdated(const std::string &)), this, SLOT(handleRankingListUpdated(const std::string &)));
@@ -105,16 +105,30 @@ void MainWindow::handlePropRetractEnabled(bool value)
     ui->retractButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
 
-void MainWindow::handlePropEliminateRowEnabled(bool value)
+void MainWindow::handlePropEliminateRowEnabled(int value)
 {
-    ui->eliminateRowButton->setEnabled(value);
-    ui->eliminateRowButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
+    std::ostringstream text;
+    text << "消除最大行 × ";
+    if (value >= 0)
+        text << value;
+    else
+        text << "??";
+    ui->eliminateRowButton->setText(text.str().c_str());
+    ui->eliminateRowButton->setEnabled(value > 0);
+    ui->eliminateRowButton->setStyleSheet(value > 0 ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
 
-void MainWindow::handlePropEliminateColEnabled(bool value)
+void MainWindow::handlePropEliminateColEnabled(int value)
 {
-    ui->eliminateColButton->setEnabled(value);
-    ui->eliminateColButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
+    std::ostringstream text;
+    text << "消除最大列 × ";
+    if (value >= 0)
+        text << value;
+    else
+        text << "??";
+    ui->eliminateColButton->setText(text.str().c_str());
+    ui->eliminateColButton->setEnabled(value > 0);
+    ui->eliminateColButton->setStyleSheet(value > 0 ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
 
 MainWindow::~MainWindow()

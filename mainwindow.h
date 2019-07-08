@@ -35,8 +35,8 @@ public slots:
     void handleScoreUpdated(int score);
     void handlePropRetractEnabled(bool value);
     void handleBestScoreUpdated(int bestScore);
-    void handlePropEliminateRowEnabled(bool value);
-    void handlePropEliminateColEnabled(bool value);
+    void handlePropEliminateRowEnabled(int value);
+    void handlePropEliminateColEnabled(int value);
     void handleSoundEffectsVolumeChanged(int value);
     void handleRankingListUpdated(const std::string &content);
     void handleCurrentStatusUpdated(const std::string &content);

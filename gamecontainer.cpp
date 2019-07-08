@@ -43,8 +43,8 @@ void GameContainer::continueGame()
     std::ostringstream status;
     status << "当前玩家昵称：" << name;
     currentStatusUpdated(status.str());
-    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
-    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
+    propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+    propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
 }
 
 bool GameContainer::newGame()
@@ -65,6 +65,9 @@ bool GameContainer::newGame()
         std::ostringstream status;
         status << "当前玩家昵称：" << name;
         currentStatusUpdated(status.str());
+        propRetractEnabled(propRetractionFlag);
+        propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+        propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
         return true;
     }
     else {
@@ -226,8 +229,8 @@ void GameContainer::move(int direction)
         propFlag = true;
         propRetractionFlag = true;
         propRetractEnabled(propRetractionFlag);
-        propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
-        propEliminateColEnabled(propEliminateCol != 0 && propFlag);
+        propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+        propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
         updateInformation();
         generateRandomTile();
         judge();
@@ -369,8 +372,8 @@ void GameContainer::retract()
         propFlag = propRetractionFlag = false;
     }
     propRetractEnabled(propRetractionFlag);
-    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
-    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
+    propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+    propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
 }
 
 int GameContainer::getWinTile() const
@@ -430,9 +433,9 @@ int GameContainer::judge()
     currentStatusUpdated("游戏结束！");
     propRetractionFlag = false;
     propFlag = false;
-    propRetractEnabled(propRetractionFlag);
-    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
-    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
+    propRetractEnabled(false);
+    propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+    propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
     recordScore(score, name);
     showRankingList();
     saveHighest();
@@ -491,8 +494,8 @@ void GameContainer::eliminateRow()
     propFlag = false;
     propRetractionFlag = false;
     propRetractEnabled(propFlag && propRetractionFlag);
-    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
-    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
+    propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+    propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
 }
 
 void GameContainer::eliminateCol()
@@ -531,8 +534,8 @@ void GameContainer::eliminateCol()
     propFlag = false;
     propRetractionFlag = false;
     propRetractEnabled(propFlag && propRetractionFlag);
-    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
-    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
+    propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+    propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
 }
 
 void GameContainer::recordScore(int scoreThis, std::string nameThis)
