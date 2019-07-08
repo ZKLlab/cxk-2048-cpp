@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(handleClosed()));
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
+    connect(ui->winTile128Button, SIGNAL(clicked()), this, SLOT(handleWinTile128Clicked()));
+    connect(ui->winTile2048Button, SIGNAL(clicked()), this, SLOT(handleWinTile2048Clicked()));
     connect(ui->eliminateRowButton, SIGNAL(clicked()), this, SLOT(handleEliminateRowClicked()));
     connect(ui->eliminateColButton, SIGNAL(clicked()), this, SLOT(handleEliminateColClicked()));
     connect(ui->soundEffectsVolumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
@@ -129,6 +131,16 @@ void MainWindow::handlePropEliminateColEnabled(int value)
     ui->eliminateColButton->setText(text.str().c_str());
     ui->eliminateColButton->setEnabled(value > 0);
     ui->eliminateColButton->setStyleSheet(value > 0 ? buttonStyleSheet : buttonStyleSheetDisabled);
+}
+
+void MainWindow::handleWinTile128Clicked()
+{
+    gameContainer->setWinTile(128);
+}
+
+void MainWindow::handleWinTile2048Clicked()
+{
+    gameContainer->setWinTile(2048);
 }
 
 MainWindow::~MainWindow()

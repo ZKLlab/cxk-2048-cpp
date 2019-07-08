@@ -30,6 +30,8 @@ public slots:
     void handleClosed();
     void handleNewGameClicked();
     void handleRetractClicked();
+    void handleWinTile128Clicked();
+    void handleWinTile2048Clicked();
     void handleEliminateRowClicked();
     void handleEliminateColClicked();
     void handleScoreUpdated(int score);
