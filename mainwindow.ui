@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>561</width>
-    <height>447</height>
-   </rect>
-  </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
@@ -131,6 +123,66 @@ line-height: 32px;</string>
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="eliminateRowButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: #8f7a66;
+color: white;
+border: none;
+border-radius: 3px;
+margin: 0;
+padding: 0 12px;
+font-size: 14px;
+height: 32px;
+line-height: 32px;</string>
+         </property>
+         <property name="text">
+          <string>消除最大行</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="eliminateColButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: #8f7a66;
+color: white;
+border: none;
+border-radius: 3px;
+margin: 0;
+padding: 0 12px;
+font-size: 14px;
+height: 32px;
+line-height: 32px;</string>
+         </property>
+         <property name="text">
+          <string>消除最大列</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="retractButton">
