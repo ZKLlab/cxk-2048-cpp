@@ -84,6 +84,12 @@ void MainWindow::handleSoundEffectsVolumeChanged(int value)
     gameContainer->setSoundEffectsVolume(value / 100.0);
 }
 
+void MainWindow::handlePropRetractEnabled(bool value)
+{
+    ui->retractButton->setVisible(value);
+    ui->retractButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
+}
+
 void MainWindow::handlePropEliminateRowEnabled(bool value)
 {
     ui->eliminateRowButton->setVisible(value);

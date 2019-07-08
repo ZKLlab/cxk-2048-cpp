@@ -31,6 +31,7 @@ public slots:
     void handleRetractClicked();
     void handleEliminateRowClicked();
     void handleEliminateColClicked();
+    void handlePropRetractEnabled(bool value);
     void handlePropEliminateRowEnabled(bool value);
     void handlePropEliminateColEnabled(bool value);
     void handleScoreUpdated(int score);

@@ -80,6 +80,7 @@ private:
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
+    void propRetractEnabled(bool);
     void propEliminateRowEnabled(bool);
     void propEliminateColEnabled(bool);
     void soundEffectsVolumeChanged(int);
