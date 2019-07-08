@@ -23,7 +23,7 @@
    <property name="styleSheet">
     <string notr="true">background: #faf8ef;
 color: #776e65;
-font-family: &quot;Source Sans Pro&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif;</string>
+font-family: &quot;Source Sans Pro&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;PingFang SC&quot;, &quot;Lantinghei SC&quot;, &quot;Microsoft Yahei&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft Sans Serif&quot;, sans-serif;</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
