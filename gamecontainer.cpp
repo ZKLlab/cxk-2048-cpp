@@ -36,8 +36,6 @@ void GameContainer::continueGame()
     showRankingList();
     initHighest();
     playSoundEffect(2);
-    generateRandomTile();
-    generateRandomTile();
 }
 
 void GameContainer::newGame()

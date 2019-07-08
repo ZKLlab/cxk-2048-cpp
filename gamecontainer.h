@@ -28,7 +28,7 @@ class GameContainer : public QWidget
     Q_OBJECT
 public:
     explicit GameContainer(QWidget *parent = nullptr); // 构造函数
-    ~GameContainer(); //析构函数
+    ~GameContainer() override; //析构函数
     void addTile(int value, int row, int col); // 增加方块
     void move(int direction); // 移动方块
     void generateRandomTile(); // 生成随机方块
