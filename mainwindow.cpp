@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->soundEffectsVolumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
 
     connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
+    connect(gameContainer, SIGNAL(propRetractEnabled(bool)), this, SLOT(handlePropRetractEnabled(bool)));
     connect(gameContainer, SIGNAL(propEliminateRowEnabled(bool)), this, SLOT(handlePropEliminateRowEnabled(bool)));
     connect(gameContainer, SIGNAL(propEliminateColEnabled(bool)), this, SLOT(handlePropEliminateColEnabled(bool)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
