@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
+    connect(ui->eliminateRowButton, SIGNAL(clicked()), this, SLOT(handleEliminateRowClicked()));
+    connect(ui->eliminateColButton, SIGNAL(clicked()), this, SLOT(handleEliminateColClicked()));
     connect(ui->soundEffectsVolumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
@@ -35,6 +37,17 @@ void MainWindow::handleNewGameClicked()
 void MainWindow::handleRetractClicked()
 {
     gameContainer->retract();
+}
+
+
+void MainWindow::handleEliminateRowClicked()
+{
+    gameContainer->eliminateRow();
+}
+
+void MainWindow::handleEliminateColClicked()
+{
+    gameContainer->eliminateCol();
 }
 
 void MainWindow::handleScoreUpdated(int score)

@@ -51,9 +51,9 @@ void GameContainer::newGame()
     generateRandomTile();
     generateRandomTile();
     propFlag = false;
+    propRetractionFlag = false;
     propEliminateCol = 0;
     propEliminateRow = 0;
-    propRetraction = 0;
 }
 
 void GameContainer::paintEvent(QPaintEvent *)
@@ -208,6 +208,7 @@ void GameContainer::move(int direction)
     if (isMoved)
     {
         propFlag = true;
+        propRetractionFlag = true;
         updateInformation();
         generateRandomTile();
         judge();
@@ -344,7 +345,7 @@ std::string GameContainer::readFile()
 
 void GameContainer::retract()
 {
-    if (propFlag)
+    if (propRetractionFlag)
     {
         partDeserialize();
     }
@@ -401,6 +402,7 @@ int GameContainer::judge()
         }
     }
     // 不符合上述两种状况，游戏结束
+    propRetractionFlag = false;
     recordScore(score, name);
     showRankingList();
     saveHighest();
@@ -451,6 +453,7 @@ void GameContainer::eliminateRow()
         }
     }
     propFlag = false;
+    propRetractionFlag = false;
 }
 
 void GameContainer::eliminateCol()
@@ -483,6 +486,7 @@ void GameContainer::eliminateCol()
         }
     }
     propFlag = false;
+    propRetractionFlag = false;
 }
 
 void GameContainer::recordScore(int scoreThis, std::string nameThis)
@@ -549,7 +553,7 @@ void GameContainer::setSoundEffectsVolume(double value)
 void GameContainer::setName()
 {
     bool ok;
-    QString text = QInputDialog::getText(this, "报上名来", "请输入昵称", QLineEdit::Normal, "", &ok);
+    QString text = QInputDialog::getText(this, "报上名来！", "请输入昵称：", QLineEdit::Normal, "", &ok);
     name = text.toStdString();
 }
 

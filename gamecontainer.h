@@ -60,11 +60,11 @@ public:
     void setName(); // 获取玩家姓名
     void initHighest(); // 初始化最高分
     void saveHighest(); // 保存最高分
-    void setSoundEffectsVolume(double value);
-    void showRankingList();
     void startGame();// 开始游戏
     void continueGame(); // 继续游戏
     void clearFile(); // 清空文件
+    void setSoundEffectsVolume(double value); // 设置音效音量大小
+    void showRankingList(); // 显示排行榜
 protected:
     void paintEvent(QPaintEvent *) override;
 private:
@@ -74,9 +74,9 @@ private:
     std::string tempInformation;
     std::list<Tile> tiles;
     bool propFlag;
+    bool propRetractionFlag;
     int propEliminateCol;
     int propEliminateRow;
-    int propRetraction;
     std::vector<int> scoreList;
     std::vector<std::string> nameList;
     std::string name;

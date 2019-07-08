@@ -28,6 +28,8 @@ signals:
 public slots:
     void handleNewGameClicked();
     void handleRetractClicked();
+    void handleEliminateRowClicked();
+    void handleEliminateColClicked();
     void handleScoreUpdated(int score);
     void handleBestScoreUpdated(int bestScore);
     void handleSoundEffectsVolumeChanged(int value);
