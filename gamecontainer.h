@@ -70,9 +70,9 @@ private:
     std::string tempInformation;
     std::list<Tile> tiles;
     bool propFlag;
+    bool propRetractionFlag;
     int propEliminateCol;
     int propEliminateRow;
-    int propRetraction;
     std::vector<int> scoreList;
     std::vector<std::string> nameList;
     std::string name;
