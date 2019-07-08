@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-const char buttonStyleSheet[] = "background: #8f7a66;color: white;border: none;border-radius: 3px;margin: 0;padding: 0 12px;font-size: 14px;height: 32px;";
-const char buttonStyleSheetDisabled[] = "background: #bdbdbd;color: white;border: none;border-radius: 3px;margin: 0;padding: 0 12px;font-size: 14px;height: 32px;";
+const char buttonStyleSheet[] = "background: #8f7a66; color: white; border: none; border-radius: 3px; padding: 9px 12px;font-size: 14px;";
+const char buttonStyleSheetDisabled[] = "background: #bdbdbd; color: white; border: none; border-radius: 3px; padding: 9px 12px;font-size: 14px;";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,11 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     gameContainer(new GameContainer())
 {
     ui->setupUi(this);
-
-    ui->exitButton->setStyleSheet(buttonStyleSheet);
-    ui->retractButton->setStyleSheet(buttonStyleSheetDisabled);
-    ui->eliminateRowButton->setStyleSheet(buttonStyleSheetDisabled);
-    ui->eliminateColButton->setStyleSheet(buttonStyleSheetDisabled);
 
     gameContainer->setParent(ui->centralWidget);
     gameContainer->setFixedSize(CONTAINER_WIDTH, CONTAINER_WIDTH);

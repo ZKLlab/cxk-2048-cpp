@@ -38,7 +38,7 @@ font-family: &quot;Source Sans Pro&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot
        </sizepolicy>
       </property>
       <property name="styleSheet">
-       <string notr="true">height: 32px;</string>
+       <string notr="true"/>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <property name="spacing">
@@ -62,13 +62,14 @@ font-family: &quot;Source Sans Pro&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot
           <string notr="true">background: white;
 border: none;
 border-radius: 3px;
-margin: 0;
-padding: 0 12px;
-font-size: 14px;
-height: 32px;</string>
+padding: 9px 12px;
+font-size: 14px;</string>
          </property>
          <property name="text">
           <string>退出</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -153,13 +154,14 @@ line-height: 32px;</string>
 color: white;
 border: none;
 border-radius: 3px;
-margin: 0;
-padding: 0 12px;
-font-size: 14px;
-height: 32px;</string>
+padding: 9px 12px;
+font-size: 14px;</string>
          </property>
          <property name="text">
           <string>消除最大行</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -185,13 +187,14 @@ height: 32px;</string>
 color: white;
 border: none;
 border-radius: 3px;
-margin: 0;
-padding: 0 12px;
-font-size: 14px;
-height: 32px;</string>
+padding: 9px 12px;
+font-size: 14px;</string>
          </property>
          <property name="text">
           <string>消除最大列</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -217,13 +220,14 @@ height: 32px;</string>
 color: white;
 border: none;
 border-radius: 3px;
-margin: 0;
-padding: 0 12px;
-font-size: 14px;
-height: 32px;</string>
+padding: 9px 12px;
+font-size: 14px;</string>
          </property>
          <property name="text">
           <string>回退一步</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -246,13 +250,14 @@ height: 32px;</string>
 color: white;
 border: none;
 border-radius: 3px;
-margin: 0;
-padding: 0 12px;
-font-size: 14px;
-height: 32px;</string>
+padding: 9px 12px;
+font-size: 14px;</string>
          </property>
          <property name="text">
           <string>新游戏</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
