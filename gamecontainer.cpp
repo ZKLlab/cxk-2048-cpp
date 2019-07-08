@@ -22,7 +22,11 @@ void GameContainer::startGame()
     readFile();
     if (information.empty())
     {
-        newGame();
+        if (!newGame())
+        {
+            currentStatusUpdated("按右上角按钮开始游戏");
+            return;
+        }
     }
     else
     {
@@ -36,14 +40,17 @@ void GameContainer::continueGame()
     showRankingList();
     initHighest();
     playSoundEffect(2);
+    std::ostringstream status;
+    status << "当前玩家昵称：" << name;
+    currentStatusUpdated(status.str());
 }
 
-void GameContainer::newGame()
+bool GameContainer::newGame()
 {
-    showRankingList();
-    initHighest();
     if (setName())
     {
+        initHighest();
+        showRankingList();
         playSoundEffect(2);
         tiles.clear();
         resetScore();
@@ -53,6 +60,13 @@ void GameContainer::newGame()
         propRetractionFlag = false;
         propEliminateCol = 1;
         propEliminateRow = 1;
+        std::ostringstream status;
+        status << "当前玩家昵称：" << name;
+        currentStatusUpdated(status.str());
+        return true;
+    }
+    else {
+        return false;
     }
 }
 
@@ -326,7 +340,6 @@ void GameContainer::recordFile()
 {
     std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("2048Record.txt").toStdString(), std::ios::trunc);
     outfile << information;
-    std::cout << information << std::endl;
     outfile.close();
 }
 
@@ -371,6 +384,9 @@ int GameContainer::judge()
         {
             if (matrix[row][col] != nullptr && matrix[row][col]->getValue() == winTile)
             {
+                std::ostringstream status;
+                status << name << "，你赢了！";
+                currentStatusUpdated(status.str());
                 recordScore(score, name);
                 showRankingList();
                 saveHighest();
@@ -402,6 +418,7 @@ int GameContainer::judge()
         }
     }
     // 不符合上述两种状况，游戏结束
+    currentStatusUpdated("游戏结束！");
     propRetractionFlag = false;
     propFlag = false;
     recordScore(score, name);
@@ -494,7 +511,6 @@ void GameContainer::eliminateCol()
 
 void GameContainer::recordScore(int scoreThis, std::string nameThis)
 {
-    std::clog << scoreThis << "  " << nameThis << std::endl;
     std::string line;
     int x;
     std::string y;
@@ -532,7 +548,6 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
     for (std::size_t j = 0; j < scoreList.size(); j++)
     {
         outfile << scoreList[j] << '\t' << nameList[j] << std::endl;
-        std::cout << scoreList[j] << '\t' << nameList[j] << std::endl;
     }
     outfile.close();
 }

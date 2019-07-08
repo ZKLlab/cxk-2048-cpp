@@ -22,21 +22,29 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->gameInfo->setFixedHeight(CONTAINER_WIDTH);
 
     // 事件
-    connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(handleClosed()));
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(handleNewGameClicked()));
     connect(ui->retractButton, SIGNAL(clicked()), this, SLOT(handleRetractClicked()));
     connect(ui->eliminateRowButton, SIGNAL(clicked()), this, SLOT(handleEliminateRowClicked()));
     connect(ui->eliminateColButton, SIGNAL(clicked()), this, SLOT(handleEliminateColClicked()));
     connect(ui->soundEffectsVolumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
+
     connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(propEliminateRowEnabled(bool)), this, SLOT(handlePropEliminateRowEnabled(bool)));
     connect(gameContainer, SIGNAL(propEliminateColEnabled(bool)), this, SLOT(handlePropEliminateColEnabled(bool)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
     connect(gameContainer, SIGNAL(rankingListUpdated(const std::string &)), this, SLOT(handleRankingListUpdated(const std::string &)));
+    connect(gameContainer, SIGNAL(currentStatusUpdated(const std::string &)), this, SLOT(handleCurrentStatusUpdated(const std::string &)));
 
     handleSoundEffectsVolumeChanged(QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 80 : 0);
     gameContainer->startGame();
+}
+
+void MainWindow::handleClosed()
+{
+
+    close();
 }
 
 void MainWindow::handleNewGameClicked()
@@ -77,6 +85,12 @@ void MainWindow::handleBestScoreUpdated(int score)
 void MainWindow::handleRankingListUpdated(const std::string &content)
 {
     ui->rankingList->setText(content.c_str());
+}
+
+
+void MainWindow::handleCurrentStatusUpdated(const std::string &content)
+{
+    ui->currentStatus->setText(content.c_str());
 }
 
 void MainWindow::handleSoundEffectsVolumeChanged(int value)

@@ -32,7 +32,7 @@ public:
     void addTile(int value, int row, int col); // 增加方块
     void move(int direction); // 移动方块
     void generateRandomTile(); // 生成随机方块
-    void newGame(); // 新游戏
+    bool newGame(); // 新游戏
     std::vector<std::vector<Tile *>> getTilesMatrix(); // 获取方块矩阵
     int getScore() const; // 获取分数
     void updateScore(int value); // 更新(增加)分数
@@ -78,6 +78,7 @@ private:
     std::vector<std::string> nameList;
     std::string name;
 signals:
+    void closed();
     void scoreUpdated(int);
     void bestScoreUpdated(int);
     void propRetractEnabled(bool);
@@ -85,6 +86,7 @@ signals:
     void propEliminateColEnabled(bool);
     void soundEffectsVolumeChanged(int);
     void rankingListUpdated(const std::string &);
+    void currentStatusUpdated(const std::string &);
 public slots:
 };
 

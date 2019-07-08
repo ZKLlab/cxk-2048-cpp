@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>772</width>
-    <height>430</height>
-   </rect>
-  </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
@@ -314,12 +306,25 @@ line-height: 32px;</string>
            </property>
            <property name="font">
             <font>
-             <family>Source Sans Pro,WenQuanYi Micro Hei,sans-serif</family>
-             <pointsize>64</pointsize>
+             <family>Source Sans Pro,WenQuanYi Micro Hei,PingFang SC,Lantinghei SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,sans-serif</family>
+             <pointsize>-1</pointsize>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 64px;</string>
            </property>
            <property name="text">
             <string>JNTM</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="currentStatus">
+           <property name="styleSheet">
+            <string notr="true">font-size: 16px;</string>
+           </property>
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
@@ -495,10 +500,23 @@ font-size: 13px;</string>
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">font-size: 24px;
-line-height: 48px;</string>
+            <string notr="true">font-size: 18px;
+line-height: 36px;</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
