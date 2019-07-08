@@ -60,6 +60,7 @@ public:
     void initHighest(); // 初始化最高分
     void saveHighest(); // 保存最高分
     void setSoundEffectsVolume(double value);
+    void showRankingList();
 protected:
     void paintEvent(QPaintEvent *) override;
 private:

@@ -4,13 +4,12 @@ GameContainer::GameContainer(QWidget *parent) :
     QWidget(parent),
     score(0),
     highest(0),
-    winTile(2048),
-    scoreList{0},
-    nameList{""}
+    winTile(2048)
 {}
 
 void GameContainer::newGame()
 {
+    showRankingList();
     initHighest();
     setName();
     playSoundEffect(2);
@@ -200,7 +199,6 @@ void GameContainer::updateScore(int value)
 
 void GameContainer::resetScore()
 {
-    recordScore(score, name);
     score = 0;
     scoreUpdated(score);
 }
@@ -333,6 +331,7 @@ int GameContainer::judge()
             if (matrix[row][col] != nullptr && matrix[row][col]->getValue() == winTile)
             {
                 recordScore(score, name);
+                showRankingList();
                 saveHighest();
                 return GAME_WIN;
             }
@@ -362,6 +361,7 @@ int GameContainer::judge()
     }
     // 不符合上述两种状况，游戏结束
     recordScore(score, name);
+    showRankingList();
     saveHighest();
     return GAME_LOSE;
 }
@@ -445,17 +445,23 @@ void GameContainer::eliminateCol()
 
 void GameContainer::recordScore(int scoreThis, std::string nameThis)
 {
+    std::clog << scoreThis << "  " << nameThis << std::endl;
     std::string line;
     int x;
     std::string y;
     std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("RankingList.txt").toStdString());
-    while(getline(infile, line))
+    scoreList.clear();
+    nameList.clear();
+    while (getline(infile, line))
     {
         std::istringstream items(line);
-        while (items >> x)
+        items >> x;
+        if (!items.fail())
         {
             scoreList.push_back(x);
-            getline(infile, y);
+            std::ws(items);
+            //items >> y;
+            getline(items, y);
             nameList.push_back(y);
         }
     }
@@ -465,16 +471,20 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
     {
         for(size_t j = i; j < scoreList.size(); j++)
         {
-            std::swap(scoreList[i], scoreList[j]);
-            std::swap(nameList[i], nameList[j]);
+            if (scoreList[i] < scoreList[j])
+            {
+                std::swap(scoreList[i], scoreList[j]);
+                std::swap(nameList[i], nameList[j]);
+            }
         }
     }
+    infile.close();
     std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("RankingList.txt").toStdString(), std::ios::trunc);
     for (std::size_t j = 0; j < scoreList.size(); j++)
     {
         outfile << scoreList[j] << '\t' << nameList[j] << std::endl;
+        std::cout << scoreList[j] << '\t' << nameList[j] << std::endl;
     }
-    infile.close();
     outfile.close();
 }
 
@@ -528,4 +538,24 @@ void GameContainer::saveHighest()
     std::ofstream outfile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("HighestScore.txt").toStdString(), std::ios::trunc);
     outfile << highest;
     outfile.close();
+}
+
+void GameContainer::showRankingList()
+{
+    std::ostringstream items;
+    if (scoreList.size() >= 5)
+    {
+        for (size_t i = 0; i < 5; i++)
+        {
+            items << nameList[i] << " " << scoreList[i] << std::endl;
+        }
+    }
+    else
+    {
+        for (size_t i = 0; i < scoreList.size(); i++)
+        {
+            items << nameList[i] << " " << scoreList[i] << std::endl;
+        }
+    }
+    rankingListUpdated(items.str());
 }
