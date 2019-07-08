@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>773</width>
+    <height>530</height>
+   </rect>
+  </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
@@ -57,8 +65,7 @@ border-radius: 3px;
 margin: 0;
 padding: 0 12px;
 font-size: 14px;
-height: 32px;
-line-height: 32px;</string>
+height: 32px;</string>
          </property>
          <property name="text">
           <string>退出</string>
@@ -149,8 +156,7 @@ border-radius: 3px;
 margin: 0;
 padding: 0 12px;
 font-size: 14px;
-height: 32px;
-line-height: 32px;</string>
+height: 32px;</string>
          </property>
          <property name="text">
           <string>消除最大行</string>
@@ -182,8 +188,7 @@ border-radius: 3px;
 margin: 0;
 padding: 0 12px;
 font-size: 14px;
-height: 32px;
-line-height: 32px;</string>
+height: 32px;</string>
          </property>
          <property name="text">
           <string>消除最大列</string>
@@ -215,8 +220,7 @@ border-radius: 3px;
 margin: 0;
 padding: 0 12px;
 font-size: 14px;
-height: 32px;
-line-height: 32px;</string>
+height: 32px;</string>
          </property>
          <property name="text">
           <string>回退一步</string>
@@ -245,8 +249,7 @@ border-radius: 3px;
 margin: 0;
 padding: 0 12px;
 font-size: 14px;
-height: 32px;
-line-height: 32px;</string>
+height: 32px;</string>
          </property>
          <property name="text">
           <string>新游戏</string>
