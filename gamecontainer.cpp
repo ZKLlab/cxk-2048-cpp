@@ -599,6 +599,25 @@ void GameContainer::saveHighest()
 
 void GameContainer::showRankingList()
 {
+    std::ifstream infile(QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).filePath("RankingList.txt").toStdString());
+    std::string line;
+    int x;
+    std::string y;
+    scoreList.clear();
+    nameList.clear();
+    while (getline(infile, line))
+    {
+        std::istringstream items(line);
+        items >> x;
+        if (!items.fail())
+        {
+            scoreList.push_back(x);
+            std::ws(items);
+            //items >> y;
+            getline(items, y);
+            nameList.push_back(y);
+        }
+    }
     std::ostringstream items;
     for (std::size_t i = 0, len = scoreList.size() >= 5 ? 5 : scoreList.size(); i < len; i++)
     {
