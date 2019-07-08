@@ -259,7 +259,7 @@ void GameContainer::resetScore()
 std::string GameContainer::serialize()
 {
     std::ostringstream record;
-    record << score << " " << name;
+    record << score;
     auto matrix = getTilesMatrix();
     for (auto &row : matrix)
     {
@@ -271,7 +271,8 @@ std::string GameContainer::serialize()
                 record << " " << 0;
         }
     }
-    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow;
+    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow << " ";
+    record << name;
     information = record.str();
     return information;
 }
@@ -299,7 +300,6 @@ void GameContainer::deserialize()
 {
     std::istringstream read(information);
     read >> score;
-    read >> name;
     scoreUpdated(score); // 给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
@@ -315,6 +315,7 @@ void GameContainer::deserialize()
         }
     }
     read  >> propFlag >> propEliminateCol >> propEliminateRow;
+    getline(read, name);
 }
 
 void GameContainer::partDeserialize()
