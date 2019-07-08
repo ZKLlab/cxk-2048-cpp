@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(gameContainer, SIGNAL(rankingListUpdated(const std::string &)), this, SLOT(handleRankingListUpdated(const std::string &)));
 
     handleSoundEffectsVolumeChanged(QMessageBox::question(this, "欢迎", "要打开游戏声音吗？") == QMessageBox::Yes ? 80 : 0);
-    gameContainer->newGame();
+    gameContainer->startGame();
 }
 
 void MainWindow::handleNewGameClicked()
