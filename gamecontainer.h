@@ -84,8 +84,8 @@ signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
     void propRetractEnabled(bool);
-    void propEliminateRowEnabled(bool);
-    void propEliminateColEnabled(bool);
+    void propEliminateRowEnabled(int);
+    void propEliminateColEnabled(int);
     void soundEffectsVolumeChanged(int);
     void rankingListUpdated(const std::string &);
     void currentStatusUpdated(const std::string &);
