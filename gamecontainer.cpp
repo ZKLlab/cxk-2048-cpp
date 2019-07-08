@@ -53,8 +53,8 @@ void GameContainer::newGame()
         generateRandomTile();
         propFlag = false;
         propRetractionFlag = false;
-        propEliminateCol = 0;
-        propEliminateRow = 0;
+        propEliminateCol = 1;
+        propEliminateRow = 1;
     }
 }
 
@@ -349,6 +349,7 @@ void GameContainer::retract()
     if (propRetractionFlag)
     {
         partDeserialize();
+        propFlag = false;
     }
 }
 
@@ -404,6 +405,7 @@ int GameContainer::judge()
     }
     // 不符合上述两种状况，游戏结束
     propRetractionFlag = false;
+    propFlag = false;
     recordScore(score, name);
     showRankingList();
     saveHighest();
@@ -426,8 +428,9 @@ void GameContainer::playSoundEffect(int value)
 
 void GameContainer::eliminateRow()
 {
-    if (propFlag)
+    if (propFlag && propEliminateRow == 1 )
     {
+        propEliminateRow --;
         auto matrix = getTilesMatrix();
         int maxRow = 0, maxSum = 0, sum = 0;
         for (int row = 0; row < 4; row ++)
@@ -459,8 +462,9 @@ void GameContainer::eliminateRow()
 
 void GameContainer::eliminateCol()
 {
-    if (propFlag)
+    if (propFlag && propEliminateCol == 1)
     {
+        propEliminateCol --;
         auto matrix = getTilesMatrix();
         int maxCol = 0, maxSum = 0, sum = 0;
         for (int col = 0; col < 4; col ++)
