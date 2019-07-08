@@ -18,9 +18,9 @@ void GameContainer::newGame()
     generateRandomTile();
     generateRandomTile();
     propFlag = false;
+    propRetractionFlag = false;
     propEliminateCol = 0;
     propEliminateRow = 0;
-    propRetraction = 0;
 }
 
 void GameContainer::paintEvent(QPaintEvent *)
@@ -175,6 +175,7 @@ void GameContainer::move(int direction)
     if (isMoved)
     {
         propFlag = true;
+        propRetractionFlag = true;
         updateInformation();
         generateRandomTile();
         judge();
@@ -218,7 +219,7 @@ std::string GameContainer::serialize()
                 record << " " << 0;
         }
     }
-    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow << " " << propRetraction;
+    record << " " << propFlag << " " << propEliminateCol << " " << propEliminateRow;
     information = record.str();
     return information;
 }
@@ -260,7 +261,7 @@ void GameContainer::deserialize()
             }
         }
     }
-    read  >> propFlag >> propEliminateCol >> propEliminateRow >> propRetraction;
+    read  >> propFlag >> propEliminateCol >> propEliminateRow;
 }
 
 void GameContainer::partDeserialize()
@@ -304,7 +305,7 @@ void GameContainer::readFile()
 
 void GameContainer::retract()
 {
-    if (propFlag)
+    if (propRetractionFlag)
     {
         partDeserialize();
     }
@@ -360,6 +361,7 @@ int GameContainer::judge()
         }
     }
     // 不符合上述两种状况，游戏结束
+    propRetractionFlag = false;
     recordScore(score, name);
     showRankingList();
     saveHighest();
@@ -409,6 +411,7 @@ void GameContainer::eliminateRow()
         }
     }
     propFlag = false;
+    propRetractionFlag = false;
 }
 
 void GameContainer::eliminateCol()
@@ -441,6 +444,7 @@ void GameContainer::eliminateCol()
         }
     }
     propFlag = false;
+    propRetractionFlag = false;
 }
 
 void GameContainer::recordScore(int scoreThis, std::string nameThis)
