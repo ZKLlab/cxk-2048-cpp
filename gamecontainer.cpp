@@ -43,6 +43,7 @@ void GameContainer::continueGame()
     std::ostringstream status;
     status << "当前玩家昵称：" << name;
     currentStatusUpdated(status.str());
+    propRetractEnabled(propFlag && propRetractionFlag);
     propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
     propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
 }
@@ -65,7 +66,7 @@ bool GameContainer::newGame()
         std::ostringstream status;
         status << "当前玩家昵称：" << name;
         currentStatusUpdated(status.str());
-        propRetractEnabled(propRetractionFlag);
+        propRetractEnabled(propFlag && propRetractionFlag);
         propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
         propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
         return true;
@@ -228,7 +229,7 @@ void GameContainer::move(int direction)
     {
         propFlag = true;
         propRetractionFlag = true;
-        propRetractEnabled(propRetractionFlag);
+        propRetractEnabled(propFlag && propRetractionFlag);
         propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
         propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
         updateInformation();
@@ -318,6 +319,7 @@ void GameContainer::deserialize()
         }
     }
     read  >> propFlag >> propEliminateCol >> propEliminateRow;
+    propRetractionFlag = propFlag;
     getline(read, name);
 }
 
@@ -372,7 +374,7 @@ void GameContainer::retract()
         partDeserialize();
         propFlag = propRetractionFlag = false;
     }
-    propRetractEnabled(propRetractionFlag);
+    propRetractEnabled(propFlag && propRetractionFlag);
     propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
     propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
 }
