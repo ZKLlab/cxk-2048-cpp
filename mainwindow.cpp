@@ -11,6 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->exitButton->setStyleSheet(buttonStyleSheet);
+    ui->retractButton->setStyleSheet(buttonStyleSheetDisabled);
+    ui->eliminateRowButton->setStyleSheet(buttonStyleSheetDisabled);
+    ui->eliminateColButton->setStyleSheet(buttonStyleSheetDisabled);
+
     gameContainer->setParent(ui->centralWidget);
     gameContainer->setFixedSize(CONTAINER_WIDTH, CONTAINER_WIDTH);
     ui->horizontalLayout->insertWidget(2, gameContainer);
@@ -86,19 +91,19 @@ void MainWindow::handleSoundEffectsVolumeChanged(int value)
 
 void MainWindow::handlePropRetractEnabled(bool value)
 {
-    ui->retractButton->setVisible(value);
+    ui->retractButton->setEnabled(value);
     ui->retractButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
 
 void MainWindow::handlePropEliminateRowEnabled(bool value)
 {
-    ui->eliminateRowButton->setVisible(value);
+    ui->eliminateRowButton->setEnabled(value);
     ui->eliminateRowButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
 
 void MainWindow::handlePropEliminateColEnabled(bool value)
 {
-    ui->eliminateColButton->setVisible(value);
+    ui->eliminateColButton->setEnabled(value);
     ui->eliminateColButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
 

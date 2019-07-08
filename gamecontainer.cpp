@@ -280,7 +280,7 @@ void GameContainer::deserialize()
     std::istringstream read(information);
     read >> score;
     read >> name;
-    scoreUpdated(score);    // 给主界面发送分数修改信号
+    scoreUpdated(score); // 给主界面发送分数修改信号
     tiles.clear();
     for (int row = 0; row < 4; row++)
     {
