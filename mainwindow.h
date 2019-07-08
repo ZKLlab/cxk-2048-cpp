@@ -4,6 +4,7 @@
 #include "gamedef.h"
 #include "gamecontainer.h"
 #include <sstream>
+#include <QCursor>
 #include <QKeyEvent>
 #include <QMainWindow>  
 
@@ -30,6 +31,7 @@ public slots:
     void handleRetractClicked();
     void handleEliminateRowClicked();
     void handleEliminateColClicked();
+    void handlePropEliminateEnabled(bool value);
     void handleScoreUpdated(int score);
     void handleBestScoreUpdated(int bestScore);
     void handleSoundEffectsVolumeChanged(int value);

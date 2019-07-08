@@ -80,6 +80,7 @@ private:
 signals:
     void scoreUpdated(int);
     void bestScoreUpdated(int);
+    void propEliminateEnabled(bool);
     void soundEffectsVolumeChanged(int);
     void rankingListUpdated(const std::string &);
 public slots:

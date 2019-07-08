@@ -104,8 +104,7 @@ void GameContainer::generateRandomTile()
     }
     if (!haveSpare)
         return;
-    static std::random_device rd;
-    static std::default_random_engine gen(rd());
+    static std::default_random_engine gen(std::time(nullptr));
     std::uniform_int_distribution<> dis(0, k - 1);
     int pos = dis(gen);
     std::uniform_int_distribution<> dis2(0, 9);

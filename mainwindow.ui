@@ -126,6 +126,9 @@ line-height: 32px;</string>
        </item>
        <item>
         <widget class="QPushButton" name="eliminateRowButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -139,7 +142,7 @@ line-height: 32px;</string>
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: #8f7a66;
+          <string notr="true">background: #bdbdbd;
 color: white;
 border: none;
 border-radius: 3px;
@@ -156,6 +159,9 @@ line-height: 32px;</string>
        </item>
        <item>
         <widget class="QPushButton" name="eliminateColButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -169,7 +175,7 @@ line-height: 32px;</string>
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: #8f7a66;
+          <string notr="true">background: #bdbdbd;
 color: white;
 border: none;
 border-radius: 3px;
