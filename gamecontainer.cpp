@@ -43,6 +43,7 @@ void GameContainer::continueGame()
     std::ostringstream status;
     status << "当前玩家昵称：" << name;
     currentStatusUpdated(status.str());
+    judge();
     propRetractEnabled(propFlag && propRetractionFlag);
     propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
     propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
@@ -389,61 +390,44 @@ void GameContainer::setWinTile(int value)
     winTile = value;
 }
 
-int GameContainer::judge()
+void GameContainer::judge()
 {
     auto matrix = getTilesMatrix();
+    bool winFlag = false, gameOverFlag = true;
     // 赢得游戏
     for (int row = 0; row < 4; row++)
-    {
         for (int col = 0; col < 4; col++)
-        {
-            if (matrix[row][col] != nullptr && matrix[row][col]->getValue() == winTile)
-            {
-                std::ostringstream status;
-                status << name << "，你赢了！";
-                currentStatusUpdated(status.str());
-                recordScore(score, name);
-                showRankingList();
-                saveHighest();
-                clearFile();
-                return GAME_WIN;
-            }
-        }
-    }
+            if (matrix[row][col] != nullptr && matrix[row][col]->getValue() >= winTile)
+                winFlag = true;
     // 横向检查
     for (int row = 0; row < 4; row++)
-    {
         for (int col = 0; col < 4 - 1; col++)
-        {
             if (matrix[row][col] == nullptr || matrix[row][col + 1] == nullptr || (matrix[row][col]->getValue() == matrix[row][col + 1]->getValue()))
-            {
-                return GAME_CONTINUE;
-            }
-        }
-    }
+                gameOverFlag = false;
     // 纵向检查
     for (int col = 0; col < 4; col++)
-    {
         for (int row = 0; row < 4 - 1; row++)
-        {
             if (matrix[row][col] == nullptr || matrix[row + 1][col] == nullptr  || (matrix[row][col]->getValue() == matrix[row + 1][col]->getValue()))
-            {
-                return GAME_CONTINUE;
-            }
-        }
+                gameOverFlag = false;
+    if (gameOverFlag)
+    {
+        currentStatusUpdated("游戏结束！");
+        propRetractionFlag = false;
+        propFlag = false;
+        recordScore(score, name);
+        showRankingList();
+        saveHighest();
+        clearFile();
+        propRetractEnabled(propFlag && propRetractionFlag);
+        propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
+        propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
     }
-    // 不符合上述两种状况，游戏结束
-    currentStatusUpdated("游戏结束！");
-    propRetractionFlag = false;
-    propFlag = false;
-    propRetractEnabled(false);
-    propEliminateRowEnabled(propEliminateRow == 0 ? 0 : (propFlag ? propEliminateRow : -1));
-    propEliminateColEnabled(propEliminateCol == 0 ? 0 : (propFlag ? propEliminateCol : -1));
-    recordScore(score, name);
-    showRankingList();
-    saveHighest();
-    clearFile();
-    return GAME_LOSE;
+    else if (winFlag)
+    {
+        std::ostringstream status;
+        status << name << "，你赢了！";
+        currentStatusUpdated(status.str());
+    }
 }
 
 void GameContainer::playSoundEffect(int value)
@@ -587,11 +571,6 @@ void GameContainer::recordScore(int scoreThis, std::string nameThis)
 void GameContainer::setHighest()
 {
     highest = score > highest ? score : highest;
-    //highest = score;
-    //if (scoreList[0] > highest)
-    //{
-    //    highest = scoreList[0];
-    //}
     bestScoreUpdated(highest);
 }
 
@@ -606,7 +585,7 @@ bool GameContainer::setName()
     QString text;
     while (text == "")
     {
-        text = QInputDialog::getText(this, "报上名来！", "请输入昵称：", QLineEdit::Normal, "", &ok);
+        text = QInputDialog::getText(this, "报上名来", "请输入昵称：", QLineEdit::Normal, "", &ok);
         if (!ok)
             return false;
         text = text.trimmed();

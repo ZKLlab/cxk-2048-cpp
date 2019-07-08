@@ -51,7 +51,7 @@ public:
     void cleanTiles(); // 清除多余方块
     int getWinTile() const; // 获取获胜方块
     void setWinTile(int value); // 设置获胜方块
-    int judge(); // 判断游戏输赢状态
+    void judge(); // 判断游戏输赢状态
     void playSoundEffect(int value); // 播放音效
     void updateInformation(); // 更新序列
     void recordScore(int score, std::string nameThis); // 记录分数排行榜
