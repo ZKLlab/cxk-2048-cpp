@@ -43,6 +43,8 @@ void GameContainer::continueGame()
     std::ostringstream status;
     status << "当前玩家昵称：" << name;
     currentStatusUpdated(status.str());
+    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
+    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
 }
 
 bool GameContainer::newGame()
