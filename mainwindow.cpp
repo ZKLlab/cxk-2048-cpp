@@ -24,7 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->eliminateColButton, SIGNAL(clicked()), this, SLOT(handleEliminateColClicked()));
     connect(ui->soundEffectsVolumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
     connect(gameContainer, SIGNAL(soundEffectsVolumeChanged(int)), this, SLOT(handleSoundEffectsVolumeChanged(int)));
-    connect(gameContainer, SIGNAL(propEliminateEnabled(bool)), this, SLOT(handlePropEliminateEnabled(bool)));
+    connect(gameContainer, SIGNAL(propEliminateRowEnabled(bool)), this, SLOT(handlePropEliminateRowEnabled(bool)));
+    connect(gameContainer, SIGNAL(propEliminateColEnabled(bool)), this, SLOT(handlePropEliminateColEnabled(bool)));
     connect(gameContainer, SIGNAL(bestScoreUpdated(int)), this, SLOT(handleBestScoreUpdated(int)));
     connect(gameContainer, SIGNAL(scoreUpdated(int)), this, SLOT(handleScoreUpdated(int)));
     connect(gameContainer, SIGNAL(rankingListUpdated(const std::string &)), this, SLOT(handleRankingListUpdated(const std::string &)));
@@ -83,10 +84,14 @@ void MainWindow::handleSoundEffectsVolumeChanged(int value)
     gameContainer->setSoundEffectsVolume(value / 100.0);
 }
 
-void MainWindow::handlePropEliminateEnabled(bool value)
+void MainWindow::handlePropEliminateRowEnabled(bool value)
 {
     ui->eliminateRowButton->setVisible(value);
     ui->eliminateRowButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
+}
+
+void MainWindow::handlePropEliminateColEnabled(bool value)
+{
     ui->eliminateColButton->setVisible(value);
     ui->eliminateColButton->setStyleSheet(value ? buttonStyleSheet : buttonStyleSheetDisabled);
 }
