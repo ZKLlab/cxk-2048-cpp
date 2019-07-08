@@ -58,8 +58,8 @@ bool GameContainer::newGame()
         generateRandomTile();
         propFlag = false;
         propRetractionFlag = false;
-        propEliminateCol = 1;
-        propEliminateRow = 1;
+        propEliminateCol = 3;
+        propEliminateRow = 3;
         std::ostringstream status;
         status << "当前玩家昵称：" << name;
         currentStatusUpdated(status.str());
@@ -159,6 +159,7 @@ void GameContainer::cleanTiles()
 
 void GameContainer::move(int direction)
 {
+    propFlag = true;
     partSerialize();
     auto matrix = getTilesMatrix();
     cleanTiles();
@@ -222,6 +223,9 @@ void GameContainer::move(int direction)
     {
         propFlag = true;
         propRetractionFlag = true;
+        propRetractEnabled(propRetractionFlag);
+        propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
+        propEliminateColEnabled(propEliminateCol != 0 && propFlag);
         updateInformation();
         generateRandomTile();
         judge();
@@ -360,8 +364,11 @@ void GameContainer::retract()
     if (propRetractionFlag)
     {
         partDeserialize();
-        propFlag = false;
+        propFlag = propRetractionFlag = false;
     }
+    propRetractEnabled(propRetractionFlag);
+    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
+    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
 }
 
 int GameContainer::getWinTile() const
@@ -421,6 +428,9 @@ int GameContainer::judge()
     currentStatusUpdated("游戏结束！");
     propRetractionFlag = false;
     propFlag = false;
+    propRetractEnabled(propRetractionFlag);
+    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
+    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
     recordScore(score, name);
     showRankingList();
     saveHighest();
@@ -443,11 +453,11 @@ void GameContainer::playSoundEffect(int value)
 
 void GameContainer::eliminateRow()
 {
-    if (propFlag && propEliminateRow == 1 )
+    if (propFlag && propEliminateRow > 0 )
     {
         propEliminateRow --;
         auto matrix = getTilesMatrix();
-        int maxRow = 0, maxSum = 0, sum = 0;
+        int maxRow = 0, maxSum = 0, sum = 0, tempSum = 0;
         for (int row = 0; row < 4; row ++)
         {
             for (int col = 0; col < 4; col ++)
@@ -458,6 +468,7 @@ void GameContainer::eliminateRow()
             }
             if (sum > maxSum)
             {
+                tempSum = maxSum;
                 maxSum = sum;
                 maxRow = row;
             }
@@ -470,18 +481,25 @@ void GameContainer::eliminateRow()
             else
                 tile = tiles.erase(tile);
         }
+        if (tempSum == 0)
+            generateRandomTile();
     }
+
+
     propFlag = false;
     propRetractionFlag = false;
+    propRetractEnabled(propFlag && propRetractionFlag);
+    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
+    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
 }
 
 void GameContainer::eliminateCol()
 {
-    if (propFlag && propEliminateCol == 1)
+    if (propFlag && propEliminateCol > 0)
     {
         propEliminateCol --;
         auto matrix = getTilesMatrix();
-        int maxCol = 0, maxSum = 0, sum = 0;
+        int maxCol = 0, maxSum = 0, sum = 0, tempSum = 0;
         for (int col = 0; col < 4; col ++)
         {
             for (int row = 0; row < 4; row ++)
@@ -492,6 +510,7 @@ void GameContainer::eliminateCol()
             }
             if (sum > maxSum)
             {
+                tempSum = maxSum;
                 maxSum = sum;
                 maxCol = col;
             }
@@ -504,9 +523,14 @@ void GameContainer::eliminateCol()
             else
                 tile = tiles.erase(tile);
         }
+        if (tempSum == 0)
+            generateRandomTile();
     }
     propFlag = false;
     propRetractionFlag = false;
+    propRetractEnabled(propFlag && propRetractionFlag);
+    propEliminateRowEnabled(propEliminateRow != 0 && propFlag);
+    propEliminateColEnabled(propEliminateCol != 0 && propFlag);
 }
 
 void GameContainer::recordScore(int scoreThis, std::string nameThis)

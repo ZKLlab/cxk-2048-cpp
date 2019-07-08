@@ -42,7 +42,9 @@ public:
     void deserialize(); // 反序列化游戏状态
     void partDeserialize(); // 反序列化游戏状态(不含道具状态)
     void recordFile(); // 储存游戏状态到文件
+    //void recordPartFile();
     std::string readFile(); // 从文件读取游戏状态
+    //std::string readPartFile();
     void eliminateCol(); // 消除一列
     void eliminateRow(); // 消除一行
     void retract(); // 回退一步
