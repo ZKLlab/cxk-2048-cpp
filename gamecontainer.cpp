@@ -497,7 +497,7 @@ void GameContainer::setSoundEffectsVolume(double value)
 void GameContainer::setName()
 {
     bool ok;
-    QString text = QInputDialog::getText(this, "报上名来", "请输入昵称", QLineEdit::Normal, "", &ok);
+    QString text = QInputDialog::getText(this, "报上名来！", "请输入昵称：", QLineEdit::Normal, "", &ok);
     name = text.toStdString();
 }
 
