@@ -477,6 +477,9 @@ font-size: 13px;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 24px;</string>
+           </property>
           </widget>
          </item>
         </layout>
