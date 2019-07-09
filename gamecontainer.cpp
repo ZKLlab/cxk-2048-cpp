@@ -604,6 +604,7 @@ void GameContainer::initHighest()
         i = 0;
     }
     highest = i;
+    bestScoreUpdated(highest);
     infile.close();
 }
 
